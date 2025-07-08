@@ -1,17 +1,16 @@
-// src/api/axios.js
 import axios from 'axios';
 import i18n from '../i18n';
 
-// Detect environment and set baseURL
+// Dynamically set baseURL
 const baseURL =
   import.meta.env.MODE === 'development'
-    ? 'http://localhost:8000'
-    : import.meta.env.VITE_BACKEND_URL;
+    ? 'http://localhost:8000' // Dev backend
+    : '/api'; // 🔥 Netlify will proxy this to Render
 
-// Global CSRF token (stored after fetch)
+// Store CSRF token globally
 let csrfToken = null;
 
-// Create a secure Axios instance
+// Secure Axios instance
 const secureAxios = axios.create({
   baseURL,
   withCredentials: true,
@@ -22,29 +21,29 @@ const secureAxios = axios.create({
   },
 });
 
-// Sync Accept-Language with i18next
+// Sync Accept-Language header with i18n
 i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// Helper to return current CSRF token (for debugging/testing if needed)
-const getCSRFToken = () => csrfToken;
+// Helper to get current token (optional)
+export const getCSRFToken = () => csrfToken;
 
 // Fetch CSRF token from backend
 export const fetchCSRFToken = async () => {
   try {
-    const res = await secureAxios.get('/api/csrf/');
+    const res = await secureAxios.get('/csrf/');
     csrfToken = res.data?.csrfToken || null;
 
     if (!csrfToken) {
-      console.warn('⚠️ CSRF token missing from /api/csrf/ response');
+      console.warn('⚠️ CSRF token missing from /csrf/ response');
     }
   } catch (err) {
     console.error('❌ Failed to fetch CSRF token:', err);
   }
 };
 
-// Automatically attach CSRF token to unsafe methods
+// Attach CSRF to unsafe requests
 secureAxios.interceptors.request.use((config) => {
   const method = config.method?.toLowerCase();
   const safeMethods = ['get', 'head', 'options'];
@@ -60,7 +59,7 @@ secureAxios.interceptors.request.use((config) => {
   return config;
 });
 
-// Global response handler for common auth issues
+// Handle common auth errors
 secureAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -79,7 +78,7 @@ secureAxios.interceptors.response.use(
   }
 );
 
-// Public Axios instance (no credentials or CSRF)
+// Public Axios (no credentials)
 export const publicAxios = axios.create({
   baseURL,
   withCredentials: false,

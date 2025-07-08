@@ -181,22 +181,18 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 else:
-    # Development-specific settings
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 
 # Cookie Settings (applies to both prod and dev)
-# Cookie Settings (applies to both prod and dev)
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 SESSION_COOKIE_SAMESITE = 'None'  # 🔥 REQUIRED for cross-domain cookies
-SESSION_COOKIE_SECURE = not DEBUG  # already handled above
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_PATH = '/'
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_SAMESITE = 'None'  # 🔥 REQUIRED too
-CSRF_COOKIE_SECURE = not DEBUG  # already handled above
 CSRF_COOKIE_HTTPONLY = False  # must stay False for JS
 CSRF_COOKIE_PATH = '/'
 
@@ -206,28 +202,25 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # ======================
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = [
+    LOCAL_ORIGINS = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
-    CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS.copy()
+    CORS_ALLOWED_ORIGINS = LOCAL_ORIGINS
+    CSRF_TRUSTED_ORIGINS = LOCAL_ORIGINS
 else:
-    CORS_ALLOWED_ORIGINS = [
-        "https://livesignal.com",
-        "https://livesignal.netlify.app",
-        "https://www.livesignal.com",
-        "https://livesignal.onrender.com",
-        "https://www.livesignal.netlify.app"
-    ]
-    CSRF_TRUSTED_ORIGINS = [
+    PROD_ORIGINS = [
         "https://livesignal.com",
         "https://www.livesignal.com",
         "https://livesignal.netlify.app",
+        "https://www.livesignal.netlify.app",
         "https://livesignal.onrender.com",
-        "https://www.livesignal.netlify.app"     
     ]
+    CORS_ALLOWED_ORIGINS = PROD_ORIGINS
+    CSRF_TRUSTED_ORIGINS = PROD_ORIGINS
+
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 CORS_ALLOW_CREDENTIALS = True
 

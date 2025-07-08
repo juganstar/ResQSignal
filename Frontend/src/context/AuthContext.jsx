@@ -57,8 +57,16 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetchCSRFToken();
-      await axios.post('/api/users/auth/logout/');
+      const csrfToken = getCSRFToken(); // 👈 manually read cookie
+      await axios.post(
+        '/api/users/auth/logout/',
+        null,
+        {
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+        }
+      );
     } catch (error) {
       console.error('🚪 Logout error:', error);
     } finally {
@@ -84,6 +92,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('livesignal_user');
+  };
+
+  const getCSRFToken = () => {
+    return (
+      document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))?.split('=')[1] || ''
+    );
   };
 
   if (loading) {

@@ -4,7 +4,7 @@ from django.views.decorators.http import require_GET
 from django.middleware.csrf import get_token
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.contrib.auth import logout, get_user_model, authenticate
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator

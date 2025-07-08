@@ -8,12 +8,16 @@ const PricingPage = () => {
   const [loading, setLoading] = useState(false);
 
   const api = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL:
+      import.meta.env.MODE === 'development'
+        ? 'http://localhost:8000'
+        : import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
     headers: {
       "Content-Type": "application/json",
     },
   });
+
 
   const startCheckout = async (plan) => {
     try {

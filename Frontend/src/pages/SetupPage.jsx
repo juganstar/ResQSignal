@@ -7,16 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from "../context/AuthContext";
 import { ShieldAlert, MapPin, Settings, Trash2, Info, ChevronDown, ChevronUp } from 'lucide-react';
 
-axios.defaults.baseURL = "http://localhost:8000";
-axios.defaults.withCredentials = true;
 
-function getCSRFToken() {
-  return (
-    document.cookie
-      .split('; ')
-      .find(row => row.startsWith('csrftoken='))?.split('=')[1] || ''
-  );
-}
 
 function translateErrorMessage(msg, t) {
   if (typeof msg !== 'string') return msg;
@@ -290,13 +281,13 @@ export default function SetupPage() {
           <h3 className="text-xl font-semibold mb-4">Emergency Buttons</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <a
-              href={`http://localhost:8000/test/${userToken}/`}
+              href={`${import.meta.env.VITE_BACKEND_URL}/test/${userToken}/`}
               className="bg-yellow-600 hover:bg-yellow-700 text-black font-medium px-4 py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <Settings size={18} /> Test Emergency
             </a>
             <a
-              href={`http://localhost:8000/public/${userToken}/`}
+              href={`${import.meta.env.VITE_BACKEND_URL}/public/${userToken}/`}
               className="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <MapPin size={18} /> Real Emergency
@@ -304,6 +295,7 @@ export default function SetupPage() {
           </div>
         </div>
       )}
+
 
       {/* Existing Contacts */}
       <h3 className="text-xl font-semibold mb-4">{t('setup.current_contacts')}</h3>

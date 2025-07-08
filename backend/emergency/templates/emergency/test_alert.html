@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Emergency Setup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1a1a1a);
+      color: white;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .test-container {
+      max-width: 500px;
+      margin: auto;
+    }
+    .btn {
+      padding: 16px 32px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 12px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+    .btn-test {
+      background: #f59e0b;
+      color: black;
+    }
+    .results {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+    }
+    .hidden {
+      display: none;
+    }
+    .error-message {
+      color: #ef4444;
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(255, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    .success-message {
+      color: #22c55e;
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>Test Emergency Setup</h1>
+    <p>This page is only used to check location permissions and account status. No messages will be sent.</p>
+
+    <div class="permission-status">
+      <h3>Permission Status:</h3>
+      <p id="locationStatus">Location: Not checked</p>
+    </div>
+
+    <button id="testPermissionsBtn" class="btn btn-test">Check System Status</button>
+
+    <div id="results" class="results hidden">
+      <h3>Test Result:</h3>
+      <p id="gpsStatus"></p>
+      <p id="serverStatus"></p>
+    </div>
+
+    <div id="feedback"></div>
+  </div>
+
+  <script>
+    const token = "{{ token }}";
+    const PERMISSION_KEY = 'emergencyPermissionsGranted';
+    let userPlan = null;
+
+    function updateStatus(status) {
+      const el = document.getElementById("locationStatus");
+      el.textContent = "Location: ";
+      if (status === 'granted') el.textContent += "✅ Granted";
+      else if (status === 'prompt') el.textContent += "🟡 Prompted";
+      else if (status === 'not_available') el.textContent += "🚫 Not available (basic plan)";
+      else el.textContent += "❌ Denied";
+    }
+
+    async function checkLocationPermission() {
+      let status = 'prompt';
+      let granted = false;
+
+      try {
+        if (navigator.permissions) {
+          const perm = await navigator.permissions.query({ name: 'geolocation' });
+          status = perm.state;
+
+          if (status === 'granted') {
+            granted = true;
+          } else if (status === 'prompt') {
+            updateStatus('prompt');
+            try {
+              await new Promise((resolve, reject) =>
+                navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true })
+              );
+              granted = true;
+              status = 'granted';
+            } catch {
+              status = 'denied';
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("Location error:", error);
+        status = 'denied';
+      }
+
+      localStorage.setItem(PERMISSION_KEY, JSON.stringify({ location: granted }));
+      updateStatus(status);
+      return granted;
+    }
+
+    async function checkServerStatus() {
+      try {
+        const response = await fetch(`/api/emergency/public/${token}/test-connection/`);
+        const data = await response.json();
+        const serverStatus = document.getElementById("serverStatus");
+        const feedback = document.getElementById("feedback");
+
+        if (response.ok) {
+          userPlan = data.plan;
+          serverStatus.textContent = `✅ Ready to send (plan: ${data.plan}, contacts: ${data.contact_count})`;
+          feedback.innerHTML = `<div class="success-message">${data.message}</div>`;
+          return true;
+        } else {
+          let message = data.message || "Unexpected error.";
+          let userMsg = `<div class="error-message">❌ ${message}</div>`;
+
+          if (message.toLowerCase().includes("no emergency contacts")) {
+            userMsg = `<div class="error-message">⚠️ You must add at least one contact to test your setup.</div>`;
+          } else if (message.toLowerCase().includes("not subscribed")) {
+            userMsg = `<div class="error-message">⚠️ You must be subscribed to test your setup.</div>`;
+          }
+
+          serverStatus.textContent = `❌ ${message}`;
+          feedback.innerHTML = userMsg;
+          return false;
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
+        document.getElementById("serverStatus").textContent = "❌ Could not reach server.";
+        document.getElementById("feedback").innerHTML =
+          `<div class="error-message">Failed to connect to backend.</div>`;
+        return false;
+      }
+    }
+
+    document.getElementById("testPermissionsBtn")?.addEventListener("click", async () => {
+      const ok = await checkServerStatus();
+      if (!ok) return;
+
+      if (userPlan === 'premium') {
+        const gpsGranted = await checkLocationPermission();
+        document.getElementById("gpsStatus").textContent = gpsGranted
+          ? "Location access: ✅ Granted"
+          : "Location access: ❌ Not granted";
+      } else if (userPlan === 'basic') {
+        updateStatus('not_available');
+        document.getElementById("gpsStatus").textContent = "Location access: 🚫 Not available on basic plan";
+      } else {
+        updateStatus('not_available');
+        document.getElementById("gpsStatus").textContent = "Location access: ❓ Unknown plan";
+      }
+
+      document.getElementById("results").classList.remove("hidden");
+    });
+
+    updateStatus('prompt');
+  </script>
+</body>
+</html>

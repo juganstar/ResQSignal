@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "country-flag-icons": "^1.5.19",
+    "i18next": "^25.2.1",
+    "lucide-react": "^0.519.0",
+    "react-i18next": "^15.5.3",
+    "react-phone-input-2": "^2.15.1",
+    "react-phone-number-input": "^3.4.12"
+  }
+}

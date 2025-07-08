@@ -1,0 +1,9 @@
+Hello {{ user.username }},
+
+Thank you for signing up with LiveSignal! Please confirm your email address by clicking the link below:
+
+{{ activate_url }}
+
+If you didn't sign up for this account, you can ignore this email.
+
+- LiveSignal Team

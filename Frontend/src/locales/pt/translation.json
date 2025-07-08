@@ -1,0 +1,167 @@
+{
+  "nav": {
+    "home": "Início",
+    "setup": "Configuração",
+    "terms": "Termos",
+    "pricing": "Planos",
+    "privacy": "Privacidade"
+  },
+  "home": {
+    "welcomeBack": "Bem-vindo de volta, {{username}}!",
+    "manageContacts": "Gerir Contactos",
+    "logout": "Sair",
+    "login": "Entrar",
+    "register": "Criar Conta",
+    "feature1": " Adicione os seus contactos de emergência.",
+    "feature2": " Em caso de alerta, eles recebem uma mensagem imediata.",
+    "feature3": " Use o link de emergência a qualquer momento.",
+    "loading": "A carregar...",
+    "user": "utilizador"
+  },
+  "login": {
+    "title": "Iniciar Sessão",
+    "subtitle": "Aceda à sua conta para continuar",
+    "username": "Nome de utilizador ou Email",
+    "password": "Palavra-passe",
+    "submit": "Entrar",
+    "processing": "A processar...",
+    "error": "Credenciais inválidas",
+    "noAccount": "Não tem uma conta?",
+    "signup": "Registar",
+    "invalid": "Credenciais inválidas. Por favor, tente novamente.",
+    "registerLink": "Registe-se agora",
+    "forgotPassword": "Esqueceste-te da palavra-passe?"
+  },
+  "register": {
+    "title": "Criar Conta",
+    "subtitle": "Preencha os seus dados para se registar",
+    "username": "Nome de utilizador",
+    "email": "Email",
+    "password1": "Palavra-passe",
+    "password2": "Confirmar palavra-passe",
+    "submit": "Registar",
+    "processing": "A processar...",
+    "haveAccount": "Já tem uma conta?",
+    "successTitle": "Registo bem-sucedido!",
+    "successMessage": "Será redirecionado para verificar o seu email...",
+    "loginLink": "Iniciar sessão",
+    "accept": "Aceito os",
+    "privacy": "Política de Privacidade",
+    "and": "e",
+    "error_policy": "Deve aceitar os Termos de Serviço e a Política de Privacidade.",
+    "error": {
+      "csrf": "Erro de segurança. Atualize a página (Ctrl+F5) e tente novamente.",
+      "generic": "Falha no registo. Por favor, tente novamente."
+    }
+  },
+  "pricing": {
+    "title": "💳 Escolher Plano",
+    "subtitle": "Básico inclui 3 contactos • Premium adiciona GPS e mais contactos",
+    "basic": "Básico – €3/mês",
+    "premium": "Premium – €5/mês",
+    "loading": "A carregar...",
+    "error": "Erro no pagamento! Já iniciou sessão?",
+    "note": "Nota:",
+    "messageCost": "Cada mensagem enviada custa €0.08 adicionais (ou equivalente local)",
+    "thankYou": "Obrigado por escolher o LiveSignal",
+    "beSafe": "Mantenha-se em segurança"
+  },
+  "setup": {
+    "title": "📋 Configuração de Contactos de Emergência",
+    "guide_title": "Como configurar o botão de emergência",
+    "step1": "Ative a sua subscrição e adicione apenas um contacto de alerta temporariamente, até ter tudo configurado.",
+    "step2": "Clique em 'Test Emergency' para simular o sistema. Certifique-se de que tudo funciona sem erros.",
+    "step3": "Se o teste for bem-sucedido, clique no botão 'Real Emergency'. Guarde o link gerado no seu telemóvel e não feche a página (IMPORTANTE).",
+    "step4": "Identifique qual o navegador que está a usar.",
+    "step5": "Para Android (Chrome, Firefox, Edge, Opera): toque nos três pontos no canto superior direito e selecione 'Adicionar ao ecrã principal'.\nPara iPhone: toque no ícone de partilha (um quadrado com seta para cima) e selecione 'Adicionar ao Ecrã Principal'.",
+    "step6": "Agora adicione o resto dos contactos que deseja alertar. ⚠️ Só o deve fazer após confirmar que a configuração funciona corretamente, para evitar enviar alertas ou gastar créditos durante os testes.",
+    "placeholder_name": "Nome do Contacto",
+    "placeholder_email": "Email",
+    "placeholder_relationship": "Relação (opcional)",
+    "add_button": "Adicionar Contacto",
+    "current_contacts": "Contactos Atuais",
+    "remove": "Remover",
+    "contact_limit": "⚠️ Atingiu o limite de contactos ({{max}}) para o plano {{plan}}.",
+    "invalid_phone_format": "O número de telemóvel deve estar no formato internacional (ex: +351913016860)",
+    "phone_too_short": "⚠️ Introduza um número de telemóvel válido com pelo menos 9 dígitos.",
+    "phone_already_exists": "⚠️ Este número já está nos seus contactos.",
+    "manage_subscription": "Gerir Subscrição",
+    "error_fetch": "Falha ao obter os contactos.",
+    "invalid_name": "Introduza um nome válido (apenas letras).",
+    "required_name": "O nome é obrigatório.",
+    "required_phone": "O número de telemóvel é obrigatório.",
+    "correct_errors": "Por favor, corrija os erros abaixo.",
+    "error_add": "Falha ao adicionar contacto.",
+    "error_delete": "Falha ao remover contacto.",
+    "must_be_logged_in": "Tem de estar autenticado para realizar esta ação.",
+    "loading": "A carregar...",
+    "error_server": "Erro do servidor. Por favor, tente novamente mais tarde.",
+    "no_contacts": "Ainda não tem contactos.",
+    "delete_account": "Apagar conta",
+    "confirm_delete": "Tem a certeza de que quer apagar a conta? Esta ação é irreversível."
+  },
+  "legal": {
+    "title": "Termos e Aviso Legal",
+    "warning": "⚠️ Este serviço não substitui o 112 ou 911. Em situações reais de emergência, contacte sempre os serviços oficiais.",
+    "disclaimer1": "O LiveSignal é uma ferramenta auxiliar destinada a ajudar os utilizadores a enviar alertas predefinidos para contactos selecionados. O seu objetivo é complementar — nunca substituir — os canais oficiais de emergência.",
+    "disclaimer2": "O serviço depende de fatores externos como ligação à internet, permissões do dispositivo, funcionamento dos servidores e integrações com terceiros (por exemplo, Stripe, Twilio). A entrega de mensagens e a fiabilidade do serviço não são garantidas.",
+    "disclaimer3": "Os utilizadores assumem total responsabilidade pela utilização da plataforma. O criador da aplicação não se responsabiliza por falhas técnicas, atrasos, mensagens não entregues ou quaisquer consequências (incluindo danos, lesões ou morte) resultantes da utilização ou falha do serviço.",
+    "back": "Voltar à Página Inicial"
+  },
+  "privacy": {
+  "title": "Política de Privacidade",
+  "intro": "A sua privacidade é importante para nós. Esta política explica como recolhemos, utilizamos e protegemos os seus dados pessoais.",
+  "data_collection_title": "Recolha de Dados",
+  "data_collection_text": "Recolhemos dados como nome, número de telefone e dados de localização (se aplicável) apenas para fins de funcionamento da aplicação.",
+  "data_usage_title": "Uso dos Dados",
+  "data_usage_text": "Os seus dados são usados exclusivamente para enviar alertas de emergência, gerir a sua conta e melhorar os nossos serviços.",
+  "third_parties_title": "Partilha com Terceiros",
+  "third_parties_text": "Não partilhamos os seus dados com terceiros, exceto os necessários para envio de alertas (ex: Twilio para SMS).",
+  "security_title": "Segurança dos Dados",
+  "security_text": "Tomamos medidas para proteger os seus dados através de encriptação, autenticação e práticas seguras de armazenamento.",
+  "user_rights_title": "Direitos do Utilizador",
+  "user_rights_text": "Pode aceder, corrigir ou eliminar os seus dados a qualquer momento através da sua conta ou contactando-nos.",
+  "last_updated": "Última atualização: Julho de 2025",
+  "back": "Voltar"
+  },
+  "verify": {
+    "title": "Confirme o seu Email",
+    "subtitle": "Enviámos um link de confirmação. Verifique a sua caixa de entrada e clique no link para ativar a sua conta.",
+    "loginButton": "Ir para o Login"
+  },
+  "emailConfirmed": {
+    "title": "Email Confirmado!",
+    "subtitle": "O seu email foi verificado. Pode agora iniciar sessão.",
+    "loginButton": "Ir para o Login"
+  },
+  "errors": {
+    "emailExists": "⚠️ Este e-mail já está registado.",
+    "usernameExists": "Nome de utilizador: Já existe um utilizador com este nome.",
+    "passwordTooShort": "Palavra-passe: A palavra-passe é demasiado curta.",
+    "passwordTooCommon": "Palavra-passe: A palavra-passe é demasiado comum.",
+    "passwordsDontMatch": "As palavras-passe não coincidem.",
+    "invalidEmail": "Insira um endereço de email válido.",
+    "emailNotVerified": "⚠️ Email não verificado. Por favor, confirme o seu email antes de iniciar sessão.",
+    "invalidCredentials": "Credenciais inválidas. Verifique o seu nome de utilizador e palavra-passe."
+  },
+  "reset": {
+    "title": "Repor palavra-passe",
+    "sending": "A enviar...",
+    "email_placeholder": "Introduz o teu email",
+    "send": "Enviar email de recuperação",
+    "set_password": "Define uma nova palavra-passe",
+    "new_password": "Nova palavra-passe",
+    "repeat_password": "Repete a nova palavra-passe",
+    "confirm": "Confirmar",
+    "success_redirect": "Palavra-passe alterada! A redirecionar...",
+    "success": "Email de recuperação enviado com sucesso.",
+    "error": "Ocorreu um erro ao enviar o email de recuperação.",
+    "confirm_error": "Erro ao redefinir palavra-passe. Verifica os dados."
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "contact": "Contacto"
+}
+
+
+}

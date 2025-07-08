@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Home",
+    "setup": "Setup",
+    "terms": "Terms",
+    "pricing": "Plans",
+    "privacy": "Privacy Policy"
+  },
+  "home": {
+    "welcomeBack": "Welcome back, {{username}}!",
+    "manageContacts": "Manage Contacts",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Create Account",
+    "feature1": " Add your emergency contacts.",
+    "feature2": "In an emergency, they receive an instant alert.",
+    "feature3": " Use your emergency link anytime.",
+    "loading": "Loading...",
+    "user": "user"
+  },
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Access your account to continue",
+    "username": "Username or Email",
+    "password": "Password",
+    "submit": "Login",
+    "processing": "Processing...",
+    "error": "Invalid credentials",
+    "noAccount": "Don’t have an account?",
+    "signup": "Register",
+    "invalid": "Invalid credentials. Please try again.",
+    "registerLink": "Sign up now",
+    "forgotPassword": "Forgot your password?"
+  },
+  "register": {
+    "title": "Create Account",
+    "subtitle": "Fill in your details to register",
+    "username": "Username",
+    "email": "Email",
+    "password1": "Password",
+    "password2": "Confirm password",
+    "submit": "Register",
+    "processing": "Processing...",
+    "haveAccount": "Already have an account?",
+    "successTitle": "Registration Successful!",
+    "successMessage": "You'll be redirected to verify your email shortly...",
+    "loginLink": "Log in",
+    "accept": "I accept the",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "and": "and",
+    "error_policy": "You must accept the Terms of Service and Privacy Policy.",
+    "error": {
+      "csrf": "Security error. Please refresh the page (Ctrl+F5) and try again.",
+      "generic": "Registration failed. Please try again."
+    }
+  },
+  "pricing": {
+    "title": "💳 Choose Plan",
+    "subtitle": "Basic includes 3 contacts • Premium adds GPS and more contacts",
+    "basic": "Basic – €3/month",
+    "premium": "Premium – €5/month",
+    "loading": "Loading...",
+    "error": "Payment error! Are you logged in?",
+    "note": "Note:",
+    "messageCost": "Each message sent costs an additional €0.08 (or local equivalent)",
+    "thankYou": "Thank you for choosing LiveSignal",
+    "beSafe": "Stay safe out there"
+  },
+  "setup": {
+    "title": "📋 Emergency Contacts Setup",
+    "guide_title": "How to set up your emergency button",
+    "step1": "Activate your subscription and add only one temporary alert contact until the setup is fully complete.",
+    "step2": "Click on 'Test Emergency' to simulate the system. Make sure everything works without errors.",
+    "step3": "If the test is successful, click on the 'Real Emergency' button. Save the generated link on your phone and keep the page open (IMPORTANT).",
+    "step4": "Identify which browser you are using.",
+    "step5": "For Android (Chrome, Firefox, Edge, Opera): tap the three dots in the top-right corner and select 'Add to Home screen'.\nFor iPhone: tap the share icon (a square with an arrow pointing up) and select 'Add to Home Screen'.",
+    "step6": "Now add the rest of the contacts you want to alert. ⚠️ Do this only after confirming the setup works correctly, to avoid sending alerts or using credits during testing.",
+    "placeholder_name": "Contact Name",
+    "placeholder_email": "Email",
+    "placeholder_relationship": "Relationship (optional)",
+    "add_button": "Add Contact",
+    "current_contacts": "Current Contacts",
+    "remove": "Remove",
+    "contact_limit": "⚠️ You've reached your contact limit ({{max}}) for the {{plan}} plan.",
+    "invalid_phone_format": "Phone number must be in international format (e.g., +351913016860)",
+    "phone_too_short": "⚠️ Enter a valid phone number with at least 9 digits.",
+    "phone_already_exists": "⚠️ This phone number is already in your contacts.",
+    "manage_subscription": "Manage Subscription",
+    "error_fetch": "Failed to fetch contacts.",
+    "invalid_name": "Please enter a valid name (letters only).",
+    "required_name": "Name is required.",
+    "required_phone": "Phone number is required.",
+    "correct_errors": "Please correct the errors below.",
+    "error_add": "Failed to add contact.",
+    "error_delete": "Failed to delete contact.",
+    "must_be_logged_in": "You must be logged in to perform this action.",
+    "loading": "Loading...",
+    "error_server": "Server error. Please try again later.",
+    "no_contacts": "No contacts yet.",
+    "delete_account": "Delete account",
+    "confirm_delete": "Are you sure you want to delete your account? This action cannot be undone."
+  },
+  "legal": {
+    "title": "Terms & Legal Notice",
+    "warning": "⚠️ This service is not a replacement for 112 or 911. In real emergencies, always contact official emergency services.",
+    "disclaimer1": "LiveSignal is an auxiliary tool intended to help users send predefined alerts to selected contacts. Its purpose is to complement — never to replace — official emergency channels.",
+    "disclaimer2": "The service relies on external factors such as internet connection, device permissions, server uptime, and third-party integrations (e.g. Stripe, Twilio). Message delivery and service reliability are not guaranteed.",
+    "disclaimer3": "Users take full responsibility for using the platform. The creator of this app disclaims all liability for technical failures, delays, undelivered messages, or any consequences (including damage, injury, or death) resulting from the use or failure of the service.",
+    "back": "Back to Homepage"
+  },
+  "privacy": {
+  "title": "Privacy Policy",
+  "intro": "Your privacy is important to us. This policy explains how we collect, use, and protect your personal data.",
+  "data_collection_title": "Data Collection",
+  "data_collection_text": "We collect data such as your name, phone number, and location data (if applicable) only for application functionality.",
+  "data_usage_title": "Data Usage",
+  "data_usage_text": "Your data is used solely to send emergency alerts, manage your account, and improve our services.",
+  "third_parties_title": "Third-Party Sharing",
+  "third_parties_text": "We do not share your data with third parties except those required to deliver alerts (e.g., Twilio for SMS).",
+  "security_title": "Data Security",
+  "security_text": "We take measures to protect your data using encryption, authentication, and secure storage practices.",
+  "user_rights_title": "User Rights",
+  "user_rights_text": "You can access, correct, or delete your data at any time through your account or by contacting us.",
+  "last_updated": "Last updated: July 2025",
+  "back": "Back"
+  },
+  "verify": {
+    "title": "Confirm Your Email",
+    "subtitle": "We've sent you a confirmation link. Please check your inbox and click the link to activate your account.",
+    "loginButton": "Go to Login"
+  },
+  "emailConfirmed": {
+    "title": "Email Confirmed!",
+    "subtitle": "Your email has been verified. You can now log in.",
+    "loginButton": "Go to Login"
+  },
+  "errors": {
+    "emailExists": "⚠️ This e-mail is allready registered",
+    "usernameExists": "Username: A user with this name already exists.",
+    "passwordTooShort": "Password is too short.",
+    "passwordTooCommon": "Password is too common.",
+    "passwordsDontMatch": "Passwords do not match.",
+    "invalidEmail": "Enter a valid email address.",
+    "emailNotVerified": "⚠️ Email not verified. Please confirm your email before logging in.",
+    "invalidCredentials": "Invalid credentials. Check your username and password."
+  },
+  "reset": {
+    "title": "Reset your password",
+    "sending": "Sending...",
+    "email_placeholder": "Enter your account email",
+    "send": "Send reset email",
+    "set_password": "Set a new password",
+    "new_password": "New password",
+    "repeat_password": "Repeat new password",
+    "confirm": "Confirm",
+    "success_redirect": "Password changed! Redirecting to login...",
+    "success": "Recovery email sent successfully.",
+    "error": "There was an error sending the recovery email.",
+    "confirm_error": "Error resetting password. Please check the details."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "contact": "Contact"
+}
+
+
+}

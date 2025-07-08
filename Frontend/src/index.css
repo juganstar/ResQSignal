@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.react-tel-input .selected-flag .flag-dropdown {
+  color: black !important; /* Makes the prefix text visible */
+}
+
+/* Keep the dropdown list items white */
+.react-tel-input .country-list .country {
+  color: rgb(6, 114, 255) !important;
+}
+
+:root {
+  --deep-crimson: #6a0c3a;
+  --rich-purple: #4a1d96;
+}

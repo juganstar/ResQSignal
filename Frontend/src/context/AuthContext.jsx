@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios, { fetchCSRFToken } from '../api/axios'; // ✅ Use your secureAxios setup
+import axios from '../utils/axiosDefaults'; // your configured secureAxios
 
 const AuthContext = createContext();
 
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const initializeAuth = async () => {
     try {
-      await fetchCSRFToken(); // ✅ Get token before anything
+      await fetchCSRFToken();
       const success = await checkAuthStatus();
       if (!success) clearAuth();
     } catch (err) {
@@ -22,6 +22,18 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchCSRFToken = async () => {
+    await axios.get('/api/csrf/');
+  };
+
+  const getCSRFToken = () => {
+    return (
+      document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))?.split('=')[1] || ''
+    );
   };
 
   const checkAuthStatus = async () => {
@@ -44,6 +56,10 @@ export const AuthProvider = ({ children }) => {
       await axios.post('/api/users/auth/login/', {
         username: username.toLowerCase(),
         password,
+      }, {
+        headers: {
+          'X-CSRFToken': getCSRFToken(),
+        },
       });
       const success = await checkAuthStatus();
       if (!success) throw new Error('Session verification failed');
@@ -57,16 +73,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const csrfToken = getCSRFToken(); // 👈 manually read cookie
-      await axios.post(
-        '/api/users/auth/logout/',
-        null,
-        {
-          headers: {
-            'X-CSRFToken': csrfToken,
-          },
-        }
-      );
+      await fetchCSRFToken();
+      await axios.post('/api/users/auth/logout/', null, {
+        headers: {
+          'X-CSRFToken': getCSRFToken(),
+        },
+      });
     } catch (error) {
       console.error('🚪 Logout error:', error);
     } finally {
@@ -92,14 +104,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('livesignal_user');
-  };
-
-  const getCSRFToken = () => {
-    return (
-      document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))?.split('=')[1] || ''
-    );
   };
 
   if (loading) {

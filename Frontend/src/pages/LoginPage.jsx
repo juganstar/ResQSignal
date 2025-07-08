@@ -5,6 +5,15 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { translateErrorMessage } from "../utils/translateErrors";
 
+function getCSRFToken() {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrftoken="))
+    ?.split("=")[1];
+  console.log("📦 CSRF token in cookie:", token);
+  return token || "";
+}
+
 export default function LoginPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
@@ -20,8 +29,9 @@ export default function LoginPage() {
       try {
         await axios.get("/api/csrf/");
         setCsrfReady(true);
+        console.log("✅ CSRF initialized");
       } catch (err) {
-        console.error("CSRF initialization error:", err);
+        console.error("❌ CSRF fetch error:", err);
         setError("Erro ao inicializar sessão. Tente recarregar a página.");
       }
     };
@@ -40,15 +50,34 @@ export default function LoginPage() {
         return;
       }
 
+      const token = getCSRFToken();
+      if (!token) {
+        throw new Error("CSRF token not found nos cookies.");
+      }
+
+      await axios.post(
+        "/api/users/auth/login/",
+        {
+          username: username.toLowerCase(),
+          password,
+        },
+        {
+          headers: {
+            "X-CSRFToken": token,
+          },
+        }
+      );
+
       const success = await login(username, password);
       if (success) {
         navigate("/", { replace: true });
       }
     } catch (err) {
+      console.error("🔐 Login error:", err);
       let errorMessage = t("errors.invalidCredentials");
       const errorData = err.response?.data || err.message;
 
-      if (typeof errorData === 'string') {
+      if (typeof errorData === "string") {
         errorMessage = errorData;
       } else if (errorData?.detail) {
         errorMessage = errorData.detail;
@@ -69,12 +98,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white">
-              {t("login.title")}
-            </h1>
-            <p className="text-sm text-gray-400 mt-2">
-              {t("login.subtitle")}
-            </p>
+            <h1 className="text-3xl font-bold text-white">{t("login.title")}</h1>
+            <p className="text-sm text-gray-400 mt-2">{t("login.subtitle")}</p>
           </div>
 
           {error && (

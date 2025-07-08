@@ -202,7 +202,7 @@ CSRF_COOKIE_HTTPONLY = False  # must stay False for JS
 CSRF_COOKIE_PATH = '/'
 CSRF_COOKIE_DOMAIN = None
 
-
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # ======================
 # CORS SETTINGS
 # ======================

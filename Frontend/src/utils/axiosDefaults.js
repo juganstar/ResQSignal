@@ -8,7 +8,7 @@ const baseURL =
     ? 'http://localhost:8000'
     : import.meta.env.VITE_BACKEND_URL;
 
-// CSRF token variable (fetched from backend)
+// Global CSRF token (stored after fetch)
 let csrfToken = null;
 
 // Create a secure Axios instance
@@ -27,23 +27,24 @@ i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// Helper to get current CSRF token
+// Helper to return current CSRF token (for debugging/testing if needed)
 const getCSRFToken = () => csrfToken;
 
-// Fetch CSRF token manually and store it
+// Fetch CSRF token from backend
 export const fetchCSRFToken = async () => {
   try {
     const res = await secureAxios.get('/api/csrf/');
     csrfToken = res.data?.csrfToken || null;
+
     if (!csrfToken) {
       console.warn('⚠️ CSRF token missing from /api/csrf/ response');
     }
   } catch (err) {
-    console.error('❌ Failed to fetch CSRF token', err);
+    console.error('❌ Failed to fetch CSRF token:', err);
   }
 };
 
-// Attach CSRF token to all unsafe methods
+// Automatically attach CSRF token to unsafe methods
 secureAxios.interceptors.request.use((config) => {
   const method = config.method?.toLowerCase();
   const safeMethods = ['get', 'head', 'options'];
@@ -52,14 +53,14 @@ secureAxios.interceptors.request.use((config) => {
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
     } else {
-      console.warn(`⚠️ No CSRF token available for ${config.method?.toUpperCase()} ${config.url}`);
+      console.warn(`⚠️ No CSRF token available for ${method?.toUpperCase()} ${config.url}`);
     }
   }
 
   return config;
 });
 
-// Handle 403 CSRF + 401 session expiration globally
+// Global response handler for common auth issues
 secureAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -78,7 +79,7 @@ secureAxios.interceptors.response.use(
   }
 );
 
-// Public Axios (for anonymous/public endpoints)
+// Public Axios instance (no credentials or CSRF)
 export const publicAxios = axios.create({
   baseURL,
   withCredentials: false,

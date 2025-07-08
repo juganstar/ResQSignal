@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from '../utils/axiosDefaults';
+import axios, { fetchCSRFToken } from '../api/axios'; // ✅ Use your secureAxios setup
 
 const AuthContext = createContext();
 
@@ -14,11 +14,9 @@ export const AuthProvider = ({ children }) => {
 
   const initializeAuth = async () => {
     try {
-      await axios.get('/api/csrf/');
-
-  const success = await checkAuthStatus();
-  if (!success) clearAuth();
-
+      await fetchCSRFToken(); // ✅ Get token before anything
+      const success = await checkAuthStatus();
+      if (!success) clearAuth();
     } catch (err) {
       clearAuth();
     } finally {
@@ -28,46 +26,27 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('/api/users/me/', {
-        withCredentials: true,
-        headers: {
-          'X-CSRFToken': getCSRFToken(),
-        },
-      });
-
+      const response = await axios.get('/api/users/me/');
       if (response.data && response.data.pk) {
         setAuth(response.data);
         return true;
       }
-
       return false;
     } catch (error) {
-      console.warn("❌ /api/users/me/ failed:", error.response?.status);
+      console.warn('❌ /api/users/me/ failed:', error.response?.status);
       return false;
     }
   };
 
   const login = async (username, password) => {
     try {
-      await axios.get('/api/csrf/', { withCredentials: true });
-
-      await axios.post(
-        '/api/users/auth/login/',
-        {
-          username: username.toLowerCase(),
-          password,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            'X-CSRFToken': getCSRFToken(),
-          },
-        }
-      );
-
+      await fetchCSRFToken();
+      await axios.post('/api/users/auth/login/', {
+        username: username.toLowerCase(),
+        password,
+      });
       const success = await checkAuthStatus();
       if (!success) throw new Error('Session verification failed');
-
       return true;
     } catch (error) {
       console.error('🔐 Login error:', error);
@@ -78,18 +57,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.get('/api/csrf/', { withCredentials: true });
-
-      await axios.post(
-        '/api/users/auth/logout/',
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            'X-CSRFToken': getCSRFToken(),
-          },
-        }
-      );
+      await fetchCSRFToken();
+      await axios.post('/api/users/auth/logout/');
     } catch (error) {
       console.error('🚪 Logout error:', error);
     } finally {
@@ -115,13 +84,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('livesignal_user');
-  };
-
-  const getCSRFToken = () => {
-    return document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('csrftoken='))
-      ?.split('=')[1];
   };
 
   if (loading) {

@@ -212,6 +212,7 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = LOCAL_ORIGINS
 else:
     PROD_ORIGINS = [
+        "https://livesignal-frontend.onrender.com",
         "https://livesignal.com",
         "https://www.livesignal.com",
         "https://livesignal.netlify.app",

@@ -200,7 +200,8 @@ CSRF_COOKIE_SAMESITE = 'None'  # 🔥 REQUIRED too
 CSRF_COOKIE_SECURE = not DEBUG  # already handled above
 CSRF_COOKIE_HTTPONLY = False  # must stay False for JS
 CSRF_COOKIE_PATH = '/'
-CSRF_COOKIE_DOMAIN = None
+CSRF_COOKIE_DOMAIN = ".livesignal.netlify.app"
+
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # ======================

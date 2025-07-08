@@ -88,6 +88,7 @@ class UserRegistrationView(generics.CreateAPIView):
 class CustomLoginView(LoginView):
     pass
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CustomLogoutView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication]
@@ -95,7 +96,7 @@ class CustomLogoutView(APIView):
     def post(self, request):
         request.session.flush()
         logout(request)
-        get_token(request)
+        get_token(request)  # refresh CSRF
         return Response({"detail": "Logged out successfully."})
     
 def filter_users_by_email(email):

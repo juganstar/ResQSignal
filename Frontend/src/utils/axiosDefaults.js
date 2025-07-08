@@ -1,3 +1,4 @@
+// src/api/axios.js
 import axios from 'axios';
 import i18n from '../i18n';
 
@@ -7,10 +8,10 @@ const baseURL =
     ? 'http://localhost:8000'
     : import.meta.env.VITE_BACKEND_URL;
 
-// Global CSRF token (fetched manually)
+// CSRF token variable (fetched from backend)
 let csrfToken = null;
 
-// Axios instance with secure defaults
+// Create a secure Axios instance
 const secureAxios = axios.create({
   baseURL,
   withCredentials: true,
@@ -26,59 +27,58 @@ i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// Get current CSRF token
+// Helper to get current CSRF token
 const getCSRFToken = () => csrfToken;
 
-// Fetch CSRF token manually from backend
+// Fetch CSRF token manually and store it
 export const fetchCSRFToken = async () => {
   try {
     const res = await secureAxios.get('/api/csrf/');
     csrfToken = res.data?.csrfToken || null;
     if (!csrfToken) {
-      console.warn('⚠️ CSRF token missing from response');
+      console.warn('⚠️ CSRF token missing from /api/csrf/ response');
     }
   } catch (err) {
     console.error('❌ Failed to fetch CSRF token', err);
   }
 };
 
-// Attach CSRF token to all unsafe requests
+// Attach CSRF token to all unsafe methods
 secureAxios.interceptors.request.use((config) => {
   const method = config.method?.toLowerCase();
   const safeMethods = ['get', 'head', 'options'];
 
   if (!safeMethods.includes(method)) {
-    const token = getCSRFToken();
-    if (token) {
-      config.headers['X-CSRFToken'] = token;
+    if (csrfToken) {
+      config.headers['X-CSRFToken'] = csrfToken;
     } else {
-      console.warn('⚠️ No CSRF token available for request');
+      console.warn(`⚠️ No CSRF token available for ${config.method?.toUpperCase()} ${config.url}`);
     }
   }
 
   return config;
 });
 
-// Handle auth errors globally
+// Handle 403 CSRF + 401 session expiration globally
 secureAxios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (
-      error.response?.status === 403 &&
-      error.response?.data?.detail?.toLowerCase().includes('csrf')
-    ) {
-      console.warn('⚠️ CSRF verification failed:', error.config.url);
+    const status = error.response?.status;
+    const url = error.config?.url;
+
+    if (status === 403 && error.response?.data?.detail?.toLowerCase().includes('csrf')) {
+      console.warn(`🚫 CSRF verification failed on: ${url}`);
     }
 
-    if (error.response?.status === 401) {
-      console.warn('⚠️ Unauthorized (401): Session may have expired.');
+    if (status === 401) {
+      console.warn(`🔒 Unauthorized (401) - Session expired for: ${url}`);
     }
 
     return Promise.reject(error);
   }
 );
 
-// Public Axios (no credentials, for public APIs)
+// Public Axios (for anonymous/public endpoints)
 export const publicAxios = axios.create({
   baseURL,
   withCredentials: false,

@@ -193,15 +193,12 @@ SESSION_COOKIE_SAMESITE = 'None'  # 🔥 REQUIRED for cross-domain cookies
 SESSION_COOKIE_SECURE = not DEBUG  # already handled above
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_PATH = '/'
-SESSION_COOKIE_DOMAIN = "none"
 
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_SAMESITE = 'None'  # 🔥 REQUIRED too
 CSRF_COOKIE_SECURE = not DEBUG  # already handled above
 CSRF_COOKIE_HTTPONLY = False  # must stay False for JS
 CSRF_COOKIE_PATH = '/'
-CSRF_COOKIE_DOMAIN = "none"
-
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # ======================

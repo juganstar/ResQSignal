@@ -1,5 +1,0 @@
-/api/csrf/
-  Access-Control-Allow-Origin: https://livesignal-frontend.onrender.com
-  Access-Control-Allow-Credentials: true
-  Access-Control-Allow-Headers: Content-Type, X-CSRFToken
-  Cache-Control: no-store

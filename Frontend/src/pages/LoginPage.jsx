@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
 import { translateErrorMessage } from "../utils/translateErrors";
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,11 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await loginAndStoreTokens({
-        username: username.toLowerCase(),
-        password,
-      });
-
+      await login(username.toLowerCase(), password);
       navigate("/", { replace: true });
     } catch (err) {
       console.error("🔐 Login error:", err);
@@ -42,7 +40,6 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">
@@ -138,7 +135,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-400">
-            {t("login.noAccount")}{" "}
+            {t("login.noAccount")} {" "}
             <Link to="/register" className="text-purple-400 hover:text-purple-300 underline">
               {t("login.signup")}
             </Link>

@@ -15,9 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const initializeAuth = async () => {
     const token = localStorage.getItem('access');
-    const refresh = localStorage.getItem('refresh');
-
-    if (token && refresh) {
+    if (token) {
       try {
         const decoded = jwtDecode(token);
         setUser({
@@ -25,44 +23,31 @@ export const AuthProvider = ({ children }) => {
           username: decoded.username,
           email: decoded.email,
         });
-
-        // ✅ Critical delay to ensure Axios interceptor syncs up
-        await new Promise((resolve) => setTimeout(resolve, 300));
-
         setIsAuthenticated(true);
-      } catch (err) {
+      } catch {
         clearAuth();
       }
     }
-
     setLoading(false);
   };
 
   const login = async (username, password) => {
-    try {
-      const res = await axios.post('/api/users/auth/login/', {
-        username: username.toLowerCase(),
-        password,
-      });
+    const res = await axios.post('/api/users/auth/login/', {
+      username: username.toLowerCase(),
+      password,
+    });
 
-      const { access, refresh } = res.data;
-      localStorage.setItem('access', access);
-      localStorage.setItem('refresh', refresh);
+    const { access, refresh } = res.data;
+    localStorage.setItem('access', access);
+    localStorage.setItem('refresh', refresh);
 
-      const decoded = jwtDecode(access);
-      setUser({
-        pk: decoded.user_id,
-        username: decoded.username,
-        email: decoded.email,
-      });
-
-      // 🔐 Prevent race condition again after login
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setIsAuthenticated(true);
-    } catch (err) {
-      clearAuth();
-      throw err;
-    }
+    const decoded = jwtDecode(access);
+    setUser({
+      pk: decoded.user_id,
+      username: decoded.username,
+      email: decoded.email,
+    });
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
@@ -82,9 +67,7 @@ export const AuthProvider = ({ children }) => {
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
     </div>
   ) : (
-    <AuthContext.Provider
-      value={{ isAuthenticated, user, login, logout }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

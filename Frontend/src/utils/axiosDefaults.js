@@ -14,12 +14,12 @@ const secureAxios = axios.create({
   },
 });
 
-// Set Accept-Language on language change
+// 🌐 Update language header
 i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// 🔐 Set access token from localStorage
+// 🔐 Attach token to every request
 secureAxios.interceptors.request.use((config) => {
   const token = localStorage.getItem('access');
   if (token) {
@@ -28,20 +28,22 @@ secureAxios.interceptors.request.use((config) => {
   return config;
 });
 
-// 🔄 Handle expired access token with refresh
+// 🔄 Auto-refresh on 401
 secureAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const refresh = localStorage.getItem('refresh');
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      localStorage.getItem('refresh')
+      refresh
     ) {
       originalRequest._retry = true;
       try {
         const res = await axios.post(`${baseURL}/api/users/auth/refresh/`, {
-          refresh: localStorage.getItem('refresh'),
+          refresh,
         });
         const newAccess = res.data.access;
         localStorage.setItem('access', newAccess);
@@ -53,6 +55,7 @@ secureAxios.interceptors.response.use(
         window.location.href = '/login';
       }
     }
+
     return Promise.reject(error);
   }
 );

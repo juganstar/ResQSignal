@@ -1,37 +1,31 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from '../utils/axiosDefaults'; // uses secureAxios
+import axios from '../utils/axiosDefaults';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    initializeAuth();
-  }, []);
-
-  const initializeAuth = () => {
-    const access = localStorage.getItem('access_token');
-    const refresh = localStorage.getItem('refresh_token');
-
-    if (access && refresh) {
+    const token = localStorage.getItem('access');
+    if (token) {
       try {
-        const decoded = jwtDecode(access);
+        const decoded = jwtDecode(token);
         setUser({
+          pk: decoded.user_id,
           username: decoded.username,
           email: decoded.email,
-          pk: decoded.user_id,
         });
         setIsAuthenticated(true);
       } catch (err) {
-        clearAuth();
+        console.error('Invalid access token');
       }
     }
     setLoading(false);
-  };
+  }, []);
 
   const login = async (username, password) => {
     try {
@@ -39,50 +33,31 @@ export const AuthProvider = ({ children }) => {
         username: username.toLowerCase(),
         password,
       });
+      localStorage.setItem('access', res.data.access);
+      localStorage.setItem('refresh', res.data.refresh);
 
-      const { access, refresh } = res.data;
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-
-      const decoded = jwtDecode(access);
+      const decoded = jwtDecode(res.data.access);
       setUser({
+        pk: decoded.user_id,
         username: decoded.username,
         email: decoded.email,
-        pk: decoded.user_id,
       });
       setIsAuthenticated(true);
-      return true;
     } catch (err) {
-      clearAuth();
       throw err;
     }
   };
 
   const logout = () => {
-    clearAuth();
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    setIsAuthenticated(false);
+    setUser(null);
     window.location.href = '/login';
   };
 
-  const clearAuth = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    setUser(null);
-    setIsAuthenticated(false);
-  };
-
-  return loading ? (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-    </div>
-  ) : (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        login,
-        logout,
-      }}
-    >
+  return loading ? null : (
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

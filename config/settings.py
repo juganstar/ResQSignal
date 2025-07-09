@@ -215,8 +215,6 @@ else:
         "https://livesignal-frontend.onrender.com",
         "https://livesignal.com",
         "https://www.livesignal.com",
-        "https://livesignal.netlify.app",
-        "https://www.livesignal.netlify.app",
         "https://livesignal.onrender.com",
     ]
     CORS_ALLOWED_ORIGINS = PROD_ORIGINS

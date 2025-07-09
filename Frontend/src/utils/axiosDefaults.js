@@ -1,21 +1,13 @@
 import axios from 'axios';
 import i18n from '../i18n';
 
-// ✅ Correct backend for Render
 const baseURL =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:8000'
     : 'https://livesignal.onrender.com';
 
-// 🔐 Get CSRF token from cookie
-const getCSRFTokenFromCookie = () => {
-  const match = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrftoken='));
-  return match ? match.split('=')[1] : null;
-};
+let csrfToken = null;
 
-// Secure Axios instance
 const secureAxios = axios.create({
   baseURL,
   withCredentials: true,
@@ -26,29 +18,39 @@ const secureAxios = axios.create({
   },
 });
 
-// Sync Accept-Language header with i18n
 i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// Attach CSRF to unsafe requests
+export const getCSRFToken = () => csrfToken;
+
+export const fetchCSRFToken = async () => {
+  try {
+    const res = await secureAxios.get('/csrf/');
+    csrfToken = res.data?.csrfToken || document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrftoken="))
+      ?.split("=")[1];
+
+    if (!csrfToken) {
+      console.warn('⚠️ CSRF token missing from /csrf/ response and cookie.');
+    }
+  } catch (err) {
+    console.error('❌ Failed to fetch CSRF token:', err);
+  }
+};
+
 secureAxios.interceptors.request.use((config) => {
   const method = config.method?.toLowerCase();
   const safeMethods = ['get', 'head', 'options'];
 
-  if (!safeMethods.includes(method)) {
-    const token = getCSRFTokenFromCookie();
-    if (token) {
-      config.headers['X-CSRFToken'] = token;
-    } else {
-      console.warn(`⚠️ No CSRF token in cookie for ${method?.toUpperCase()} ${config.url}`);
-    }
+  if (!safeMethods.includes(method) && csrfToken) {
+    config.headers['X-CSRFToken'] = csrfToken;
   }
 
   return config;
 });
 
-// Handle common auth errors
 secureAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -67,7 +69,6 @@ secureAxios.interceptors.response.use(
   }
 );
 
-// Public Axios (no credentials)
 export const publicAxios = axios.create({
   baseURL,
   withCredentials: false,

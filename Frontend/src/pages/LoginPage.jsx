@@ -5,15 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { translateErrorMessage } from "../utils/translateErrors";
 
-function getCSRFToken() {
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("csrftoken="))
-    ?.split("=")[1];
-  console.log("📦 CSRF token in cookie:", token);
-  return token || "";
-}
-
 export default function LoginPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
@@ -27,9 +18,15 @@ export default function LoginPage() {
   useEffect(() => {
     const fetchCSRF = async () => {
       try {
-        await axios.get("/api/csrf/");
-        setCsrfReady(true);
-        console.log("✅ CSRF initialized");
+        const res = await axios.get("/api/csrf/");
+        const token = res.data?.csrfToken;
+        if (token) {
+          axios.defaults.headers.common["X-CSRFToken"] = token;
+          setCsrfReady(true);
+          console.log("✅ CSRF initialized", token);
+        } else {
+          throw new Error("No CSRF token in response");
+        }
       } catch (err) {
         console.error("❌ CSRF fetch error:", err);
         setError("Erro ao inicializar sessão. Tente recarregar a página.");
@@ -50,23 +47,10 @@ export default function LoginPage() {
         return;
       }
 
-      const token = getCSRFToken();
-      if (!token) {
-        throw new Error("CSRF token not found nos cookies.");
-      }
-
-      await axios.post(
-        "/api/users/auth/login/",
-        {
-          username: username.toLowerCase(),
-          password,
-        },
-        {
-          headers: {
-            "X-CSRFToken": token,
-          },
-        }
-      );
+      await axios.post("/api/users/auth/login/", {
+        username: username.toLowerCase(),
+        password,
+      });
 
       const success = await login(username, password);
       if (success) {
@@ -158,9 +142,25 @@ export default function LoginPage() {
             >
               {loading ? (
                 <span className="inline-flex items-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   {t("login.processing")}
                 </span>
@@ -172,10 +172,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center text-sm text-gray-400">
             {t("login.noAccount")}{" "}
-            <Link
-              to="/register"
-              className="text-purple-400 hover:text-purple-300 underline"
-            >
+            <Link to="/register" className="text-purple-400 hover:text-purple-300 underline">
               {t("login.signup")}
             </Link>
           </div>

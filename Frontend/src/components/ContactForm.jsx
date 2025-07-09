@@ -1,16 +1,9 @@
 // src/components/ContactForm.jsx
 import { useState } from "react";
-import axios from "axios";
+import axios from "../utils/axiosDefaults"; // ✅ use custom axios with JWT
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "react-i18next";
-
-function getCSRFToken() {
-  return document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("csrftoken="))
-    ?.split("=")[1];
-}
 
 function translateErrorMessage(msg, t) {
   if (typeof msg !== "string") return msg;
@@ -67,12 +60,7 @@ export default function ContactForm({ contacts, setContacts, setError }) {
           : `+${newContact.phone_number}`,
       };
 
-      const response = await axios.post("/api/emergency/contacts/", formatted, {
-        headers: {
-          "X-CSRFToken": getCSRFToken(),
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post("/api/emergency/contacts/", formatted);
 
       const created = response.data;
 
@@ -109,7 +97,6 @@ export default function ContactForm({ contacts, setContacts, setError }) {
       setFormErrors(formErrs);
     }
   };
-
 
   return (
     <div className="space-y-4 mb-10">

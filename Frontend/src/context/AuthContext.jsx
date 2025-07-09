@@ -10,8 +10,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    initializeAuth();
+  }, []);
+
+  const initializeAuth = async () => {
     const token = localStorage.getItem('access');
-    if (token) {
+    const refresh = localStorage.getItem('refresh');
+
+    if (token && refresh) {
       try {
         const decoded = jwtDecode(token);
         setUser({
@@ -19,13 +25,18 @@ export const AuthProvider = ({ children }) => {
           username: decoded.username,
           email: decoded.email,
         });
+
+        // ✅ Critical delay to ensure Axios interceptor syncs up
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
         setIsAuthenticated(true);
       } catch (err) {
-        console.error('Invalid access token');
+        clearAuth();
       }
     }
+
     setLoading(false);
-  }, []);
+  };
 
   const login = async (username, password) => {
     try {
@@ -33,31 +44,47 @@ export const AuthProvider = ({ children }) => {
         username: username.toLowerCase(),
         password,
       });
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
 
-      const decoded = jwtDecode(res.data.access);
+      const { access, refresh } = res.data;
+      localStorage.setItem('access', access);
+      localStorage.setItem('refresh', refresh);
+
+      const decoded = jwtDecode(access);
       setUser({
         pk: decoded.user_id,
         username: decoded.username,
         email: decoded.email,
       });
+
+      // 🔐 Prevent race condition again after login
+      await new Promise((resolve) => setTimeout(resolve, 300));
       setIsAuthenticated(true);
     } catch (err) {
+      clearAuth();
       throw err;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-    setIsAuthenticated(false);
-    setUser(null);
+    clearAuth();
     window.location.href = '/login';
   };
 
-  return loading ? null : (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+  const clearAuth = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  return loading ? (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+    </div>
+  ) : (
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

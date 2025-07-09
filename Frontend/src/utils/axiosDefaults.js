@@ -1,11 +1,11 @@
 import axios from 'axios';
 import i18n from '../i18n';
 
-// Dynamically set baseURL
+// ✅ Correct backend for Render
 const baseURL =
   import.meta.env.MODE === 'development'
-    ? 'http://localhost:8000' // Dev backend
-    : '/api'; // 🔥 Netlify will proxy this to Render
+    ? 'http://localhost:8000'
+    : 'https://livesignal.onrender.com';
 
 // Store CSRF token globally
 let csrfToken = null;

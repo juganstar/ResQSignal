@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios, { fetchCSRFToken } from "../utils/axiosDefaults";
+import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
 import { translateErrorMessage } from "../utils/translateErrors";
 
@@ -10,17 +10,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [csrfReady, setCsrfReady] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const initCSRF = async () => {
-      await fetchCSRFToken();
-      setCsrfReady(true);
-    };
-
-    initCSRF();
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

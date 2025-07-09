@@ -4,7 +4,6 @@ class AllowCookieMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        # Allow Netlify to receive and send cookies
-        response["Access-Control-Allow-Origin"] = "https://livesignal.netlify.app"
+        response["Access-Control-Allow-Origin"] = "https://livesignal-frontend.onrender.com"
         response["Access-Control-Allow-Credentials"] = "true"
         return response

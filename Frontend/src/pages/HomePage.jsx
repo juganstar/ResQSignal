@@ -32,7 +32,9 @@ export default function HomePage() {
           {isAuthenticated ? (
             <>
               <h2 className="text-3xl md:text-5xl font-extrabold drop-shadow-xl">
-                {t("home.welcomeBack", { username: user?.username || t("home.user") })}
+                {user?.username
+                  ? t("home.welcomeBack", { username: user.username })
+                  : t("home.loading")}
               </h2>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link

@@ -74,10 +74,16 @@ export default function ContactForm({ contacts, setContacts, setError }) {
         },
       });
 
-      setContacts([...contacts, response.data]);
-      setNewContact({ name: "", phone_number: "", relationship: "" });
-      setError("");
-      setFormErrors({});
+      const created = response.data;
+
+      if (created && created.id && created.phone_number) {
+        setContacts([...contacts, created]);
+        setNewContact({ name: "", phone_number: "", relationship: "" });
+        setError("");
+        setFormErrors({});
+      } else {
+        setError(t("setup.contact_creation_failed"));
+      }
     } catch (err) {
       let message = t("setup.error_add");
       const formErrs = {};
@@ -103,6 +109,7 @@ export default function ContactForm({ contacts, setContacts, setError }) {
       setFormErrors(formErrs);
     }
   };
+
 
   return (
     <div className="space-y-4 mb-10">

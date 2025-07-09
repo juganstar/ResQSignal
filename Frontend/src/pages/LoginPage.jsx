@@ -18,7 +18,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await axios.post("/api/users/auth/login/", {
+      await loginAndStoreTokens({
         username: username.toLowerCase(),
         password,
       });
@@ -42,6 +42,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">

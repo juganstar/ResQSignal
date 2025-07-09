@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
@@ -12,17 +12,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      if (!csrfReady) {
-        throw new Error("⚠️ CSRF token not ready. Try again.");
-      }
-
       await axios.post("/api/users/auth/login/", {
         username: username.toLowerCase(),
         password,
@@ -106,16 +101,32 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading || !csrfReady}
+              disabled={loading}
               className={`w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md shadow transition ${
-                loading || !csrfReady ? "opacity-70 cursor-not-allowed" : ""
+                loading ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
               {loading ? (
                 <span className="inline-flex items-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   {t("login.processing")}
                 </span>
@@ -127,10 +138,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center text-sm text-gray-400">
             {t("login.noAccount")}{" "}
-            <Link
-              to="/register"
-              className="text-purple-400 hover:text-purple-300 underline"
-            >
+            <Link to="/register" className="text-purple-400 hover:text-purple-300 underline">
               {t("login.signup")}
             </Link>
           </div>

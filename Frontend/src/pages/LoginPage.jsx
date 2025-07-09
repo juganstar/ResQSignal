@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginAndStoreTokens } from "../utils/axiosDefaults";
 import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
 import { translateErrorMessage } from "../utils/translateErrors";

@@ -6,9 +6,7 @@ const baseURL =
     ? 'http://localhost:8000'
     : 'https://livesignal.onrender.com';
 
-let accessToken = localStorage.getItem('access_token');
-let refreshToken = localStorage.getItem('refresh_token');
-
+// Create axios instance
 const secureAxios = axios.create({
   baseURL,
   withCredentials: true,
@@ -19,20 +17,21 @@ const secureAxios = axios.create({
   },
 });
 
-// Update language on change
+// 🔄 Add Accept-Language on language switch
 i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-// Add access token to headers
+// 🔐 Attach access token to every request
 secureAxios.interceptors.request.use((config) => {
+  const accessToken = localStorage.getItem('access_token');
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
   return config;
 });
 
-// Handle token expiration and auto-refresh
+// 🔁 Handle 401 and auto-refresh token
 secureAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -40,16 +39,16 @@ secureAxios.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      refreshToken
+      localStorage.getItem('refresh_token')
     ) {
       originalRequest._retry = true;
       try {
         const res = await axios.post(`${baseURL}/api/users/auth/refresh/`, {
-          refresh: refreshToken,
+          refresh: localStorage.getItem('refresh_token'),
         });
-        accessToken = res.data.access;
-        localStorage.setItem('access_token', accessToken);
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        const newAccessToken = res.data.access;
+        localStorage.setItem('access_token', newAccessToken);
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return secureAxios(originalRequest);
       } catch (refreshError) {
         console.warn('🔐 Token refresh failed');
@@ -62,18 +61,21 @@ secureAxios.interceptors.response.use(
   }
 );
 
+// ✅ Login function to store tokens
 export const loginAndStoreTokens = async (credentials) => {
-  const res = await secureAxios.post('/api/users/auth/login/', credentials);
-  accessToken = res.data.access;
-  refreshToken = res.data.refresh;
-  localStorage.setItem('access_token', accessToken);
-  localStorage.setItem('refresh_token', refreshToken);
+  const res = await axios.post(`${baseURL}/api/users/auth/login/`, credentials, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  localStorage.setItem('access_token', res.data.access);
+  localStorage.setItem('refresh_token', res.data.refresh);
   return res;
 };
 
+// ✅ Logout function to clear tokens
 export const logoutAndClearTokens = () => {
-  accessToken = null;
-  refreshToken = null;
   localStorage.removeItem('access_token');
   localStorage.removeItem('refresh_token');
 };

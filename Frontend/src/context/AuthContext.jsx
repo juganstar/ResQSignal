@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from '../utils/axiosDefaults'; // uses secureAxios with baseURL + JWT
-import { jwtDecode } from 'jwt-decode'; 
+import axios from '../utils/axiosDefaults'; // uses secureAxios
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const initializeAuth = () => {
-    const access = localStorage.getItem('access');
-    const refresh = localStorage.getItem('refresh');
+    const access = localStorage.getItem('access_token');
+    const refresh = localStorage.getItem('refresh_token');
 
     if (access && refresh) {
       try {
@@ -41,8 +41,8 @@ export const AuthProvider = ({ children }) => {
       });
 
       const { access, refresh } = res.data;
-      localStorage.setItem('access', access);
-      localStorage.setItem('refresh', refresh);
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
 
       const decoded = jwtDecode(access);
       setUser({
@@ -60,12 +60,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     clearAuth();
-    window.location.pathname = '/login';
+    window.location.href = '/login';
   };
 
   const clearAuth = () => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     setUser(null);
     setIsAuthenticated(false);
   };

@@ -1,9 +1,7 @@
 # Django core imports
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import logout, get_user_model
@@ -28,31 +26,23 @@ from dj_rest_auth.views import PasswordResetView as DRFPasswordResetView
 # Local
 from .serializers import CustomRegisterSerializer
 from users.models import Profile
+from users.serializers import UserDetailsSerializer
 
 User = get_user_model()
-
-
-@require_GET
-def csrf_token_view(request):
-    return JsonResponse({'csrfToken': get_token(request)})
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def current_user(request):
     user = request.user
+    serializer = UserDetailsSerializer(user)
+    data = serializer.data
     try:
-        token = str(user.profile.token)
+        data['token'] = str(user.profile.token)
     except (Profile.DoesNotExist, AttributeError):
-        token = None
-
-    return Response({
-        'pk': user.pk,
-        'username': user.username,
-        'email': user.email,
-        'token': token,
-        'is_authenticated': True
-    })
+        data['token'] = None
+    data['is_authenticated'] = True
+    return Response(data)
 
 
 class HealthCheck(APIView):

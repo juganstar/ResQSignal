@@ -8,7 +8,6 @@ from .views import (
     HealthCheck,
     current_user,
     UserRegistrationView,
-    csrf_token_view,
     CustomPasswordResetView,
     CustomPasswordResetConfirmView,
     DeleteAccountView,
@@ -18,7 +17,6 @@ urlpatterns = [
     path("health/", HealthCheck.as_view(), name="health-check"),
     path("me/", current_user, name="current_user"),
     path("registration/", UserRegistrationView.as_view(), name="user-registration"),
-    path("csrf/", csrf_token_view, name="csrf-token"),
 
     # ✅ JWT Auth endpoints
     path("auth/login/", TokenObtainPairView.as_view(), name="jwt-login"),

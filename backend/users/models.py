@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.middleware.csrf import get_token
 from django.views.decorators.http import require_GET
 from django.http import JsonResponse
 
@@ -91,6 +90,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     instance.profile.save()
 
-@require_GET
-def csrf_token_view(request):
-    return JsonResponse({'csrfToken': get_token(request)})

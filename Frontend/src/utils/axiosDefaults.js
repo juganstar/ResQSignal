@@ -11,7 +11,7 @@ let refreshToken = localStorage.getItem('refresh_token');
 
 const secureAxios = axios.create({
   baseURL,
-  withCredentials: false,
+  withCredentials: true,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

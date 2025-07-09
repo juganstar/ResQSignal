@@ -6,11 +6,12 @@ const baseURL =
     ? 'http://localhost:8000'
     : 'https://livesignal.onrender.com';
 
-let csrfToken = null;
+let accessToken = localStorage.getItem('access_token');
+let refreshToken = localStorage.getItem('refresh_token');
 
 const secureAxios = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -18,64 +19,63 @@ const secureAxios = axios.create({
   },
 });
 
+// Update language on change
 i18n.on('languageChanged', (lng) => {
   secureAxios.defaults.headers.common['Accept-Language'] = lng;
 });
 
-export const getCSRFToken = () => csrfToken;
-
-export const fetchCSRFToken = async () => {
-  try {
-    const res = await secureAxios.get('/csrf/');
-    csrfToken = res.data?.csrfToken || document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("csrftoken="))
-      ?.split("=")[1];
-
-    if (!csrfToken) {
-      console.warn('⚠️ CSRF token missing from /csrf/ response and cookie.');
-    }
-  } catch (err) {
-    console.error('❌ Failed to fetch CSRF token:', err);
-  }
-};
-
+// Add access token to headers
 secureAxios.interceptors.request.use((config) => {
-  const method = config.method?.toLowerCase();
-  const safeMethods = ['get', 'head', 'options'];
-
-  if (!safeMethods.includes(method) && csrfToken) {
-    config.headers['X-CSRFToken'] = csrfToken;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
-
   return config;
 });
 
+// Handle token expiration and auto-refresh
 secureAxios.interceptors.response.use(
   (response) => response,
-  (error) => {
-    const status = error.response?.status;
-    const url = error.config?.url;
-
-    if (status === 403 && error.response?.data?.detail?.toLowerCase().includes('csrf')) {
-      console.warn(`🚫 CSRF verification failed on: ${url}`);
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      refreshToken
+    ) {
+      originalRequest._retry = true;
+      try {
+        const res = await axios.post(`${baseURL}/api/users/auth/refresh/`, {
+          refresh: refreshToken,
+        });
+        accessToken = res.data.access;
+        localStorage.setItem('access_token', accessToken);
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        return secureAxios(originalRequest);
+      } catch (refreshError) {
+        console.warn('🔐 Token refresh failed');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        window.location.href = '/login';
+      }
     }
-
-    if (status === 401) {
-      console.warn(`🔒 Unauthorized (401) - Session expired for: ${url}`);
-    }
-
     return Promise.reject(error);
   }
 );
 
-export const publicAxios = axios.create({
-  baseURL,
-  withCredentials: false,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-});
+export const loginAndStoreTokens = async (credentials) => {
+  const res = await secureAxios.post('/api/users/auth/login/', credentials);
+  accessToken = res.data.access;
+  refreshToken = res.data.refresh;
+  localStorage.setItem('access_token', accessToken);
+  localStorage.setItem('refresh_token', refreshToken);
+  return res;
+};
+
+export const logoutAndClearTokens = () => {
+  accessToken = null;
+  refreshToken = null;
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refresh_token');
+};
 
 export default secureAxios;

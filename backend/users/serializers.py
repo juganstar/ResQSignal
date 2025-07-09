@@ -10,6 +10,7 @@ from allauth.account import app_settings as allauth_settings
 
 User = get_user_model()
 
+
 # ✅ Custom login: block if email not verified
 class CustomLoginSerializer(LoginSerializer):
     def validate(self, attrs):
@@ -29,12 +30,14 @@ class CustomLoginSerializer(LoginSerializer):
         attrs['user'] = user
         return attrs
 
+
 # ✅ Used in /api/users/me/
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['pk', 'username', 'email', 'first_name', 'last_name']
         read_only_fields = ['email']
+
 
 # ✅ Custom registration with validation + email confirmation trigger
 class CustomRegisterSerializer(RegisterSerializer):
@@ -53,9 +56,6 @@ class CustomRegisterSerializer(RegisterSerializer):
         if User.objects.filter(username__iexact=username).exists():
             raise serializers.ValidationError("Já existe um utilizador com este nome.")
         return username
-
-    def validate(self, data):
-        return super().validate(data)
 
     def save(self, request):
         user = super().save(request)

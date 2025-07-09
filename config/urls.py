@@ -10,40 +10,45 @@ from billing.stripe_webhooks import stripe_webhook
 from django.conf import settings
 from django.conf.urls.static import static
 
+# ✅ JWT views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
-    # Admin
+    # Admin Panel
     path("admin/", admin.site.urls),
 
-    # AllAuth
+    # AllAuth (used only for email confirmation URLs)
     path("accounts/", include("allauth.urls")),
 
-    # dj-rest-auth
-    path("api/auth/", include("dj_rest_auth.urls")),
-    path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("api/users/verify-email/<str:key>/", confirm_email, name="account_confirm_email"),
+    # ✅ JWT Authentication
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-    # CSRF
-    path("api/csrf/", get_csrf_token, name="csrf_token"),
+    # Email verification (via AllAuth)
+    path("api/users/verify-email/<str:key>/", confirm_email, name="account_confirm_email"),
 
     # App routes
     path("api/users/", include("users.urls")),
     path("api/emergency/", include("emergency.urls")),
     path("api/billing/", include("billing.urls")),
 
-    # Stripe Webhook
+    # Stripe webhook
     path("stripe/webhook/", stripe_webhook, name="stripe_webhook"),
 
-    # Public Emergency Trigger
+    # Public Emergency Trigger Pages
     path("public/<uuid:token>/", public_alert_page, name="public-alert-page"),
     path("test/<uuid:token>/", test_alert_page, name="test-alert"),
     path("api/emergency/public/<uuid:token>/", TriggerPublicAlertView.as_view(), name="public-alert-api"),
 ]
 
-# Optional deduplication cleanup
+# Optional deduplication
 urlpatterns = list({
     pattern.pattern if isinstance(pattern, URLPattern) else str(pattern): pattern
     for pattern in urlpatterns
 }.values())
 
-# 🔧 Serve static files (admin CSS) in production
+# Static files (for admin panel)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

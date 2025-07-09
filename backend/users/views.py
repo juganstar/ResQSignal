@@ -2,41 +2,40 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from django.middleware.csrf import get_token
-from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from django.contrib.auth import logout, get_user_model, authenticate
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import logout, get_user_model
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 
 # Django Allauth
-from allauth.account.models import EmailAddress
-from allauth.account.utils import user_pk_to_url_str
 from allauth.account.adapter import get_adapter
+from allauth.account.models import EmailAddress
 
-# Django REST Framework
+# DRF
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
 # dj-rest-auth
-from dj_rest_auth.views import LoginView, PasswordResetView as DRFPasswordResetView
+from dj_rest_auth.views import PasswordResetView as DRFPasswordResetView
 
-# Local imports
-from .serializers import CustomRegisterSerializer, CustomLoginSerializer
+# Local
+from .serializers import CustomRegisterSerializer
 from users.models import Profile
 
 User = get_user_model()
 
+
 @require_GET
 def csrf_token_view(request):
     return JsonResponse({'csrfToken': get_token(request)})
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -55,20 +54,22 @@ def current_user(request):
         'is_authenticated': True
     })
 
+
 class HealthCheck(APIView):
     permission_classes = [AllowAny]
-    
+
     def get(self, request):
         return Response({"status": "ok"})
+
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = CustomRegisterSerializer
     permission_classes = [AllowAny]
-    
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save(request=request)  # 👈 AQUI está a correção
+            user = serializer.save(request=request)
             return Response(
                 {
                     "detail": "Account created successfully!",
@@ -85,23 +86,11 @@ class UserRegistrationView(generics.CreateAPIView):
         )
 
 
-class CustomLoginView(LoginView):
-    pass
+# 🔒 Password Reset
 
-@method_decorator(csrf_exempt, name='dispatch')
-class CustomLogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [SessionAuthentication]
-
-    def post(self, request):
-        request.session.flush()
-        logout(request)
-        get_token(request)  # refresh CSRF
-        return Response({"detail": "Logged out successfully."})
-    
 def filter_users_by_email(email):
-    User = get_user_model()
     return User.objects.filter(email__iexact=email, is_active=True)
+
 
 class CustomPasswordResetView(DRFPasswordResetView):
     def generate_reset_url(self, user, token):
@@ -130,6 +119,7 @@ class CustomPasswordResetView(DRFPasswordResetView):
             )
 
         return Response({"detail": "Password reset e-mail has been sent."}, status=status.HTTP_200_OK)
+
 
 class CustomPasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
@@ -160,10 +150,10 @@ class CustomPasswordResetConfirmView(APIView):
 
         return Response({"detail": "Password has been reset."}, status=status.HTTP_200_OK)
 
+
 class DeleteAccountView(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
-        user = request.user
-        user.delete()
+        request.user.delete()
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)

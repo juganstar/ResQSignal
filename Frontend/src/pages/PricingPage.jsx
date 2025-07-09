@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import secureAxios from "../utils/axiosDefaults";
 import { ShieldCheck, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -7,31 +7,10 @@ const PricingPage = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
-  const api = axios.create({
-    baseURL:
-      import.meta.env.MODE === 'development'
-        ? 'http://localhost:8000'
-        : import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-
   const startCheckout = async (plan) => {
     try {
       setLoading(true);
-      const csrfToken = document.cookie
-        .split("; ")
-        .find(row => row.startsWith("csrftoken="))
-        ?.split("=")[1];
-
-      const response = await api.post("/api/billing/checkout/",
-        { plan },
-        { headers: { "X-CSRFToken": csrfToken } }
-      );
-
+      const response = await secureAxios.post("/api/billing/checkout/", { plan });
       window.location.href = response.data.url;
     } catch (error) {
       console.error("Checkout failed:", error);
@@ -50,9 +29,7 @@ const PricingPage = () => {
       </div>
 
       <div className="w-full max-w-md text-center">
-        <h1 className="text-3xl font-bold mb-2 text-white">
-          🪙 {t("pricing.title")}
-        </h1>
+        <h1 className="text-3xl font-bold mb-2 text-white">🪙 {t("pricing.title")}</h1>
         <p className="text-gray-300 text-sm mb-8">{t("pricing.subtitle")}</p>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -76,7 +53,7 @@ const PricingPage = () => {
         </div>
 
         <p className="text-xs text-gray-400 mt-1">
-          <span className="text-purple-300">*</span>{t("pricing.messageCost")}
+          <span className="text-purple-300">*</span> {t("pricing.messageCost")}
         </p>
 
         <div className="mt-10 text-center">

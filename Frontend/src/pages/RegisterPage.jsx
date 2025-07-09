@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
@@ -18,10 +18,6 @@ export default function RegisterPage() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios.get("/api/csrf/", { withCredentials: true });
-  }, []);
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData(prev => ({
@@ -36,8 +32,6 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await axios.get("/api/csrf/");
-
       await axios.post("/api/users/registration/", {
         username: formData.username.toLowerCase(),
         email: formData.email || undefined,
@@ -51,9 +45,7 @@ export default function RegisterPage() {
       console.error("Registration error:", err);
       let errorMessage = t("register.error.generic");
 
-      if (err.response?.status === 403 && err.response.data?.detail?.includes("CSRF")) {
-        errorMessage = t("register.error.csrf");
-      } else if (err.response?.data) {
+      if (err.response?.data) {
         errorMessage = Object.entries(err.response.data)
           .flatMap(([field, errors]) =>
             Array.isArray(errors)
@@ -183,11 +175,11 @@ export default function RegisterPage() {
                 className="mt-1"
               />
               <label htmlFor="terms" className="text-sm text-gray-300">
-                {t("register.accept")} {" "}
+                {t("register.accept")}{" "}
                 <a href="/legal" className="text-purple-400 hover:underline" target="_blank" rel="noreferrer">
                   {t("register.terms")}
-                </a> {" "}
-                {t("register.and")} {" "}
+                </a>{" "}
+                {t("register.and")}{" "}
                 <a href="/privacy" className="text-purple-400 hover:underline" target="_blank" rel="noreferrer">
                   {t("register.privacy")}
                 </a>
@@ -208,7 +200,7 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-400">
-            {t("register.haveAccount")} {" "}
+            {t("register.haveAccount")}{" "}
             <Link
               to="/login"
               className="text-purple-400 hover:text-purple-300 underline"

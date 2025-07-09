@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import SetupGuide from "./SetupGuide";
-import ContactForm from "./ContactForm";
-import ContactList from "./ContactList";
-import EmergencyButtons from "./EmergencyButtons";
-import AccountActions from "./AccountActions";
+import SetupGuide from "../components/SetupGuide";
+import ContactForm from "../components/ContactForm";
+import ContactList from "../components/ContactList";
+import EmergencyButtons from "../components/EmergencyButtons";
+import AccountActions from "../components/AccountActions";
 
 export default function SetupPage() {
   const { isAuthenticated, user, logout } = useAuth();

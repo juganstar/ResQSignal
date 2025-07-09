@@ -313,7 +313,7 @@ LOGGING = {
 # CUSTOM SETTINGS
 # ======================
 
-MAX_EMERGENCY_CONTACTS = 10
+MAX_EMERGENCY_CONTACTS = 7
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),

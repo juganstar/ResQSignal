@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../utils/axiosDefaults";
 import SetupGuide from "../components/SetupGuide";
 import ContactForm from "../components/ContactForm";
 import ContactList from "../components/ContactList";

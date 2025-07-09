@@ -15,21 +15,28 @@ export const AuthProvider = ({ children }) => {
 
   const initializeAuth = async () => {
     const token = localStorage.getItem('access');
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUser({
-          pk: decoded.user_id,
-          username: decoded.username,
-          email: decoded.email,
-        });
-        setIsAuthenticated(true);
-      } catch {
-        clearAuth();
-      }
+    if (!token) {
+      clearAuth();
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    try {
+      const decoded = jwtDecode(token);
+      // Optionally check expiration here if needed
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const res = await axios.get("/api/users/me/");
+      setUser(res.data);  // Full user from backend
+      setIsAuthenticated(true);
+    } catch (err) {
+      console.error("Auth init failed:", err);
+      clearAuth();
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   const login = async (username, password) => {
     const res = await axios.post('/api/users/auth/login/', {
@@ -40,15 +47,13 @@ export const AuthProvider = ({ children }) => {
     const { access, refresh } = res.data;
     localStorage.setItem('access', access);
     localStorage.setItem('refresh', refresh);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
 
-    const decoded = jwtDecode(access);
-    setUser({
-      pk: decoded.user_id,
-      username: decoded.username,
-      email: decoded.email,
-    });
+    const userRes = await axios.get("/api/users/me/");
+    setUser(userRes.data);
     setIsAuthenticated(true);
   };
+
 
   const logout = () => {
     clearAuth();

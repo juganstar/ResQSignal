@@ -28,7 +28,7 @@ export default function HomePage() {
   return (
     <>
       <main className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">
-        <div className="w-full max-w-2xl text-center space-y-10">
+        <div className="w-full text-center space-y-10">
           {isAuthenticated ? (
             <>
               <h2 className="text-4xl md:text-5xl font-extrabold drop-shadow-xl leading-tight">
@@ -55,52 +55,56 @@ export default function HomePage() {
             </>
           ) : (
             <>
-             <div className="flex flex-col items-center justify-center text-center px-4 sm:px-8 py-12">
-              <h2 className="text-white font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight sm:leading-snug tracking-tight">
-                <span className="block">
-                  Made for the ones we can't lose.
-                </span>
-                <span className="block mt-2">
-                  Built for the moments we can't plan.
-                </span>
-              </h2>
+              <div className="flex flex-col items-center justify-center text-center px-4 sm:px-8 py-12">
+                <h2 className="text-white font-extrabold text-4xl sm:text-6xl lg:text-7xl leading-tight sm:leading-snug tracking-tight">
+                  <span className="block">
+                    Made for the ones we can't lose.
+                  </span>
+                  <span className="block mt-2">
+                    Built for the moments we can't plan.
+                  </span>
+                </h2>
 
-              <p className="mt-6 text-sm text-purple-200">
-                One button. One message. One chance.
-              </p>
+                <p className="mt-6 text-sm text-purple-200">
+                  One button. One message. One chance.
+                </p>
 
-              <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all duration-200 rounded-lg text-white text-sm font-semibold shadow-md"
-                >
-                  <LogIn size={18} />
-                  {t("home.login")}
-                </Link>
-                <Link
-                  to="/register"
-                  className="flex items-center justify-center gap-2 px-6 py-3 border border-purple-400 hover:bg-purple-700 transition-all duration-200 text-purple-300 rounded-lg text-sm font-semibold shadow-md"
-                >
-                  <User size={18} />
-                  {t("home.register")}
-                </Link>
+                <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all duration-200 rounded-lg text-white text-sm font-semibold shadow-md"
+                  >
+                    <LogIn size={18} />
+                    {t("home.login")}
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center justify-center gap-2 px-6 py-3 border border-purple-400 hover:bg-purple-700 transition-all duration-200 text-purple-300 rounded-lg text-sm font-semibold shadow-md"
+                  >
+                    <User size={18} />
+                    {t("home.register")}
+                  </Link>
+                </div>
               </div>
-            </div>
 
-          <ul className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs">
-            <li>✅ {t("home.feature1")}</li>
-            <li>📨 {t("home.feature2")}</li>
-            <li>🔗 {t("home.feature3")}</li>
-          </ul>
+              <ul className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs">
+                <li>✅ {t("home.feature1")}</li>
+                <li>📨 {t("home.feature2")}</li>
+                <li>🔗 {t("home.feature3")}</li>
+              </ul>
+            </>
+          )}
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="text-center text-sm text-gray-500 py-6">
         <p>© {new Date().getFullYear()} LiveSignal. {t("footer.rights")}</p>
         <p>
           {t("footer.contact")}:{" "}
-          <a href="mailto:livesignalapp@gmail.com" className="text-purple-400 underline">
+          <a
+            href="mailto:livesignalapp@gmail.com"
+            className="text-purple-400 underline"
+          >
             livesignalapp@gmail.com
           </a>
         </p>

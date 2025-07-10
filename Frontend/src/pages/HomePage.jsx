@@ -57,9 +57,20 @@ export default function HomePage() {
             <>
               <div className="flex flex-col items-center justify-center px-4">
                 <h2 className="text-4xl md:text-5xl font-extrabold drop-shadow-xl leading-tight text-center">
-                  Made for the ones we can't lose.
-                  <br className="hidden sm:inline" />
-                  Built for the moments we can't plan.
+                  <span className="hidden sm:inline">
+                    Made for the ones we can't lose.<br />
+                    Built for the moments we can't plan.
+                  </span>
+
+                  <span className="sm:hidden block">
+                    Made for the ones
+                    <br />
+                    we can't lose.
+                    <br />
+                    Built for the
+                    <br />
+                    moments we can't plan.
+                  </span>
                 </h2>
               </div>
               <p className="text-sm text-purple-200">

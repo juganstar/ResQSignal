@@ -30,11 +30,12 @@ function App() {
     <Router>
       <div className="min-h-screen bg-black text-white flex flex-col">
         {/* HEADER */}
-        <header className="p-4 border-b border-gray-800 shadow-sm flex flex-col sm:flex-row justify-between items-center bg-black">
+        <header className="p-4 border-b border-gray-800 shadow-sm bg-black flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Left: Brand */}
           <h1 className="text-2xl font-bold text-white">LiveSignal</h1>
 
-          {/* NAVBAR (scrollable on mobile) */}
-          <nav className="mt-2 sm:mt-0 w-full overflow-x-auto whitespace-nowrap flex items-center gap-4 px-2 sm:px-0 text-sm sm:text-base">
+          {/* Center: Navigation */}
+          <nav className="flex flex-wrap gap-4 text-sm sm:text-base items-center">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -85,27 +86,27 @@ function App() {
             >
               {t("nav.privacy")}
             </NavLink>
-
-            {/* Language toggle */}
-            <div className="ml-auto flex-shrink-0 space-x-1">
-              <button
-                onClick={() => switchLanguage("pt")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇵🇹
-              </button>
-              <button
-                onClick={() => switchLanguage("en")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇬🇧
-              </button>
-            </div>
           </nav>
+
+          {/* Right: Language Toggle */}
+          <div className="flex gap-2 ml-auto sm:ml-0">
+            <button
+              onClick={() => switchLanguage("pt")}
+              className={`px-2 py-1 rounded text-sm ${
+                i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
+              }`}
+            >
+              🇵🇹
+            </button>
+            <button
+              onClick={() => switchLanguage("en")}
+              className={`px-2 py-1 rounded text-sm ${
+                i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
+              }`}
+            >
+              🇬🇧
+            </button>
+          </div>
         </header>
 
         {/* ROUTES */}

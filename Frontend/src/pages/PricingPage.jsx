@@ -24,7 +24,6 @@ const PricingPage = () => {
     <div className="min-h-[calc(100vh-96px)] flex flex-col items-center justify-center py-12 px-4 text-white relative">
       {/* Decorative blobs */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-24 left-[-80px] w-[300px] h-[300px] bg-purple-800 rounded-full opacity-20 blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-[-100px] w-[300px] h-[300px] bg-purple-600 rounded-full opacity-20 blur-2xl animate-pulse"></div>
       </div>
 

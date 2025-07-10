@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Install system dependencies (added git here)
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -23,6 +23,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . .
+
+# ✅ Collect static files here
+RUN python manage.py collectstatic --noinput
 
 # Default entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

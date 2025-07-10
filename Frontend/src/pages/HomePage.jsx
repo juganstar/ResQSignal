@@ -5,6 +5,8 @@ import { LogIn, LogOut, User, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import axios from "../utils/axiosDefaults";
 
+// ... previous imports
+
 export default function HomePage() {
   const { isAuthenticated, user, logout } = useAuth();
   const { t } = useTranslation();
@@ -86,14 +88,15 @@ export default function HomePage() {
                   </Link>
                 </div>
               </div>
-
-              <ul className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs">
-                <li>✅ {t("home.feature1")}</li>
-                <li>📨 {t("home.feature2")}</li>
-                <li>🔗 {t("home.feature3")}</li>
-              </ul>
             </>
           )}
+
+          {/* This part is now always visible */}
+          <ul className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs">
+            <li>✅ {t("home.feature1")}</li>
+            <li>📨 {t("home.feature2")}</li>
+            <li>🔗 {t("home.feature3")}</li>
+          </ul>
         </div>
       </main>
 

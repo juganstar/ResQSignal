@@ -56,27 +56,10 @@ export default function HomePage() {
           ) : (
             <>
               <div className="flex flex-col items-center justify-center px-4 text-center">
-                {/* Desktop (min width: sm) - 2 lines */}
-                <div className="hidden sm:block max-w-2xl">
-                  <h2 className="text-5xl font-extrabold drop-shadow-xl leading-snug">
-                    Made for the ones we can't lose. Built for the moments we can't plan.
-                  </h2>
-                </div>
-                {/* Mobile (below sm) - 4 lines */}
-                <div className="block sm:hidden max-w-xs">
-                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug">
-                    Made for the ones
-                  </h2>
-                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
-                    we can't lose.
-                  </h2>
-                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
-                    Built for the
-                  </h2>
-                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
-                    moments we can't plan.
-                  </h2>
-                </div>
+                <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight drop-shadow-xl max-w-xl">
+                  Made for the ones we can't lose.<br />
+                  Built for the moments we can't plan.
+                </h2>
               </div>
               <p className="text-sm text-purple-200">
                 One button. One message. One chance.

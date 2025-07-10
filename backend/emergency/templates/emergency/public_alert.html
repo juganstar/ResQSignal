@@ -1,9 +1,20 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Automatic Emergency Alert</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Home screen manifest + icons -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <link rel="icon" href="{% static 'icons/icon-192.png' %}" type="image/png">
+  <meta name="theme-color" content="#e60023">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="LiveSignal">
+  <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+
   <style>
     body {
       background: linear-gradient(to bottom, #000000, #1a1a1a);

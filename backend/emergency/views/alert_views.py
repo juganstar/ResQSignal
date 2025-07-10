@@ -13,7 +13,7 @@ class TriggerEmergencyAlert(APIView):
     def post(self, request):
         profile = request.user.profile
 
-        if not (profile.is_subscribed or profile.is_free_user):
+        if not (profile.is_subscribed or profile.plan in ["basic", "premium"]):
             return Response(
                 {"error": "⚠️ Plano inativo. Por favor subscreva ou contacte suporte."},
                 status=403

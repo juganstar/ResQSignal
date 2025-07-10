@@ -31,7 +31,7 @@ export default function HomePage() {
         <div className="w-full max-w-2xl text-center space-y-10">
           {isAuthenticated ? (
             <>
-              <h2 className="text-3xl md:text-5xl font-extrabold drop-shadow-xl">
+              <h2 className="text-[clamp(1.5rem,5vw,3rem)] font-extrabold drop-shadow-xl leading-tight">
                 {user?.username
                   ? t("home.welcomeBack", { username: user.username })
                   : t("home.loading")}
@@ -55,10 +55,11 @@ export default function HomePage() {
             </>
           ) : (
             <>
-              <div className="flex flex-col items-center justify-center">
-                <h2 className="text-3xl md:text-5xl font-extrabold drop-shadow-xl leading-tight">
-                  <div className="whitespace-nowrap">Made for the ones we can't lose.</div>
-                  <div className="whitespace-nowrap">Built for the moments we can't plan.</div>
+              <div className="flex flex-col items-center justify-center px-4">
+                <h2 className="text-[clamp(1.3rem,4.5vw,2.4rem)] font-extrabold drop-shadow-xl leading-snug text-center">
+                  Made for the ones we can't lose.
+                  <br />
+                  Built for the moments we can't plan.
                 </h2>
               </div>
               <p className="text-sm text-purple-200">

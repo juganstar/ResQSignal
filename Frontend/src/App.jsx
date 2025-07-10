@@ -32,7 +32,9 @@ function App() {
         {/* HEADER */}
         <header className="p-4 border-b border-gray-800 shadow-sm flex flex-col sm:flex-row justify-between items-center bg-black">
           <h1 className="text-2xl font-bold text-white">LiveSignal</h1>
-          <nav className="mt-2 sm:mt-0 space-x-4 flex items-center">
+
+          {/* NAVBAR (scrollable on mobile) */}
+          <nav className="mt-2 sm:mt-0 w-full overflow-x-auto whitespace-nowrap flex items-center gap-4 px-2 sm:px-0 text-sm sm:text-base">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -85,7 +87,7 @@ function App() {
             </NavLink>
 
             {/* Language toggle */}
-            <div className="ml-4 space-x-1">
+            <div className="ml-auto flex-shrink-0 space-x-1">
               <button
                 onClick={() => switchLanguage("pt")}
                 className={`px-2 py-1 rounded text-sm ${

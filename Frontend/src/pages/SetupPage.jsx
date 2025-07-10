@@ -41,22 +41,14 @@ export default function SetupPage() {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-white">A verificar autenticação...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-[calc(100vh-96px)] py-12 px-4 max-w-2xl mx-auto text-white">
       <h2 className="text-3xl font-bold text-center mb-8">{t('setup.title')}</h2>
       <SetupGuide />
       <ContactForm contacts={contacts} setContacts={setContacts} setError={setError} />
       {error && <div className="mt-2 text-red-500 text-sm font-medium">{error}</div>}
-      <EmergencyButtons userToken={userToken} />
       <ContactList contacts={contacts} setContacts={setContacts} />
+      <EmergencyButtons userToken={userToken} />
       <AccountActions logout={logout} navigate={navigate} />
     </div>
   );

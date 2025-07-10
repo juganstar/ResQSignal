@@ -56,29 +56,38 @@ export default function HomePage() {
           ) : (
             <>
               <div className="flex flex-col items-center justify-center px-4 text-center">
-                <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight drop-shadow-xl max-w-xl">
-                  Made for the ones we can't lose.<br />
-                  Built for the moments we can't plan.
+                <h2 className="text-3xl sm:text-5xl font-extrabold leading-snug sm:leading-tight drop-shadow-xl max-w-3xl">
+                  <span className="hidden sm:inline">
+                    Made for the ones we can't lose. Built for the moments we can't plan.
+                  </span>
+                  <span className="sm:hidden block">
+                    Made for the ones<br />
+                    we can't lose.<br />
+                    Built for the<br />
+                    moments we can't plan.
+                  </span>
                 </h2>
-              </div>
-              <p className="text-sm text-purple-200">
-                One button. One message. One chance.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all duration-200 rounded-lg text-white text-sm font-semibold shadow-md"
-                >
-                  <LogIn size={18} />
-                  {t("home.login")}
-                </Link>
-                <Link
-                  to="/register"
-                  className="flex items-center justify-center gap-2 px-6 py-3 border border-purple-400 hover:bg-purple-700 transition-all duration-200 text-purple-300 rounded-lg text-sm font-semibold shadow-md"
-                >
-                  <User size={18} />
-                  {t("home.register")}
-                </Link>
+
+                <p className="mt-4 text-sm text-purple-200">
+                  One button. One message. One chance.
+                </p>
+
+                <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all duration-200 rounded-lg text-white text-sm font-semibold shadow-md"
+                  >
+                    <LogIn size={18} />
+                    {t("home.login")}
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center justify-center gap-2 px-6 py-3 border border-purple-400 hover:bg-purple-700 transition-all duration-200 text-purple-300 rounded-lg text-sm font-semibold shadow-md"
+                  >
+                    <User size={18} />
+                    {t("home.register")}
+                  </Link>
+                </div>
               </div>
             </>
           )}

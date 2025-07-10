@@ -56,9 +56,10 @@ export default function HomePage() {
           ) : (
             <>
              <div className="flex flex-col items-center justify-center px-4 text-center">
-              <h2 className="text-3xl sm:text-5xl font-extrabold leading-snug sm:leading-tight drop-shadow-xl text-center">
+              <h2 className="w-full text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-snug sm:leading-tight drop-shadow-xl text-center px-2 sm:px-0">
                 Made for the ones we can't lose. Built for the moments we can't plan.
               </h2>
+
 
               <p className="mt-4 text-sm text-purple-200">
                 One button. One message. One chance.

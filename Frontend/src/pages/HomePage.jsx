@@ -55,13 +55,17 @@ export default function HomePage() {
             </>
           ) : (
             <>
-             <div className="flex flex-col items-center justify-center px-4 text-center">
-              <h2 className="w-full text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-snug sm:leading-tight drop-shadow-xl text-center px-2 sm:px-0">
-                Made for the ones we can't lose. Built for the moments we can't plan.
+             <div className="flex flex-col items-center justify-center text-center px-4 sm:px-8 py-12">
+              <h2 className="text-white font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight sm:leading-snug tracking-tight">
+                <span className="block">
+                  Made for the ones we can't lose.
+                </span>
+                <span className="block mt-2">
+                  Built for the moments we can't plan.
+                </span>
               </h2>
 
-
-              <p className="mt-4 text-sm text-purple-200">
+              <p className="mt-6 text-sm text-purple-200">
                 One button. One message. One chance.
               </p>
 
@@ -82,8 +86,6 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            </>
-          )}
 
           <ul className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs">
             <li>✅ {t("home.feature1")}</li>

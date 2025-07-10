@@ -56,7 +56,7 @@ export default function HomePage() {
           ) : (
             <>
               <div className="flex flex-col items-center justify-center text-center px-4 sm:px-8 py-12">
-                <h2 className="text-white font-extrabold text-4xl sm:text-6xl lg:text-7xl leading-tight sm:leading-snug tracking-tight">
+                <h2 className="text-white font-extrabold text-3xl sm:text-5xl lg:text-6xl leading-snug sm:leading-snug tracking-tight">
                   <span className="block">
                     Made for the ones we can't lose.
                   </span>

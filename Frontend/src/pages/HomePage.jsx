@@ -56,22 +56,18 @@ export default function HomePage() {
           ) : (
             <>
               <div className="flex flex-col items-center justify-center px-4">
-                {/* Desktop: 2-line slogan */}
-                <div className="hidden sm:block text-3xl sm:text-4xl md:text-5xl font-extrabold drop-shadow-xl leading-snug text-center">
-                  Made for the ones we can't lose.
-                  <br />
-                  Built for the moments we can't plan.
+                {/* Desktop: 2 lines */}
+                <div className="hidden sm:block text-5xl font-extrabold drop-shadow-xl leading-snug text-center">
+                  <p>Made for the ones we can't lose.</p>
+                  <p>Built for the moments we can't plan.</p>
                 </div>
 
-                {/* Mobile: 4-line slogan */}
+                {/* Mobile: 4 lines */}
                 <div className="block sm:hidden text-3xl font-extrabold drop-shadow-xl leading-snug text-center">
-                  Made for the ones
-                  <br />
-                  we can't lose.
-                  <br />
-                  Built for the
-                  <br />
-                  moments we can't plan.
+                  <p>Made for the ones</p>
+                  <p>we can't lose.</p>
+                  <p>Built for the</p>
+                  <p>moments we can't plan.</p>
                 </div>
               </div>
               <p className="text-sm text-purple-200">

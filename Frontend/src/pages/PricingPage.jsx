@@ -27,7 +27,7 @@ const PricingPage = () => {
         <div className="absolute bottom-20 right-[-100px] w-[300px] h-[300px] bg-purple-600 rounded-full opacity-20 blur-2xl animate-pulse"></div>
       </div>
 
-      <div className="w-full max-w-md text-center">
+      <div className="w-full text-center px-4">
         <h1 className="text-3xl font-bold mb-2 text-white">🪙 {t("pricing.title")}</h1>
         <p className="text-gray-300 text-sm mb-8">{t("pricing.subtitle")}</p>
 

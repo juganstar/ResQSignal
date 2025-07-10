@@ -56,30 +56,30 @@ export default function HomePage() {
           ) : (
             <>
               <div className="flex flex-col items-center justify-center px-4 text-center">
-                {/* Desktop (md and up): 2-line split, forced breaks */}
-                <div className="hidden sm:block">
-                  <p className="text-5xl font-extrabold drop-shadow-xl leading-snug">
+                {/* Desktop (min width: sm) - 2 lines */}
+                <div className="hidden sm:block max-w-2xl">
+                  <h2 className="text-5xl font-extrabold drop-shadow-xl leading-snug">
                     Made for the ones we can't lose.
-                  </p>
-                  <p className="text-5xl font-extrabold drop-shadow-xl leading-snug">
+                  </h2>
+                  <h2 className="text-5xl font-extrabold drop-shadow-xl leading-snug mt-2">
                     Built for the moments we can't plan.
-                  </p>
+                  </h2>
                 </div>
 
-                {/* Mobile: 4-line split */}
-                <div className="block sm:hidden">
-                  <p className="text-3xl font-extrabold drop-shadow-xl leading-snug">
+                {/* Mobile (below sm) - 4 lines */}
+                <div className="block sm:hidden max-w-xs">
+                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug">
                     Made for the ones
-                  </p>
-                  <p className="text-3xl font-extrabold drop-shadow-xl leading-snug">
+                  </h2>
+                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
                     we can't lose.
-                  </p>
-                  <p className="text-3xl font-extrabold drop-shadow-xl leading-snug">
+                  </h2>
+                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
                     Built for the
-                  </p>
-                  <p className="text-3xl font-extrabold drop-shadow-xl leading-snug">
+                  </h2>
+                  <h2 className="text-3xl font-extrabold drop-shadow-xl leading-snug mt-1">
                     moments we can't plan.
-                  </p>
+                  </h2>
                 </div>
               </div>
               <p className="text-sm text-purple-200">

@@ -31,3 +31,22 @@ class TriggerEmergencyAlert(APIView):
         add_stripe_usage(request.user, quantity=message_count)
 
         return Response({"status": "alert triggered", "id": alert.id})
+    
+
+    
+from django.http import JsonResponse
+
+def dynamic_manifest(request, token):
+    return JsonResponse({
+        "name": "LiveSignal - Alerta",
+        "short_name": "LiveSignal",
+        "start_url": f"/public/{token}/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#e11d48",
+        "icons": [
+            {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+            {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+        ]
+    })
+ 

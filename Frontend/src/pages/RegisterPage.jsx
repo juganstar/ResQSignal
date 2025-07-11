@@ -50,11 +50,15 @@ export default function RegisterPage() {
       if (err.response?.data) {
         const responseErrors = err.response.data;
         errorMessage = Object.entries(responseErrors)
-          .flatMap(([field, errors]) =>
-            Array.isArray(errors)
-              ? errors.map((e) => translateErrorMessage(field, e, t))
-              : [translateErrorMessage(field, errors, t)]
-          )
+          .flatMap(([field, errors]) => {
+            if (Array.isArray(errors)) {
+              return errors.map((e) => translateErrorMessage(field, e, t));
+            } else if (typeof errors === "string") {
+              return [translateErrorMessage(field, errors, t)];
+            } else {
+              return [JSON.stringify(errors)];
+            }
+          })
           .join("\n");
       }
 
@@ -63,6 +67,7 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
 
   if (success) {
     return (

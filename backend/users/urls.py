@@ -11,6 +11,7 @@ from .views import (
     CustomPasswordResetView,
     CustomPasswordResetConfirmView,
     DeleteAccountView,
+    CustomTokenObtainPairView,
 )
 
 urlpatterns = [
@@ -19,7 +20,7 @@ urlpatterns = [
     path("registration/", UserRegistrationView.as_view(), name="user-registration"),
 
     # ✅ JWT Auth endpoints
-    path("auth/login/", TokenObtainPairView.as_view(), name="jwt-login"),
+    path("auth/login/", CustomTokenObtainPairView.as_view(), name="jwt-login"),
     path("auth/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
     path("auth/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
 

@@ -6,17 +6,19 @@ import { translateErrorMessage } from "../utils/translateErrors";
 
 export default function RegisterPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password1: "",
     password2: ""
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -33,7 +35,7 @@ export default function RegisterPage() {
 
     try {
       await axios.post("/api/users/registration/", {
-        username: formData.username.toLowerCase(),
+        username: typeof formData.username === "string" ? formData.username.toLowerCase() : "",
         email: formData.email || undefined,
         password1: formData.password1,
         password2: formData.password2
@@ -46,7 +48,8 @@ export default function RegisterPage() {
       let errorMessage = t("register.error.generic");
 
       if (err.response?.data) {
-        errorMessage = Object.entries(err.response.data)
+        const responseErrors = err.response.data;
+        errorMessage = Object.entries(responseErrors)
           .flatMap(([field, errors]) =>
             Array.isArray(errors)
               ? errors.map((e) => translateErrorMessage(field, e, t))
@@ -74,9 +77,7 @@ export default function RegisterPage() {
             <h1 className="text-2xl font-bold text-white mb-4">
               {t("register.successTitle")}
             </h1>
-            <p className="text-gray-300">
-              {t("register.successMessage")}
-            </p>
+            <p className="text-gray-300">{t("register.successMessage")}</p>
           </div>
         </div>
       </div>
@@ -104,7 +105,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleRegister} className="space-y-6">
             <div>
-              <label className="block text-sm text-gray-300 mb-1" htmlFor="username">
+              <label htmlFor="username" className="block text-sm text-gray-300 mb-1">
                 {t("register.username")}
               </label>
               <input
@@ -120,7 +121,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1" htmlFor="email">
+              <label htmlFor="email" className="block text-sm text-gray-300 mb-1">
                 {t("register.email")}
               </label>
               <input
@@ -135,7 +136,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1" htmlFor="password1">
+              <label htmlFor="password1" className="block text-sm text-gray-300 mb-1">
                 {t("register.password1")}
               </label>
               <input
@@ -151,7 +152,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1" htmlFor="password2">
+              <label htmlFor="password2" className="block text-sm text-gray-300 mb-1">
                 {t("register.password2")}
               </label>
               <input
@@ -176,11 +177,11 @@ export default function RegisterPage() {
               />
               <label htmlFor="terms" className="text-sm text-gray-300">
                 {t("register.accept")}{" "}
-                <a href="/legal" className="text-purple-400 hover:underline" target="_blank" rel="noreferrer">
+                <a href="/legal" target="_blank" rel="noreferrer" className="text-purple-400 hover:underline">
                   {t("register.terms")}
                 </a>{" "}
                 {t("register.and")}{" "}
-                <a href="/privacy" className="text-purple-400 hover:underline" target="_blank" rel="noreferrer">
+                <a href="/privacy" target="_blank" rel="noreferrer" className="text-purple-400 hover:underline">
                   {t("register.privacy")}
                 </a>
               </label>
@@ -201,10 +202,7 @@ export default function RegisterPage() {
 
           <div className="mt-6 text-center text-sm text-gray-400">
             {t("register.haveAccount")}{" "}
-            <Link
-              to="/login"
-              className="text-purple-400 hover:text-purple-300 underline"
-            >
+            <Link to="/login" className="text-purple-400 hover:text-purple-300 underline">
               {t("register.loginLink")}
             </Link>
           </div>

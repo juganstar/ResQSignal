@@ -50,7 +50,11 @@
     "and": "e",
     "error_policy": "Deve aceitar os Termos de Serviço e a Política de Privacidade.",
     "error": {
-      "generic": "Falha no registo. Por favor, tente novamente."
+      "generic": "Falha no registo. Por favor, tente novamente.",
+      "username_exists": "Este nome de utilizador já está em uso.",
+      "email_exists": "Este email já está registado.",
+      "password_mismatch": "As palavras-passe não coincidem.",
+      "invalidCredentials": "Email ou palavra-passe inválidos."
     }
   },
   "pricing": {

@@ -51,8 +51,11 @@
     "and": "and",
     "error_policy": "You must accept the Terms of Service and Privacy Policy.",
     "error": {
-      "csrf": "Security error. Please refresh the page (Ctrl+F5) and try again.",
-      "generic": "Registration failed. Please try again."
+      "generic": "Registration failed. Please try again.",
+      "usernameExists": "This username is already taken.",
+      "emailExists": "This email is already registered.",
+      "passwordsDontMatch": "Passwords do not match.",
+      "invalidCredentials": "Invalid email or password."
     }
   },
   "pricing": {

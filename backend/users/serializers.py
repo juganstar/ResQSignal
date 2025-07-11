@@ -7,6 +7,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account import app_settings as allauth_settings
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -29,6 +30,16 @@ class CustomLoginSerializer(LoginSerializer):
 
         attrs['user'] = user
         return attrs
+    
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user = self.user
+
+        if not EmailAddress.objects.filter(user=user, email=user.email, verified=True).exists():
+            raise serializers.ValidationError({"detail": "EMAIL_NOT_VERIFIED"})
+
+        return data
 
 
 # ✅ Used in /api/users/me/

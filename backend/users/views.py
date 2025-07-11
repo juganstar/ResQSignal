@@ -27,6 +27,8 @@ from dj_rest_auth.views import PasswordResetView as DRFPasswordResetView
 from .serializers import CustomRegisterSerializer
 from users.models import Profile
 from users.serializers import UserDetailsSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from users.serializers import CustomTokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -147,3 +149,6 @@ class DeleteAccountView(APIView):
     def delete(self, request):
         request.user.delete()
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

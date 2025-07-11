@@ -114,9 +114,13 @@ export default function HomePage() {
             transition={{ delay: 0.8 }}
             className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs"
           >
-            <li>✅ {t("home.feature1")}</li>
-            <li>📨 {t("home.feature2")}</li>
-            <li>🔗 {t("home.feature3")}</li>
+            {[t("home.feature1"), t("home.feature2"), t("home.feature3")].map((msg, i) => (
+              <li key={i}>
+                {msg.split("\n").map((line, j) => (
+                  <p key={j}>{line}</p>
+                ))}
+              </li>
+            ))}
           </motion.ul>
         </div>
       </main>

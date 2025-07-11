@@ -32,12 +32,90 @@ function App() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
-      <header className="p-4 border-b border-gray-800 shadow-sm bg-black flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center justify-between w-full sm:w-auto">
-          <h1 className="text-2xl font-bold text-white">LiveSignal</h1>
+      <header
+        className={`z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300`}
+      >
+        <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center justify-between w-full sm:w-auto">
+            <h1 className="text-2xl font-bold text-white">LiveSignal</h1>
 
-          {/* Language Toggle (mobile) */}
-          <div className="flex gap-2 sm:hidden">
+            {/* Language Toggle (mobile) */}
+            <div className="flex gap-2 sm:hidden">
+              <button
+                onClick={() => switchLanguage("pt")}
+                className={`px-2 py-1 rounded text-sm ${
+                  i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
+                }`}
+              >
+                🇵🇹
+              </button>
+              <button
+                onClick={() => switchLanguage("en")}
+                className={`px-2 py-1 rounded text-sm ${
+                  i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
+                }`}
+              >
+                🇬🇧
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex flex-wrap justify-center gap-4 text-sm sm:text-base items-center w-full sm:w-auto">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-purple-400 font-semibold"
+                  : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.home")}
+            </NavLink>
+            <NavLink
+              to="/setup"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-purple-400 font-semibold"
+                  : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.setup")}
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-purple-400 font-semibold"
+                  : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.pricing")}
+            </NavLink>
+            <NavLink
+              to="/legal"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-purple-400 font-semibold"
+                  : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.terms")}
+            </NavLink>
+            <NavLink
+              to="/privacy"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-purple-400 font-semibold"
+                  : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.privacy")}
+            </NavLink>
+          </nav>
+
+          {/* Language Toggle (desktop) */}
+          <div className="hidden sm:flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -55,80 +133,6 @@ function App() {
               🇬🇧
             </button>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex flex-wrap justify-center gap-4 text-sm sm:text-base items-center w-full sm:w-auto">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? "text-purple-400 font-semibold"
-                : "text-white hover:text-purple-300"
-            }
-          >
-            {t("nav.home")}
-          </NavLink>
-          <NavLink
-            to="/setup"
-            className={({ isActive }) =>
-              isActive
-                ? "text-purple-400 font-semibold"
-                : "text-white hover:text-purple-300"
-            }
-          >
-            {t("nav.setup")}
-          </NavLink>
-          <NavLink
-            to="/pricing"
-            className={({ isActive }) =>
-              isActive
-                ? "text-purple-400 font-semibold"
-                : "text-white hover:text-purple-300"
-            }
-          >
-            {t("nav.pricing")}
-          </NavLink>
-          <NavLink
-            to="/legal"
-            className={({ isActive }) =>
-              isActive
-                ? "text-purple-400 font-semibold"
-                : "text-white hover:text-purple-300"
-            }
-          >
-            {t("nav.terms")}
-          </NavLink>
-          <NavLink
-            to="/privacy"
-            className={({ isActive }) =>
-              isActive
-                ? "text-purple-400 font-semibold"
-                : "text-white hover:text-purple-300"
-            }
-          >
-            {t("nav.privacy")}
-          </NavLink>
-        </nav>
-
-        {/* Language Toggle (desktop) */}
-        <div className="hidden sm:flex gap-2">
-          <button
-            onClick={() => switchLanguage("pt")}
-            className={`px-2 py-1 rounded text-sm ${
-              i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
-            }`}
-          >
-            🇵🇹
-          </button>
-          <button
-            onClick={() => switchLanguage("en")}
-            className={`px-2 py-1 rounded text-sm ${
-              i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
-            }`}
-          >
-            🇬🇧
-          </button>
         </div>
       </header>
 

@@ -112,12 +112,12 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="text-sm text-purple-200 space-y-2 text-left mx-auto max-w-xs"
+            className="text-sm text-purple-200 space-y-4 mx-auto text-left max-w-sm"
           >
             {[t("home.feature1"), t("home.feature2"), t("home.feature3")].map((msg, i) => (
               <li key={i}>
                 {msg.split("\n").map((line, j) => (
-                  <p key={j}>{line}</p>
+                  <p key={j} className="leading-snug">{line}</p>
                 ))}
               </li>
             ))}

@@ -6,6 +6,7 @@ from rest_framework import status
 from emergency.models import EmergencyAlert, Contact
 from emergency.utils import send_emergency_message
 from billing.utils import add_stripe_usage
+import json
 
 class TriggerEmergencyAlert(APIView):
     permission_classes = [IsAuthenticated]
@@ -33,20 +34,21 @@ class TriggerEmergencyAlert(APIView):
         return Response({"status": "alert triggered", "id": alert.id})
     
 
-    
-from django.http import JsonResponse
+
+from django.http import JsonResponse, HttpResponse
 
 def dynamic_manifest(request, token):
-    return JsonResponse({
-        "name": "LiveSignal - Alerta",
+    manifest = {
+        "name": "LiveSignal Emergency Button",
         "short_name": "LiveSignal",
         "start_url": f"/public/{token}/",
         "display": "standalone",
         "background_color": "#ffffff",
-        "theme_color": "#e11d48",
+        "theme_color": "#e60023",
         "icons": [
-            {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-            {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "/static/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+            {"src": "/static/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
         ]
-    })
+    }
+    return HttpResponse(json.dumps(manifest), content_type="application/manifest+json")
  

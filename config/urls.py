@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.urls.resolvers import URLPattern
 from allauth.account.views import confirm_email
+from django.views.static import serve as static_serve
+from django.conf import settings
 
 from emergency.views.public_views import public_alert_page, test_alert_page, TriggerPublicAlertView
-from emergency.views.misc_views import get_csrf_token
 from billing.stripe_webhooks import stripe_webhook
 
 from django.conf import settings
@@ -15,6 +16,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings
 
 urlpatterns = [
     # Admin Panel
@@ -42,6 +44,7 @@ urlpatterns = [
     path("public/<uuid:token>/", public_alert_page, name="public-alert-page"),
     path("test/<uuid:token>/", test_alert_page, name="test-alert"),
     path("api/emergency/public/<uuid:token>/", TriggerPublicAlertView.as_view(), name="public-alert-api"),
+    re_path(r'^sw\.js$', static_serve, {'path': 'sw.js', 'document_root': settings.STATIC_ROOT}),
 ]
 
 # Optional deduplication

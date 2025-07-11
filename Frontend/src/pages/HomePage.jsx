@@ -112,12 +112,12 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="text-sm text-purple-200 space-y-4 mx-auto text-left max-w-sm"
+            className="mt-8 text-sm text-purple-200 space-y-4 text-left max-w-md mx-auto"
           >
             {[t("home.feature1"), t("home.feature2"), t("home.feature3")].map((msg, i) => (
-              <li key={i}>
+              <li key={i} className="flex flex-col leading-snug">
                 {msg.split("\n").map((line, j) => (
-                  <p key={j} className="leading-snug">{line}</p>
+                  <span key={j}>{line}</span>
                 ))}
               </li>
             ))}

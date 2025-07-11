@@ -45,25 +45,14 @@ export default function RegisterPage() {
       console.error("Registration error:", err);
       let errorMessage = t("register.error.generic");
 
-      try {
-        const data = err.response?.data;
-
-        if (data && typeof data === "object") {
-          const messages = [];
-
-          for (const [field, value] of Object.entries(data)) {
-            const fieldErrors = Array.isArray(value) ? value : [value];
-            for (const message of fieldErrors) {
-              messages.push(translateErrorMessage(field, message, t));
-            }
-          }
-
-          errorMessage = messages.join("\n");
-        } else if (typeof data === "string") {
-          errorMessage = data;
-        }
-      } catch (e) {
-        console.error("Error parsing backend response:", e);
+      if (err.response?.data) {
+        errorMessage = Object.entries(err.response.data)
+          .flatMap(([field, errors]) =>
+            Array.isArray(errors)
+              ? errors.map((e) => translateErrorMessage(field, e, t))
+              : [translateErrorMessage(field, errors, t)]
+          )
+          .join("\n");
       }
 
       setError(errorMessage);

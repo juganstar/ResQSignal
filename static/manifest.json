@@ -1,7 +1,7 @@
 {
   "name": "LiveSignal Emergency Button",
   "short_name": "LiveSignal",
-  "start_url": "/public/",
+  "start_url": "/public/<user-token>/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e60023",

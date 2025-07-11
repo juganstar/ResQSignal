@@ -154,7 +154,7 @@
     function startLocationTracking() {
       if (!('geolocation' in navigator)) {
         updateStatus('error', 'Geolocation not supported');
-        sendLocation(null, null, true); // Send alert without location
+        sendLocation(null, null, true);
         return;
       }
 
@@ -163,9 +163,9 @@
           const { latitude, longitude } = position.coords;
           if (!firstAlertSent) {
             firstAlertSent = true;
-            sendLocation(latitude, longitude, true); // Initial alert
+            sendLocation(latitude, longitude, true);
           } else {
-            sendLocation(latitude, longitude, false); // Continuous update
+            sendLocation(latitude, longitude, false);
           }
         },
         err => {
@@ -173,7 +173,7 @@
           updateStatus('warning', 'Alert sent without location');
           if (!firstAlertSent) {
             firstAlertSent = true;
-            sendLocation(null, null, true); // Send alert without location
+            sendLocation(null, null, true);
           }
         },
         { 
@@ -187,5 +187,15 @@
     startLocationTracking();
   });
 </script>
+
+<script>
+  // Register minimal service worker for PWA install prompt
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/sw.js')
+      .then(() => console.log("✅ Service Worker registered"))
+      .catch((err) => console.error("❌ SW registration failed:", err));
+  }
+</script>
+
 </body>
 </html>

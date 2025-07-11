@@ -3,7 +3,6 @@ from django.urls import path, include, re_path
 from django.urls.resolvers import URLPattern
 from allauth.account.views import confirm_email
 from django.views.static import serve as static_serve
-from django.conf import settings
 
 from emergency.views.public_views import public_alert_page, test_alert_page, TriggerPublicAlertView
 from billing.stripe_webhooks import stripe_webhook
@@ -17,6 +16,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.conf import settings
+from emergency.views.alert_views import dynamic_manifest
+
 
 urlpatterns = [
     # Admin Panel
@@ -45,6 +46,7 @@ urlpatterns = [
     path("test/<uuid:token>/", test_alert_page, name="test-alert"),
     path("api/emergency/public/<uuid:token>/", TriggerPublicAlertView.as_view(), name="public-alert-api"),
     re_path(r'^sw\.js$', static_serve, {'path': 'sw.js', 'document_root': settings.STATIC_ROOT}),
+    path("manifest/<uuid:token>.json", dynamic_manifest, name="dynamic-manifest"),
 ]
 
 # Optional deduplication

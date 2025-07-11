@@ -14,7 +14,6 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
-from users.views import CustomTokenObtainPairView  # ✅
 from django.conf import settings
 from emergency.views.alert_views import dynamic_manifest
 
@@ -27,7 +26,6 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
 
     # ✅ JWT Authentication
-    path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
     # Email verification (via AllAuth)

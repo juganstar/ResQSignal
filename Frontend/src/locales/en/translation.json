@@ -12,9 +12,9 @@
     "logout": "Logout",
     "login": "Login",
     "register": "Create Account",
-    "feature1": "✅ Real emergency button, always ready to use.\nOne tap alerts your contacts — no login or app needed.",
-    "feature2": "📡 Real-time location sharing.\nYour contacts receive a GPS message instantly (if allowed).",
-    "feature3": "⏱️ Built for critical moments.\nWhen there’s no time to explain, LiveSignal speaks for you.",
+    "feature1": "✅ Real emergency button.\n1 tap alerts contacts — no login or apps needed.",
+    "feature2": "📡 Sends real-time location.\nAvailable only on the premium plan.",
+    "feature3": "⏱️ For critical moments.\nNo time? LiveSignal speaks for you.",
     "loading": "Loading...",
     "user": "user"
   },

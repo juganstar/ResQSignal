@@ -12,9 +12,9 @@
     "logout": "Sair",
     "login": "Entrar",
     "register": "Criar Conta",
-    "feature1": "✅ Botão de emergência real, sempre pronto a usar.\nBasta 1 clique para alertar os seus contactos, sem login nem apps.",
-    "feature2": "📡 Localização enviada em tempo real.\nOs seus contactos recebem uma mensagem com o seu GPS (se autorizado).",
-    "feature3": "⏱️ Criado para momentos críticos.\nQuando não há tempo para explicações, o LiveSignal fala por si.",
+    "feature1": "✅ Botão de emergência real.\n1 clique alerta os seus contactos sem apps ou login.",
+    "feature2": "📡 Envia localização em tempo real.\nFunciona apenas com plano premium.",
+    "feature3": "⏱️ Para momentos críticos.\nSem tempo? O LiveSignal fala por si.",
     "loading": "A carregar...",
     "user": "utilizador"
   },

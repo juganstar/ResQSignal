@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "country-flag-icons": "^1.5.19",
+    "framer-motion": "^12.23.3",
     "i18next": "^25.2.1",
     "lucide-react": "^0.519.0",
     "react-i18next": "^15.5.3",

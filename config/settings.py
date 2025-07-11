@@ -330,9 +330,8 @@ SIMPLE_JWT = {
 # ======================
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-
+DEFAULT_FROM_EMAIL = "LiveSignal <no-reply@livesignal.com>"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "livesignalapp@gmail.com")
 
 # ======================
 # ALLAUTH EMAIL CONFIRMATION SETTINGS

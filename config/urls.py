@@ -12,9 +12,9 @@ from django.conf.urls.static import static
 
 # ✅ JWT views
 from rest_framework_simplejwt.views import (
-    CustomTokenObtainPairView,
     TokenRefreshView,
 )
+from users.views import CustomTokenObtainPairView  # ✅
 from django.conf import settings
 from emergency.views.alert_views import dynamic_manifest
 

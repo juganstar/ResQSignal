@@ -47,14 +47,18 @@ export default function RegisterPage() {
 
       try {
         const data = err.response?.data;
-        if (typeof data === "object" && data !== null) {
-          errorMessage = Object.entries(data)
-            .flatMap(([field, errors]) =>
-              Array.isArray(errors)
-                ? errors.map((e) => translateErrorMessage(field, e, t))
-                : [translateErrorMessage(field, errors, t)]
-            )
-            .join("\n");
+
+        if (data && typeof data === "object") {
+          const messages = [];
+
+          for (const [field, value] of Object.entries(data)) {
+            const fieldErrors = Array.isArray(value) ? value : [value];
+            for (const message of fieldErrors) {
+              messages.push(translateErrorMessage(field, message, t));
+            }
+          }
+
+          errorMessage = messages.join("\n");
         } else if (typeof data === "string") {
           errorMessage = data;
         }

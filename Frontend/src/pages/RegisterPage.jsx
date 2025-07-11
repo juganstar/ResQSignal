@@ -55,8 +55,10 @@ export default function RegisterPage() {
               return errors.map((e) => translateErrorMessage(field, e, t));
             } else if (typeof errors === "string") {
               return [translateErrorMessage(field, errors, t)];
+            } else if (typeof errors === "object") {
+              return Object.values(errors).flat();
             } else {
-              return [JSON.stringify(errors)];
+              return [String(errors)];
             }
           })
           .join("\n");
@@ -67,6 +69,7 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
 
 
   if (success) {

@@ -36,65 +36,62 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
-        <div className="relative max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* Center: Logo + Nav */}
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
-              <img
-                src={logo}
-                alt="ResQSignal icon"
-                className="h-12 w-12 object-contain animate-pulse -ml-1"
-              />
-            </Link>
+        <div className="relative max-w-7xl mx-auto px-4 py-3 flex flex-col items-center justify-center gap-2">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 mb-2">
+            <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
+            <img
+              src={logo}
+              alt="ResQSignal icon"
+              className="h-10 w-10 object-contain animate-pulse"
+            />
+          </Link>
 
-            {/* Nav */}
-            <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.home")}
-              </NavLink>
-              <NavLink
-                to="/setup"
-                className={({ isActive }) =>
-                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.setup")}
-              </NavLink>
-              <NavLink
-                to="/pricing"
-                className={({ isActive }) =>
-                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.pricing")}
-              </NavLink>
-              <NavLink
-                to="/legal"
-                className={({ isActive }) =>
-                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.terms")}
-              </NavLink>
-              <NavLink
-                to="/privacy"
-                className={({ isActive }) =>
-                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.privacy")}
-              </NavLink>
-            </nav>
-          </div>
+          {/* Nav center */}
+          <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.home")}
+            </NavLink>
+            <NavLink
+              to="/setup"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.setup")}
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.pricing")}
+            </NavLink>
+            <NavLink
+              to="/legal"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.terms")}
+            </NavLink>
+            <NavLink
+              to="/privacy"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.privacy")}
+            </NavLink>
+          </nav>
 
-          {/* Right: Language Toggle */}
+          {/* Language Toggle (top-right) */}
           <div className="absolute right-4 top-4 flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}

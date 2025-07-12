@@ -126,14 +126,14 @@ export default function HomePage() {
       </main>
 
       <footer className="text-center text-sm text-gray-500 py-6">
-        <p>© {new Date().getFullYear()} LiveSignal. {t("footer.rights")}</p>
+        <p>© {new Date().getFullYear()} ResQSignal. {t("footer.rights")}</p>
         <p>
           {t("footer.contact")}: {" "}
           <a
-            href="mailto:livesignalapp@gmail.com"
+            href="mailto:ResQSignal.help@gmail.com"
             className="text-purple-400 underline"
           >
-            livesignalapp@gmail.com
+            ResQSignal.help@gmail.com
           </a>
         </p>
       </footer>

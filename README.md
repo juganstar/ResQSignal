@@ -1,4 +1,4 @@
-# livesignal# Build and run
+# ResQSignal# Build and run
 docker-compose --env-file .env.dev up --build
 
 # Apply migrations

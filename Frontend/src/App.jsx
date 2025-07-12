@@ -4,6 +4,7 @@ import {
   Route,
   NavLink,
   useLocation,
+  Link,
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
@@ -32,12 +33,16 @@ function App() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
-      <header
-        className={`z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300`}
-      >
+      <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center justify-between w-full sm:w-auto">
-            <h1 className="text-2xl font-bold text-white">LiveSignal</h1>
+            <Link to="/" className="flex items-center">
+              <img
+                src="/assets/logo-navbar.png"
+                alt="ResQSignal"
+                className="h-10 w-auto"
+              />
+            </Link>
 
             {/* Language Toggle (mobile) */}
             <div className="flex gap-2 sm:hidden">

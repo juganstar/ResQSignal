@@ -39,8 +39,8 @@ from django.http import JsonResponse, HttpResponse
 
 def dynamic_manifest(request, token):
     manifest = {
-        "name": "LiveSignal Emergency Button",
-        "short_name": "LiveSignal",
+        "name": "ResQSignal Emergency Button",
+        "short_name": "ResQSignal",
         "start_url": f"/public/{token}/",
         "display": "standalone",
         "background_color": "#ffffff",

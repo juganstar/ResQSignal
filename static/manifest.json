@@ -1,6 +1,6 @@
 {
-  "name": "LiveSignal Emergency Button",
-  "short_name": "LiveSignal",
+  "name": "ResQSignal Emergency Button",
+  "short_name": "ResQSignal",
   "start_url": "/public/<user-token>/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -1,4 +1,4 @@
-{% blocktrans %}Thank you for signing up with LiveSignal!{% endblocktrans %}
+{% blocktrans %}Thank you for signing up with ResQSignal!{% endblocktrans %}
 
 {% blocktrans %}Please confirm your email address by clicking the link below:{% endblocktrans %}
 
@@ -6,4 +6,4 @@
 
 {% blocktrans %}If you didn’t sign up for this account, you can ignore this email.{% endblocktrans %}
 
-- LiveSignal Team
+- ResQSignal Team

@@ -14,7 +14,7 @@
     "register": "Criar Conta",
     "feature1": "✅ Botão de emergência real.\n1 clique e alerta os seus contactos.",
     "feature2": "📡 Envia localização em tempo real.\nFunciona apenas com plano premium.",
-    "feature3": "⏱️ Para momentos críticos.\nSem tempo? O LiveSignal fala por si.",
+    "feature3": "⏱️ Para momentos críticos.\nSem tempo? O ResQSignal fala por si.",
     "loading": "A carregar...",
     "user": "utilizador"
   },
@@ -66,7 +66,7 @@
     "error": "Erro no pagamento! Já iniciou sessão?",
     "note": "Nota:",
     "messageCost": "Cada mensagem enviada custa €0.08 adicionais (ou equivalente local)",
-    "thankYou": "Obrigado por escolher o LiveSignal",
+    "thankYou": "Obrigado por escolher o ResQSignal",
     "beSafe": "Mantenha-se em segurança"
   },
   "setup": {
@@ -106,7 +106,7 @@
   "legal": {
     "title": "Termos e Aviso Legal",
     "warning": "⚠️ Este serviço não substitui o 112 ou 911. Em situações reais de emergência, contacte sempre os serviços oficiais.",
-    "disclaimer1": "O LiveSignal é uma ferramenta auxiliar destinada a ajudar os utilizadores a enviar alertas predefinidos para contactos selecionados. O seu objetivo é complementar — nunca substituir — os canais oficiais de emergência.",
+    "disclaimer1": "O ResQSignal é uma ferramenta auxiliar destinada a ajudar os utilizadores a enviar alertas predefinidos para contactos selecionados. O seu objetivo é complementar — nunca substituir — os canais oficiais de emergência.",
     "disclaimer2": "O serviço depende de fatores externos como ligação à internet, permissões do dispositivo, funcionamento dos servidores e integrações com terceiros (por exemplo, Stripe, Twilio). A entrega de mensagens e a fiabilidade do serviço não são garantidas.",
     "disclaimer3": "Os utilizadores assumem total responsabilidade pela utilização da plataforma. O criador da aplicação não se responsabiliza por falhas técnicas, atrasos, mensagens não entregues ou quaisquer consequências (incluindo danos, lesões ou morte) resultantes da utilização ou falha do serviço.",
     "back": "Voltar à Página Inicial"

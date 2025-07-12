@@ -14,7 +14,7 @@
     "register": "Create Account",
     "feature1": "✅ Real emergency button.\n1 tap and alert your contacts.",
     "feature2": "📡 Sends real-time location.\nAvailable only on the premium plan.",
-    "feature3": "⏱️ For critical moments.\nNo time? LiveSignal speaks for you.",
+    "feature3": "⏱️ For critical moments.\nNo time? ResQSignal speaks for you.",
     "loading": "Loading...",
     "user": "user"
   },
@@ -67,7 +67,7 @@
     "error": "Payment error! Are you logged in?",
     "note": "Note:",
     "messageCost": "Each message sent costs an additional €0.08 (or local equivalent)",
-    "thankYou": "Thank you for choosing LiveSignal",
+    "thankYou": "Thank you for choosing ResQSignal",
     "beSafe": "Stay safe out there"
   },
   "setup": {
@@ -107,7 +107,7 @@
   "legal": {
     "title": "Terms & Legal Notice",
     "warning": "⚠️ This service is not a replacement for 112 or 911. In real emergencies, always contact official emergency services.",
-    "disclaimer1": "LiveSignal is an auxiliary tool intended to help users send predefined alerts to selected contacts. Its purpose is to complement — never to replace — official emergency channels.",
+    "disclaimer1": "ResQSignal is an auxiliary tool intended to help users send predefined alerts to selected contacts. Its purpose is to complement — never to replace — official emergency channels.",
     "disclaimer2": "The service relies on external factors such as internet connection, device permissions, server uptime, and third-party integrations (e.g. Stripe, Twilio). Message delivery and service reliability are not guaranteed.",
     "disclaimer3": "Users take full responsibility for using the platform. The creator of this app disclaims all liability for technical failures, delays, undelivered messages, or any consequences (including damage, injury, or death) resulting from the use or failure of the service.",
     "back": "Back to Homepage"

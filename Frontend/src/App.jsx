@@ -21,7 +21,7 @@ import ResetRequestPage from "./pages/ResetRequestPage";
 import ResetConfirmPage from "./pages/ResetConfirmPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
-import logoPulse from "./assets/logo-pulse.png"; // make sure this exists
+import logo from "./assets/logo.png"; // your heart icon
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -37,13 +37,14 @@ function App() {
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Logo + Name */}
           <div className="flex items-center justify-between w-full sm:w-auto">
             <Link to="/" className="flex items-center gap-2">
-              <span className="text-white font-bold text-xl sm:text-2xl">ResQSignal</span>
+              <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
-                src={logoPulse}
+                src={logo}
                 alt="ResQSignal icon"
-                className="h-6 w-6 animate-pulse"
+                className="h-6 w-6 object-contain animate-pulse"
               />
             </Link>
 
@@ -165,10 +166,7 @@ function App() {
               <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/email-confirmed" element={<EmailConfirmedPage />} />
               <Route path="/reset-password/" element={<ResetRequestPage />} />
-              <Route
-                path="/reset-password-confirm/:uid/:token"
-                element={<ResetConfirmPage />}
-              />
+              <Route path="/reset-password-confirm/:uid/:token" element={<ResetConfirmPage />} />
             </Routes>
           </motion.div>
         </AnimatePresence>

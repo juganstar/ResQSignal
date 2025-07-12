@@ -36,9 +36,10 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* Left: Logo */}
-          <div className="flex items-center justify-between w-full sm:w-auto">
+        <div className="relative max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* Center: Logo + Nav */}
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
@@ -47,54 +48,54 @@ function App() {
                 className="h-12 w-12 object-contain animate-pulse -ml-1"
               />
             </Link>
+
+            {/* Nav */}
+            <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.home")}
+              </NavLink>
+              <NavLink
+                to="/setup"
+                className={({ isActive }) =>
+                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.setup")}
+              </NavLink>
+              <NavLink
+                to="/pricing"
+                className={({ isActive }) =>
+                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.pricing")}
+              </NavLink>
+              <NavLink
+                to="/legal"
+                className={({ isActive }) =>
+                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.terms")}
+              </NavLink>
+              <NavLink
+                to="/privacy"
+                className={({ isActive }) =>
+                  isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.privacy")}
+              </NavLink>
+            </nav>
           </div>
 
-          {/* Center: Nav */}
-          <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.home")}
-            </NavLink>
-            <NavLink
-              to="/setup"
-              className={({ isActive }) =>
-                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.setup")}
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              className={({ isActive }) =>
-                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.pricing")}
-            </NavLink>
-            <NavLink
-              to="/legal"
-              className={({ isActive }) =>
-                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.terms")}
-            </NavLink>
-            <NavLink
-              to="/privacy"
-              className={({ isActive }) =>
-                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.privacy")}
-            </NavLink>
-          </nav>
-
           {/* Right: Language Toggle */}
-          <div className="flex justify-center sm:justify-end gap-2">
+          <div className="absolute right-4 top-4 flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${

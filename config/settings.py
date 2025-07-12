@@ -151,7 +151,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            os.path.join(BASE_DIR, "backend", "users", "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -255,6 +257,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https" if not DEBUG else "http"
 ACCOUNT_PASSWORD_RESET_CONFIRM_URL = "reset-password-confirm/{uid}/{token}/"
 ACCOUNT_ADAPTER = "users.adapters.CustomAccountAdapter"
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
 
 
 REST_AUTH = {

@@ -151,7 +151,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(BASE_DIR / "backend" / "users" / "templates")],
+        "DIRS": [os.path.join(BASE_DIR, "users", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

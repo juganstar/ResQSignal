@@ -1,7 +1,16 @@
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "APP_DIRS": True,
-        ...
-    }
-]
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% blocktrans %}Confirm your email address{% endblocktrans %}</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+  <h2>{% blocktrans %}Welcome to LiveSignal!{% endblocktrans %}</h2>
+  <p>{% blocktrans %}Please confirm your email by clicking the button below:{% endblocktrans %}</p>
+  <a href="{{ activate_url }}" style="display: inline-block; background: #007bff; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+    {% blocktrans %}Confirm Email{% endblocktrans %}
+  </a>
+  <p style="margin-top: 20px;">{% blocktrans %}If you didn’t request this, you can safely ignore this email.{% endblocktrans %}</p>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{% blocktrans %}Confirm your email address{% endblocktrans %}

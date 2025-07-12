@@ -1,9 +1,9 @@
-Hello {{ user.username }},
+{% blocktrans %}Thank you for signing up with LiveSignal!{% endblocktrans %}
 
-Thank you for signing up with LiveSignal! Please confirm your email address by clicking the link below:
+{% blocktrans %}Please confirm your email address by clicking the link below:{% endblocktrans %}
 
 {{ activate_url }}
 
-If you didn't sign up for this account, you can ignore this email.
+{% blocktrans %}If you didn’t sign up for this account, you can ignore this email.{% endblocktrans %}
 
 - LiveSignal Team

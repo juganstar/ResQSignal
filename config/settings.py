@@ -329,8 +329,9 @@ SIMPLE_JWT = {
 # ======================
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "ResQSignal <resqsignal.help@gmail.com>")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "resqsignal.help@gmail.com")
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+SERVER_EMAIL = "ResQSignal <resqsignal.help@gmail.com>"
 
 # ======================
 # ALLAUTH EMAIL CONFIRMATION SETTINGS

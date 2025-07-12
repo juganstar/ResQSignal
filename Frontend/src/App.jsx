@@ -9,19 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 
-import HomePage from "./pages/HomePage";
-import SetupPage from "./pages/SetupPage";
-import LegalPage from "./pages/LegalPage";
-import PricingPage from "./pages/PricingPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import VerifyEmailPage from "./pages/VerifyEmailPage";
-import EmailConfirmedPage from "./pages/EmailConfirmedPage";
-import ResetRequestPage from "./pages/ResetRequestPage";
-import ResetConfirmPage from "./pages/ResetConfirmPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-
-import logo from "./assets/logo.png";
+// ... (keep all your existing imports)
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -37,8 +25,8 @@ function App() {
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Left: Logo */}
-          <div className="flex items-center gap-2">
+          {/* Left: Logo - Made this section flex-grow to push nav left */}
+          <div className="flex items-center gap-2 flex-grow">
             <Link to="/" className="flex items-center">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
@@ -47,61 +35,61 @@ function App() {
                 className="h-12 w-12 object-contain animate-pulse -ml-1"
               />
             </Link>
+            
+            {/* Moved nav inside this div and added ml-8 for spacing */}
+            <nav className="hidden sm:flex gap-6 text-sm sm:text-base items-center ml-8">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-purple-400 font-semibold"
+                    : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.home")}
+              </NavLink>
+              <NavLink
+                to="/setup"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-purple-400 font-semibold"
+                    : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.setup")}
+              </NavLink>
+              <NavLink
+                to="/pricing"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-purple-400 font-semibold"
+                    : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.pricing")}
+              </NavLink>
+              <NavLink
+                to="/legal"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-purple-400 font-semibold"
+                    : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.terms")}
+              </NavLink>
+              <NavLink
+                to="/privacy"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-purple-400 font-semibold"
+                    : "text-white hover:text-purple-300"
+                }
+              >
+                {t("nav.privacy")}
+              </NavLink>
+            </nav>
           </div>
-
-          {/* Center: Nav */}
-          <nav className="hidden sm:flex gap-6 text-sm sm:text-base items-center">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-purple-400 font-semibold"
-                  : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.home")}
-            </NavLink>
-            <NavLink
-              to="/setup"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-purple-400 font-semibold"
-                  : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.setup")}
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-purple-400 font-semibold"
-                  : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.pricing")}
-            </NavLink>
-            <NavLink
-              to="/legal"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-purple-400 font-semibold"
-                  : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.terms")}
-            </NavLink>
-            <NavLink
-              to="/privacy"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-purple-400 font-semibold"
-                  : "text-white hover:text-purple-300"
-              }
-            >
-              {t("nav.privacy")}
-            </NavLink>
-          </nav>
 
           {/* Right: Language buttons */}
           <div className="flex gap-2">
@@ -124,7 +112,7 @@ function App() {
           </div>
         </div>
 
-        {/* Mobile nav */}
+        {/* Mobile nav - unchanged */}
         <div className="flex sm:hidden justify-center gap-4 pb-3">
           <NavLink
             to="/"
@@ -159,7 +147,7 @@ function App() {
         </div>
       </header>
 
-      {/* ROUTES with animation */}
+      {/* MAIN CONTENT - unchanged */}
       <main className="flex-grow p-6 bg-gradient-to-b from-black via-gray-900 to-[#4a1d96]">
         <AnimatePresence mode="wait">
           <motion.div
@@ -170,17 +158,7 @@ function App() {
             transition={{ duration: 0.4 }}
           >
             <Routes location={location}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/setup" element={<SetupPage />} />
-              <Route path="/legal" element={<LegalPage />} />
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
-              <Route path="/pricing" element={<PricingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/verify-email" element={<VerifyEmailPage />} />
-              <Route path="/email-confirmed" element={<EmailConfirmedPage />} />
-              <Route path="/reset-password/" element={<ResetRequestPage />} />
-              <Route path="/reset-password-confirm/:uid/:token" element={<ResetConfirmPage />} />
+              {/* ... (keep all your existing routes) */}
             </Routes>
           </motion.div>
         </AnimatePresence>

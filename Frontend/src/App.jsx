@@ -37,8 +37,9 @@ function App() {
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-6 w-full sm:w-auto">
-            <Link to="/" className="flex items-center">
+          {/* Left: Logo */}
+          <div className="flex items-center justify-between w-full sm:w-auto">
+            <Link to="/" className="flex items-center gap-2">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
                 src={logo}
@@ -46,84 +47,54 @@ function App() {
                 className="h-12 w-12 object-contain animate-pulse -ml-1"
               />
             </Link>
-
-            {/* NAVIGATION - moved left slightly with tighter spacing */}
-            <nav className="hidden sm:flex gap-4 items-center">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-purple-400 font-semibold"
-                    : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.home")}
-              </NavLink>
-              <NavLink
-                to="/setup"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-purple-400 font-semibold"
-                    : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.setup")}
-              </NavLink>
-              <NavLink
-                to="/pricing"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-purple-400 font-semibold"
-                    : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.pricing")}
-              </NavLink>
-              <NavLink
-                to="/legal"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-purple-400 font-semibold"
-                    : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.terms")}
-              </NavLink>
-              <NavLink
-                to="/privacy"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-purple-400 font-semibold"
-                    : "text-white hover:text-purple-300"
-                }
-              >
-                {t("nav.privacy")}
-              </NavLink>
-            </nav>
           </div>
 
-          {/* LANGUAGE SWITCH (Desktop) */}
-          <div className="hidden sm:flex gap-2">
-            <button
-              onClick={() => switchLanguage("pt")}
-              className={`px-2 py-1 rounded text-sm ${
-                i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
-              }`}
+          {/* Center: Nav */}
+          <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
             >
-              🇵🇹
-            </button>
-            <button
-              onClick={() => switchLanguage("en")}
-              className={`px-2 py-1 rounded text-sm ${
-                i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
-              }`}
+              {t("nav.home")}
+            </NavLink>
+            <NavLink
+              to="/setup"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
             >
-              🇬🇧
-            </button>
-          </div>
+              {t("nav.setup")}
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.pricing")}
+            </NavLink>
+            <NavLink
+              to="/legal"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.terms")}
+            </NavLink>
+            <NavLink
+              to="/privacy"
+              className={({ isActive }) =>
+                isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"
+              }
+            >
+              {t("nav.privacy")}
+            </NavLink>
+          </nav>
 
-          {/* LANGUAGE SWITCH (Mobile) */}
-          <div className="flex gap-2 sm:hidden justify-end">
+          {/* Right: Language Toggle */}
+          <div className="flex justify-center sm:justify-end gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -144,7 +115,7 @@ function App() {
         </div>
       </header>
 
-      {/* MAIN ROUTES WITH ANIMATION */}
+      {/* ROUTES + ANIMATION */}
       <main className="flex-grow p-6 bg-gradient-to-b from-black via-gray-900 to-[#4a1d96]">
         <AnimatePresence mode="wait">
           <motion.div

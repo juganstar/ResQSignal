@@ -9,6 +9,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 
+import logo from "./assets/logo.png";
+
 import HomePage from "./pages/HomePage";
 import SetupPage from "./pages/SetupPage";
 import LegalPage from "./pages/LegalPage";
@@ -38,9 +40,9 @@ function App() {
           <div className="flex items-center justify-between w-full sm:w-auto">
             <Link to="/" className="flex items-center">
               <img
-                src="/assets/logo-navbar.png"
+                src={logo}
                 alt="ResQSignal"
-                className="h-10 w-auto"
+                className="h-10 sm:h-12 w-auto object-contain"
               />
             </Link>
 

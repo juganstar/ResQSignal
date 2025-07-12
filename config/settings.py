@@ -329,7 +329,7 @@ SIMPLE_JWT = {
 # ======================
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "ResQSignal <resQSignal.help@gmail.com>")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "resQSignal.help@gmail.com>")
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
 # ======================

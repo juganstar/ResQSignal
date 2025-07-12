@@ -70,7 +70,7 @@ function App() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex justify-start gap-6 text-sm sm:text-base items-center pl8">
+          <nav className="flex justify-start gap-6 text-sm sm:text-base items-center pl20">
             <NavLink
               to="/"
               className={({ isActive }) =>

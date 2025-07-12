@@ -70,7 +70,7 @@ function App() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex flex-wrap justify-center gap-4 text-sm sm:text-base items-center w-full sm:w-auto ml-[-12px] sm:ml-[-24px]">
+          <nav className="flex flex-wrap justify-start gap-4 text-sm sm:text-base items-center w-full sm:w-auto pl-2 sm:pl-0">
             <NavLink
               to="/"
               className={({ isActive }) =>

@@ -1,18 +1,19 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import user_email
-from allauth.account.models import EmailConfirmation
 from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 
 class CustomAccountAdapter(DefaultAccountAdapter):
     def get_email_confirmation_context(self, request, emailconfirmation):
-        """
-        Fixes the error:
-        AttributeError: 'CustomAccountAdapter' object has no attribute 'get_email_confirmation_context'
-        """
+        # Manually build confirmation link for EmailConfirmationHMAC
+        activate_url = request.build_absolute_uri(
+            reverse("account_confirm_email", args=[emailconfirmation.key])
+        )
+
         return {
             "user": emailconfirmation.email_address.user,
-            "activate_url": emailconfirmation.get_absolute_url(),
+            "activate_url": activate_url,
             "current_site": self.get_current_site(request),
             "key": emailconfirmation.key,
         }

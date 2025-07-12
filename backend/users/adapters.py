@@ -20,7 +20,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
     def send_confirmation_mail(self, request, emailconfirmation, signup):
         ctx = self.get_email_confirmation_context(request, emailconfirmation)
-        self.send_mail("account/email/email_confirmation", email, ctx)
+        self.send_mail("account/email/email_confirmation", emailconfirmation.email_address.email, ctx)
 
 
     def get_current_site(self, request):

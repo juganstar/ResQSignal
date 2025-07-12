@@ -39,12 +39,12 @@ function App() {
         <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Logo + Name */}
           <div className="flex items-center justify-between w-full sm:w-auto">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
                 src={logo}
                 alt="ResQSignal icon"
-                className="h-12 w-12 object-contain animate-pulse"
+                className="h-12 w-12 object-contain animate-pulse -ml-1"
               />
             </Link>
 

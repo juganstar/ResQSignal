@@ -328,10 +328,10 @@ SIMPLE_JWT = {
 # EMAIL SETTINGS - SendGrid (API method)
 # ======================
 
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "resqsignal.help@gmail.com")
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "sendgrid_backend.SendgridBackend")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-SERVER_EMAIL = "ResQSignal <resqsignal.help@gmail.com>"
+SERVER_EMAIL = os.getenv("SERVER_EMAIL")
 
 # ======================
 # ALLAUTH EMAIL CONFIRMATION SETTINGS
@@ -348,7 +348,7 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
     f"{ACCOUNT_DEFAULT_HTTP_PROTOCOL}://{FRONTEND_DOMAIN}/email-confirmed"
 )
 
-SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+SENDGRID_SANDBOX_MODE_IN_DEBUG = os.getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG", "False") == "True"
 SENDGRID_ECHO_TO_STDOUT = False
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ResQSignal] "
 #ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "account/email/email_confirmation_message.txt"

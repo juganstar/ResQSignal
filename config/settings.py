@@ -205,8 +205,8 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = LOCAL_ORIGINS
 else:
     PROD_ORIGINS = [
-        "https://ResQSignal.com",
-        "https://www.ResQSignal.com",
+        "https://resqsignal.com",
+        "https://www.resqsignal.com",
         "https://livesignal.onrender.com",
     ]
     CORS_ALLOWED_ORIGINS = PROD_ORIGINS

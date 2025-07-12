@@ -9,8 +9,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 
-import logo from "./assets/logo.png";
-
 import HomePage from "./pages/HomePage";
 import SetupPage from "./pages/SetupPage";
 import LegalPage from "./pages/LegalPage";
@@ -22,6 +20,8 @@ import EmailConfirmedPage from "./pages/EmailConfirmedPage";
 import ResetRequestPage from "./pages/ResetRequestPage";
 import ResetConfirmPage from "./pages/ResetConfirmPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+
+import logoPulse from "./assets/logo-pulse.png"; // make sure this exists
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -38,11 +38,12 @@ function App() {
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center justify-between w-full sm:w-auto">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center gap-2">
+              <span className="text-white font-bold text-xl sm:text-2xl">ResQSignal</span>
               <img
-                src={logo}
-                alt="ResQSignal"
-                className="h-10 sm:h-12 w-auto object-contain"
+                src={logoPulse}
+                alt="ResQSignal icon"
+                className="h-6 w-6 animate-pulse"
               />
             </Link>
 

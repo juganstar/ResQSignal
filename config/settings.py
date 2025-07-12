@@ -152,7 +152,11 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, 'backend/users/templates'),
+            # Modern Pathlib style (recommended)
+            BASE_DIR / "backend" / "users" / "templates",
+            
+            # Alternative os.path.join style (use one or the other)
+            # os.path.join(BASE_DIR, 'backend', 'users', 'templates'),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -161,10 +165,15 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # If using allauth, add this (optional but recommended):
+                # "django.template.context_processors.request",
             ],
+            # Optional: uncomment if you need debug output
+            # 'debug': DEBUG,  # Make sure DEBUG is True in development
         },
     },
 ]
+
 
 # ======================
 # SECURITY SETTINGS

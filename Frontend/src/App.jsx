@@ -36,9 +36,10 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
-        <div className="relative max-w-7xl mx-auto px-4 py-3 flex flex-col items-center justify-center gap-2">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 mb-2">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          
+          {/* Left: Logo */}
+          <Link to="/" className="flex items-center gap-2">
             <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
             <img
               src={logo}
@@ -47,7 +48,7 @@ function App() {
             />
           </Link>
 
-          {/* Nav center */}
+          {/* Center: Nav */}
           <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
             <NavLink
               to="/"
@@ -91,8 +92,8 @@ function App() {
             </NavLink>
           </nav>
 
-          {/* Language Toggle (top-right) */}
-          <div className="absolute right-4 top-4 flex gap-2">
+          {/* Right: Language toggle */}
+          <div className="flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -112,6 +113,7 @@ function App() {
           </div>
         </div>
       </header>
+
 
       {/* ROUTES + ANIMATION */}
       <main className="flex-grow p-6 bg-gradient-to-b from-black via-gray-900 to-[#4a1d96]">

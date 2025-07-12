@@ -21,7 +21,7 @@ import ResetRequestPage from "./pages/ResetRequestPage";
 import ResetConfirmPage from "./pages/ResetConfirmPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
-import logo from "./assets/logo.png"; // your heart icon
+import logo from "./assets/logo.png";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -36,9 +36,9 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* Logo + Name */}
-          <div className="flex items-center justify-between w-full sm:w-auto">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Left: Logo */}
+          <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
@@ -47,30 +47,10 @@ function App() {
                 className="h-12 w-12 object-contain animate-pulse -ml-1"
               />
             </Link>
-
-            {/* Language Toggle (mobile) */}
-            <div className="flex gap-2 sm:hidden">
-              <button
-                onClick={() => switchLanguage("pt")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇵🇹
-              </button>
-              <button
-                onClick={() => switchLanguage("en")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇬🇧
-              </button>
-            </div>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex justify-start gap-6 text-sm sm:text-base items-center pl20">
+          {/* Center: Nav */}
+          <nav className="hidden sm:flex gap-6 text-sm sm:text-base items-center">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -123,8 +103,8 @@ function App() {
             </NavLink>
           </nav>
 
-          {/* Language Toggle (desktop) */}
-          <div className="hidden sm:flex gap-2">
+          {/* Right: Language buttons */}
+          <div className="flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -142,6 +122,40 @@ function App() {
               🇬🇧
             </button>
           </div>
+        </div>
+
+        {/* Mobile nav */}
+        <div className="flex sm:hidden justify-center gap-4 pb-3">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "text-purple-400 font-semibold"
+                : "text-white hover:text-purple-300"
+            }
+          >
+            {t("nav.home")}
+          </NavLink>
+          <NavLink
+            to="/setup"
+            className={({ isActive }) =>
+              isActive
+                ? "text-purple-400 font-semibold"
+                : "text-white hover:text-purple-300"
+            }
+          >
+            {t("nav.setup")}
+          </NavLink>
+          <NavLink
+            to="/pricing"
+            className={({ isActive }) =>
+              isActive
+                ? "text-purple-400 font-semibold"
+                : "text-white hover:text-purple-300"
+            }
+          >
+            {t("nav.pricing")}
+          </NavLink>
         </div>
       </header>
 

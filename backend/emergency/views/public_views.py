@@ -15,6 +15,8 @@ from billing.utils import add_stripe_usage
 from users.models import Profile
 from users.utils import get_user_plan
 from billing.models import Subscription
+from .twilio_sms import send_sms_alert
+
 
 logger = logging.getLogger(__name__)
 
@@ -71,14 +73,18 @@ class TriggerPublicAlertView(APIView):
             is_first_real_alert = alert_count == 0
 
             if not is_test:
+                # ⚠️ Define message BEFORE loop
+                full_message = f"{message}\n\nLocation: {location}" if location else message
+
                 for contact in contacts:
                     try:
-                        full_message = f"{message}\n\nLocation: {location}" if location else message
                         send_emergency_message(contact=contact, user=user, message=full_message)
                         successful_sends += 1
                     except Exception as e:
                         logger.error(f"Failed to send alert to contact {contact.id}: {str(e)}")
                         continue
+
+                send_sms_alert(user, full_message)
 
                 # Bill only if it's not their first real alert
                 if successful_sends > 0 and not is_first_real_alert:

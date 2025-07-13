@@ -16,11 +16,17 @@ def send_sms_alert(user, message):
     """
     Sends the alert message to all contacts of a user via Twilio SMS.
     """
-    contacts = user.contacts.all()  # ✅ correct related_name
+    print(f"📞 send_sms_alert() called for user: {user.username}")
+    contacts = user.contacts.all()
+
+    print(f"📇 Found {contacts.count()} contacts:")
+    for contact in contacts:
+        print(f"- {contact.name}: {contact.phone_number}")
 
     for contact in contacts:
         if contact.phone_number:
             try:
+                print(f"📤 Sending to {contact.phone_number}")
                 client.messages.create(
                     body=message,
                     from_=TWILIO_PHONE_NUMBER,

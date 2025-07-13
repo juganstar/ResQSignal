@@ -135,7 +135,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-400">
-            {t("login.noAccount")} {" "}
+            {t("login.noAccount")}{" "}
             <Link to="/register" className="text-purple-400 hover:text-purple-300 underline">
               {t("login.signup")}
             </Link>

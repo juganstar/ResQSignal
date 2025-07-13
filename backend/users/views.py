@@ -81,7 +81,7 @@ class UserRegistrationView(generics.CreateAPIView):
 # 🔒 Password Reset
 
 def filter_users_by_email(email):
-    return User.objects.filter(email__iexact=email, is_active=True)
+    return User.objects.filter(email__iexact=email)
 
 
 class CustomPasswordResetView(DRFPasswordResetView):

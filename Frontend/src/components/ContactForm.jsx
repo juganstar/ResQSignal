@@ -72,32 +72,38 @@ export default function ContactForm({ contacts, setContacts, setError }) {
       } else {
         setError(t("setup.contact_creation_failed"));
       }
-    } catch (err) {
-      let message = t("setup.error_add");
-      const formErrs = {};
+        } catch (err) {
+          let message = t("setup.error_add");
+          const formErrs = {};
 
-      if (err.response) {
-        const data = err.response.data;
+          if (err.response) {
+            const data = err.response.data;
 
-        if (err.response.status === 403) {
-          message = t("setup.must_be_logged_in");
-        } else if (typeof data === "string") {
-          // Handle raw string like "CONTACT_LIMIT_REACHED::3::Basic"
-          message = translateErrorMessage("non_field_errors", data, t);
-        } else if (typeof data === "object") {
-          Object.entries(data).forEach(([field, messages]) => {
-            const translated = Array.isArray(messages)
-              ? messages.map((msg) => translateErrorMessage(field, msg, t))
-              : [translateErrorMessage(field, messages, t)];
-            formErrs[field] = translated;
-          });
+            if (err.response.status === 403) {
+              message = t("setup.must_be_logged_in");
+            } else if (typeof data === "string") {
+              message = translateErrorMessage(null, data, t);
+            } else if (Array.isArray(data) && typeof data[0] === "string") {
+              message = translateErrorMessage(null, data[0], t);
+            } else if (typeof data === "object") {
+              Object.entries(data).forEach(([field, messages]) => {
+                const translated = Array.isArray(messages)
+                  ? messages.map((msg) => translateErrorMessage(field, msg, t))
+                  : [translateErrorMessage(field, messages, t)];
+                formErrs[field] = translated;
+              });
+
+              // Optional: fallback to non-field errors if present
+              if (formErrs["non_field_errors"]?.length) {
+                message = formErrs["non_field_errors"][0];
+              }
+            }
+          }
+
+          setError(message);
+          setFormErrors(formErrs);
         }
-      }
 
-      setError(message);
-      setFormErrors(formErrs);
-    }
-  };
 
   return (
     <div className="space-y-4 mb-10">

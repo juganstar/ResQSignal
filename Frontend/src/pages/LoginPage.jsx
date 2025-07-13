@@ -20,12 +20,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(username.toLowerCase(), password);
+      await login(username, password);  // assume login() is already sanitizing
       navigate("/", { replace: true });
     } catch (err) {
       console.error("🔐 Login error:", err);
-      let errorMessage = t("errors.invalidCredentials");
-      const errorData = err.response?.data || err.message;
+
+      let errorMessage = t("errors.unknown");
+      const errorData = err?.response?.data;
 
       if (typeof errorData === "string") {
         errorMessage = errorData;
@@ -33,13 +34,17 @@ export default function LoginPage() {
         errorMessage = errorData.detail;
       } else if (Array.isArray(errorData?.non_field_errors)) {
         errorMessage = errorData.non_field_errors[0];
+      } else if (err?.message) {
+        errorMessage = err.message;
       }
 
+      console.log("🧠 Final parsed error:", errorMessage);
       setError(translateErrorMessage("login", errorMessage, t));
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">

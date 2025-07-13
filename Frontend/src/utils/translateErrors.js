@@ -1,12 +1,14 @@
 export function translateErrorMessage(field, message, t) {
-  // Handle object format (e.g., API response with .detail)
-  if (typeof message === 'object' && message.detail) {
+  // Step 1: Normalize message
+  if (typeof message === "object" && message?.detail) {
     message = message.detail;
   }
 
-  const msg = message.toLowerCase();
+  if (typeof message !== "string") {
+    return t("errors.unknown"); // fallback to generic error
+  }
 
-  // ✅ Custom error for contact limit reached
+  // ✅ CONTACT_LIMIT_REACHED custom format
   if (message.startsWith("CONTACT_LIMIT_REACHED::")) {
     const parts = message.split("::");
     const max = parts[1];
@@ -14,10 +16,14 @@ export function translateErrorMessage(field, message, t) {
     return t("setup.contact_limit", { max, plan });
   }
 
-  // ✅ Specific known messages
-  if (message === "EMAIL_NOT_VERIFIED" || 
-      msg.includes("email not verified") ||
-      msg.includes("e-mail is not verified")) {
+  const msg = message.toLowerCase();
+
+  // ✅ Specific known errors
+  if (
+    message === "EMAIL_NOT_VERIFIED" ||
+    msg.includes("email not verified") ||
+    msg.includes("e-mail is not verified")
+  ) {
     return t("errors.emailNotVerified");
   }
 
@@ -45,11 +51,10 @@ export function translateErrorMessage(field, message, t) {
     return t("errors.invalidEmail");
   }
 
-  if (msg.includes("invalid credentials") || 
-      msg.includes("unable to log in")) {
+  if (msg.includes("invalid credentials") || msg.includes("unable to log in")) {
     return t("errors.invalidCredentials");
   }
 
-  // ⚠️ Fallback: return original message
+  // ⚠️ Fallback
   return message;
 }

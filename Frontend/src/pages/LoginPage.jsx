@@ -16,31 +16,30 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-     setError("");
+    setError("");
     setLoading(true);
 
-     try {
-      await login(username, password);  // ⬅️ no formatting here anymore
+    try {
+      await login(username.toLowerCase(), password);
       navigate("/", { replace: true });
     } catch (err) {
-       console.error("🔐 Login error:", err);
+      console.error("🔐 Login error:", err);
       let errorMessage = t("errors.invalidCredentials");
-       const errorData = err.response?.data || err.message;
+      const errorData = err.response?.data || err.message;
 
-       if (typeof errorData === "string") {
-         errorMessage = errorData;
-       } else if (errorData?.detail) {
-         errorMessage = errorData.detail;
-       } else if (Array.isArray(errorData?.non_field_errors)) {
-         errorMessage = errorData.non_field_errors[0];
-       }
+      if (typeof errorData === "string") {
+        errorMessage = errorData;
+      } else if (errorData?.detail) {
+        errorMessage = errorData.detail;
+      } else if (Array.isArray(errorData?.non_field_errors)) {
+        errorMessage = errorData.non_field_errors[0];
+      }
 
-       setError(translateErrorMessage("login", errorMessage, t));
+      setError(translateErrorMessage("login", errorMessage, t));
     } finally {
-       setLoading(false);
+      setLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">

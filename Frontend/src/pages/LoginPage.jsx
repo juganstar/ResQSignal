@@ -20,7 +20,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const usernameFormatted = (username || "").trim().toLowerCase();
+      const usernameFormatted =
+        typeof username === "string" ? username.trim().toLowerCase() : "";
+        
       await login(usernameFormatted, password);
       navigate("/", { replace: true });
     } catch (err) {

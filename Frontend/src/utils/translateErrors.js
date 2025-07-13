@@ -1,14 +1,15 @@
 export function translateErrorMessage(field, message, t) {
-  // Step 1: Normalize message
+  // Normalize from object
   if (typeof message === "object" && message?.detail) {
     message = message.detail;
   }
 
+  // If still not string, fallback
   if (typeof message !== "string") {
-    return t("errors.unknown"); // fallback to generic error
+    return t("errors.unknown");
   }
 
-  // ✅ CONTACT_LIMIT_REACHED custom format
+  // Handle contact limit (needs raw string, not lowercase)
   if (message.startsWith("CONTACT_LIMIT_REACHED::")) {
     const parts = message.split("::");
     const max = parts[1];
@@ -16,11 +17,12 @@ export function translateErrorMessage(field, message, t) {
     return t("setup.contact_limit", { max, plan });
   }
 
+  // Now safe to lowercase for all others
   const msg = message.toLowerCase();
 
-  // ✅ Specific known errors
+  // Handle EMAIL_NOT_VERIFIED
   if (
-    message === "EMAIL_NOT_VERIFIED" ||
+    msg === "email_not_verified" ||
     msg.includes("email not verified") ||
     msg.includes("e-mail is not verified")
   ) {
@@ -51,10 +53,14 @@ export function translateErrorMessage(field, message, t) {
     return t("errors.invalidEmail");
   }
 
-  if (msg.includes("invalid credentials") || msg.includes("unable to log in")) {
+  if (
+    msg.includes("invalid credentials") ||
+    msg.includes("unable to log in") ||
+    msg.includes("no active account")
+  ) {
     return t("errors.invalidCredentials");
   }
 
-  // ⚠️ Fallback
+  // Fallback: show raw error
   return message;
 }

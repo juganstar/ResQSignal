@@ -1,11 +1,15 @@
 {% load i18n %}
 
-{% blocktrans %}Thank you for signing up with ResQSignal!{% endblocktrans %}
+{% blocktrans %}Hello and welcome to ResQSignal!{% endblocktrans %}
 
-{% blocktrans %}Please confirm your email address by clicking the link below:{% endblocktrans %}
+{% blocktrans %}To activate your account, please confirm your email address by clicking the link below:{% endblocktrans %}
 
 {{ activate_url }}
 
-{% blocktrans %}If you didn’t sign up for this account, you can ignore this email.{% endblocktrans %}
+{% blocktrans %}If the button above doesn’t work, you can copy and paste the link into your browser.{% endblocktrans %}
 
-- ResQSignal Team
+{% blocktrans %}If you didn’t create this account, you can safely ignore this email.{% endblocktrans %}
+
+{% blocktrans %}Thank you for joining us.{% endblocktrans %}
+
+— ResQSignal

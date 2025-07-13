@@ -39,8 +39,9 @@ export const AuthProvider = ({ children }) => {
 
 
   const login = async (username, password) => {
-    const res = await axios.post('/api/users/auth/login/', {
-      username: username.toLowerCase(),
+    const safeUsername = typeof username === "string" ? username.trim().toLowerCase() : "";
+    const response = await axios.post("/api/users/auth/login/", {
+      username: safeUsername,
       password,
     });
 

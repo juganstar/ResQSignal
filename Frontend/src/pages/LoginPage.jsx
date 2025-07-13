@@ -16,34 +16,31 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+     setError("");
     setLoading(true);
 
-    try {
-      const usernameFormatted =
-        typeof username === "string" ? username.trim().toLowerCase() : "";
-        
-      await login(usernameFormatted, password);
+     try {
+      await login(username, password);  // ⬅️ no formatting here anymore
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("🔐 Login error:", err);
+       console.error("🔐 Login error:", err);
       let errorMessage = t("errors.invalidCredentials");
+       const errorData = err.response?.data || err.message;
 
-      const errorData = err.response?.data || err.message;
+       if (typeof errorData === "string") {
+         errorMessage = errorData;
+       } else if (errorData?.detail) {
+         errorMessage = errorData.detail;
+       } else if (Array.isArray(errorData?.non_field_errors)) {
+         errorMessage = errorData.non_field_errors[0];
+       }
 
-      if (typeof errorData === "string") {
-        errorMessage = errorData;
-      } else if (errorData?.detail) {
-        errorMessage = errorData.detail;
-      } else if (Array.isArray(errorData?.non_field_errors)) {
-        errorMessage = errorData.non_field_errors[0];
-      }
-
-      setError(translateErrorMessage("login", errorMessage, t));
+       setError(translateErrorMessage("login", errorMessage, t));
     } finally {
-      setLoading(false);
+       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">
@@ -70,7 +67,7 @@ export default function LoginPage() {
                 type="text"
                 autoComplete="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value.toLowerCase())}
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
                 disabled={loading}
@@ -139,7 +136,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-400">
-            {t("login.noAccount")}{" "}
+            {t("login.noAccount")} {" "}
             <Link to="/register" className="text-purple-400 hover:text-purple-300 underline">
               {t("login.signup")}
             </Link>

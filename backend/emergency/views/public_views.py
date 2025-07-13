@@ -15,7 +15,8 @@ from billing.utils import add_stripe_usage
 from users.models import Profile
 from users.utils import get_user_plan
 from billing.models import Subscription
-from .twilio_sms import send_sms_alert
+from services.twilio_sms import send_sms_alert
+
 
 
 logger = logging.getLogger(__name__)

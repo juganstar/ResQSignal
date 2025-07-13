@@ -36,42 +36,22 @@ function App() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          
-          {/* Top row: Left = Logo + Icon, Right = Flags */}
-          <div className="flex items-center justify-between w-full sm:w-auto">
-            <Link to="/" className="flex items-center gap-1 sm:gap0">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between w-full">
+
+          {/* LEFT: Logo + Heart */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Link to="/" className="flex items-center gap-1 sm:gap-1">
               <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
               <img
                 src={logo}
                 alt="ResQSignal icon"
-                className="h-12 w-12 sm:h-8 sm:w-8 object-contain animate-pulse"
+                className="h-12 w-12 sm:h-10 sm:w-10 object-contain animate-pulse"
               />
             </Link>
-
-            {/* Right side on mobile: Flags */}
-            <div className="sm:hidden flex gap-2">
-              <button
-                onClick={() => switchLanguage("pt")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "pt" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇵🇹
-              </button>
-              <button
-                onClick={() => switchLanguage("en")}
-                className={`px-2 py-1 rounded text-sm ${
-                  i18n.language === "en" ? "bg-purple-600" : "bg-gray-800"
-                }`}
-              >
-                🇬🇧
-              </button>
-            </div>
           </div>
 
-          {/* Center: NavLinks */}
-          <nav className="flex flex-wrap justify-center gap-4 text-sm sm:text-base items-center">
+          {/* CENTER: NavLinks */}
+          <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 gap-6 text-sm sm:text-base items-center">
             <NavLink to="/" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
               {t("nav.home")}
             </NavLink>
@@ -89,8 +69,8 @@ function App() {
             </NavLink>
           </nav>
 
-          {/* Desktop flags only */}
-          <div className="hidden sm:flex gap-2">
+          {/* RIGHT: Flags */}
+          <div className="flex gap-2">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -109,8 +89,26 @@ function App() {
             </button>
           </div>
         </div>
-      </header>
 
+        {/* MOBILE NAVIGATION (below top row) */}
+        <nav className="flex sm:hidden justify-center gap-4 text-sm pt-2">
+          <NavLink to="/" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
+            {t("nav.home")}
+          </NavLink>
+          <NavLink to="/setup" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
+            {t("nav.setup")}
+          </NavLink>
+          <NavLink to="/pricing" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
+            {t("nav.pricing")}
+          </NavLink>
+          <NavLink to="/legal" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
+            {t("nav.terms")}
+          </NavLink>
+          <NavLink to="/privacy" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
+            {t("nav.privacy")}
+          </NavLink>
+        </nav>
+      </header>
 
       {/* ROUTES + ANIMATION */}
       <main className="flex-grow p-6 bg-gradient-to-b from-black via-gray-900 to-[#4a1d96]">

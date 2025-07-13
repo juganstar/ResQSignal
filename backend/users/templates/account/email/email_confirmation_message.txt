@@ -1,4 +1,5 @@
 {% load i18n %}
+
 {% blocktrans %}Thank you for signing up with ResQSignal!{% endblocktrans %}
 
 {% blocktrans %}Please confirm your email address by clicking the link below:{% endblocktrans %}

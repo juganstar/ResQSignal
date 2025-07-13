@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth import logout, get_user_model
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+
 
 # Django Allauth
 from allauth.account.adapter import get_adapter

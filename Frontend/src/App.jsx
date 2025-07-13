@@ -37,19 +37,21 @@ function App() {
       {/* HEADER */}
       <header className="z-50 sticky top-0 backdrop-blur bg-black/70 border-b border-gray-800 shadow-sm transition-shadow duration-300">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          
+
           {/* Left: Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
-            <img
-              src={logo}
-              alt="ResQSignal icon"
-              className="h-10 w-10 object-contain animate-pulse"
-            />
-          </Link>
+          <div className="flex items-center gap-2 w-1/3 justify-start">
+            <Link to="/" className="flex items-center gap-2">
+              <span className="text-xl sm:text-2xl font-bold text-white">ResQSignal</span>
+              <img
+                src={logo}
+                alt="ResQSignal icon"
+                className="h-12 w-12 object-contain animate-pulse"
+              />
+            </Link>
+          </div>
 
           {/* Center: Nav */}
-          <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base items-center">
+          <nav className="flex flex-wrap justify-center gap-6 text-sm sm:text-base w-1/3">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -93,7 +95,7 @@ function App() {
           </nav>
 
           {/* Right: Language toggle */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-1/3 justify-end">
             <button
               onClick={() => switchLanguage("pt")}
               className={`px-2 py-1 rounded text-sm ${
@@ -113,7 +115,6 @@ function App() {
           </div>
         </div>
       </header>
-
 
       {/* ROUTES + ANIMATION */}
       <main className="flex-grow p-6 bg-gradient-to-b from-black via-gray-900 to-[#4a1d96]">

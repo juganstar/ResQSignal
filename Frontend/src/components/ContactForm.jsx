@@ -1,17 +1,18 @@
 // src/components/ContactForm.jsx
 import { useState } from "react";
-import axios from "../utils/axiosDefaults"; // ✅ use custom axios with JWT
+import axios from "../utils/axiosDefaults";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "react-i18next";
 
-function translateErrorMessage(msg, t) {
+function translateErrorMessage(field, msg, t) {
   if (typeof msg !== "string") return msg;
 
-  if (msg.startsWith("CONTACT_LIMIT_REACHED::")) {
-    const parts = msg.split("::");
-    const max = parts[1];
-    const plan = parts[2];
+  // 🔥 Contact limit handling — supports ":" or "::"
+  if (msg.startsWith("CONTACT_LIMIT_REACHED")) {
+    const parts = msg.split(/[:]{1,2}/);
+    const max = parts[1] || "0";
+    const plan = parts[2] || "none";
     return t("setup.contact_limit", { max, plan });
   }
 
@@ -61,7 +62,6 @@ export default function ContactForm({ contacts, setContacts, setError }) {
       };
 
       const response = await axios.post("/api/emergency/contacts/", formatted);
-
       const created = response.data;
 
       if (created && created.id && created.phone_number) {
@@ -72,38 +72,37 @@ export default function ContactForm({ contacts, setContacts, setError }) {
       } else {
         setError(t("setup.contact_creation_failed"));
       }
-        } catch (err) {
-          let message = t("setup.error_add");
-          const formErrs = {};
+    } catch (err) {
+      let message = t("setup.error_add");
+      const formErrs = {};
 
-          if (err.response) {
-            const data = err.response.data;
+      if (err.response) {
+        const data = err.response.data;
 
-            if (err.response.status === 403) {
-              message = t("setup.must_be_logged_in");
-            } else if (typeof data === "string") {
-              message = translateErrorMessage(null, data, t);
-            } else if (Array.isArray(data) && typeof data[0] === "string") {
-              message = translateErrorMessage(null, data[0], t);
-            } else if (typeof data === "object") {
-              Object.entries(data).forEach(([field, messages]) => {
-                const translated = Array.isArray(messages)
-                  ? messages.map((msg) => translateErrorMessage(field, msg, t))
-                  : [translateErrorMessage(field, messages, t)];
-                formErrs[field] = translated;
-              });
+        if (err.response.status === 403) {
+          message = t("setup.must_be_logged_in");
+        } else if (typeof data === "string") {
+          message = translateErrorMessage(null, data, t);
+        } else if (Array.isArray(data) && typeof data[0] === "string") {
+          message = translateErrorMessage(null, data[0], t);
+        } else if (typeof data === "object") {
+          Object.entries(data).forEach(([field, messages]) => {
+            const translated = Array.isArray(messages)
+              ? messages.map((msg) => translateErrorMessage(field, msg, t))
+              : [translateErrorMessage(field, messages, t)];
+            formErrs[field] = translated;
+          });
 
-              // Optional: fallback to non-field errors if present
-              if (formErrs["non_field_errors"]?.length) {
-                message = formErrs["non_field_errors"][0];
-              }
-            }
+          if (formErrs["non_field_errors"]?.length) {
+            message = formErrs["non_field_errors"][0];
           }
-
-          setError(message);
-          setFormErrors(formErrs);
         }
+      }
 
+      setError(message);
+      setFormErrors(formErrs);
+    }
+  };
 
   return (
     <div className="space-y-4 mb-10">

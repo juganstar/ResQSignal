@@ -46,31 +46,31 @@ export default function RegisterPage() {
     } catch (err) {
       console.error("Registration error:", err);
       let errorMessage = t("register.error.generic");
+      const formErrs = {};
 
       if (err.response?.data) {
-        const responseErrors = err.response.data;
-        errorMessage = Object.entries(responseErrors)
-          .flatMap(([field, errors]) => {
-            if (Array.isArray(errors)) {
-              return errors.map((e) => translateErrorMessage(field, e, t));
-            } else if (typeof errors === "string") {
-              return [translateErrorMessage(field, errors, t)];
-            } else if (typeof errors === "object") {
-              return Object.values(errors).flat();
-            } else {
-              return [String(errors)];
-            }
-          })
-          .join("\n");
+        const data = err.response.data;
+
+        if (typeof data === "string") {
+          errorMessage = translateErrorMessage(data, t);
+        } else if (typeof data === "object") {
+          Object.entries(data).forEach(([field, errors]) => {
+            const translated = Array.isArray(errors)
+              ? errors.map((e) => translateErrorMessage(e, t))
+              : [translateErrorMessage(errors, t)];
+            formErrs[field] = translated;
+          });
+
+          errorMessage = Object.values(formErrs)
+            .flat()
+            .join("\n");
+        }
       }
 
       setError(errorMessage);
-    } finally {
       setLoading(false);
     }
   };
-
-
 
   if (success) {
     return (

@@ -1,8 +1,15 @@
 export function translateErrorMessage(field, message, t) {
+  // If it's an object with `.detail`
   if (typeof message === "object" && message?.detail) {
     message = message.detail;
   }
 
+  // 🛠️ NEW: If it's an array like ["EMAIL_NOT_VERIFIED"]
+  if (Array.isArray(message) && message.length > 0) {
+    message = message[0];
+  }
+
+  // If still not string, fallback
   if (typeof message !== "string") {
     return t("errors.unknown");
   }

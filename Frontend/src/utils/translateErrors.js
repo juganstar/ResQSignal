@@ -1,20 +1,20 @@
 export function translateErrorMessage(field, message, t) {
-  // If it's an object with `.detail`
+  // Extract detail if needed
   if (typeof message === "object" && message?.detail) {
     message = message.detail;
   }
 
-  // 🛠️ NEW: If it's an array like ["EMAIL_NOT_VERIFIED"]
-  if (Array.isArray(message) && message.length > 0) {
+  // If it's an array with a single string (ex: ["CONTACT_LIMIT_REACHED::3::Basic"])
+  if (Array.isArray(message) && message.length === 1 && typeof message[0] === "string") {
     message = message[0];
   }
 
-  // If still not string, fallback
+  // Fallback for still unrecognized types
   if (typeof message !== "string") {
     return t("errors.unknown");
   }
 
-  // CONTACT_LIMIT_REACHED should happen before lowercase
+  // 🛠️ Must come before `.toLowerCase()`
   if (message.startsWith("CONTACT_LIMIT_REACHED::")) {
     const parts = message.split("::");
     const max = parts[1];
@@ -24,7 +24,6 @@ export function translateErrorMessage(field, message, t) {
 
   const msg = message.toLowerCase().trim();
 
-  // 💥 The only real fix
   if (
     msg === "email_not_verified" ||
     msg === "email not verified" ||
@@ -66,6 +65,5 @@ export function translateErrorMessage(field, message, t) {
     return t("errors.invalidCredentials");
   }
 
-  // Fallback
   return t("errors.unknown");
 }

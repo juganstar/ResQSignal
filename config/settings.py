@@ -362,3 +362,6 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ResQSignal] "
 ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "account/email/email_confirmation_message.txt"
 #ACCOUNT_EMAIL_CONFIRMATION_HTML_TEMPLATE = "account/email/email_confirmation_message.html"
 ACCOUNT_EMAIL_SUBJECT_TEMPLATE = "account/email/email_confirmation_subject.txt"
+
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "https://resqsignal.com/email-confirmed"
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "https://resqsignal.com/email-confirmed"

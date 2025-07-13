@@ -81,13 +81,14 @@ export default function ContactForm({ contacts, setContacts, setError }) {
 
         if (err.response.status === 403) {
           message = t("setup.must_be_logged_in");
-        } else if (typeof data === "string" && data.startsWith("<")) {
-          message = t("setup.error_server");
+        } else if (typeof data === "string") {
+          // Handle raw string like "CONTACT_LIMIT_REACHED::3::Basic"
+          message = translateErrorMessage("non_field_errors", data, t);
         } else if (typeof data === "object") {
           Object.entries(data).forEach(([field, messages]) => {
             const translated = Array.isArray(messages)
-              ? messages.map((msg) => translateErrorMessage(msg, t))
-              : [translateErrorMessage(messages, t)];
+              ? messages.map((msg) => translateErrorMessage(field, msg, t))
+              : [translateErrorMessage(field, messages, t)];
             formErrs[field] = translated;
           });
         }

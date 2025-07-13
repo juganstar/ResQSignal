@@ -34,22 +34,16 @@ class TriggerPublicAlertView(APIView):
             is_test = request.data.get('is_test', False)
             location = request.data.get("location")
 
-            # Continuous GPS mode (just store and return)
+            # Continuous GPS mode
             if request.data.get("continuous"):
                 logger.info(f"📍 Continuous GPS update from {user.username}: {location}")
-                return Response({
-                    "status": "location update received",
-                    "type": "continuous"
-                })
+                return Response({"status": "location update received", "type": "continuous"})
 
-            # Check subscription
+            # Subscription check
             if not (profile.is_subscribed or profile.is_free_user):
-                return Response(
-                    {"detail": "Subscription required"},
-                    status=status.HTTP_403_FORBIDDEN
-                )
+                return Response({"detail": "Subscription required"}, status=status.HTTP_403_FORBIDDEN)
 
-            # Get user plan and block location for non-premium
+            # Plan
             plan = get_user_plan(user)
             logger.info(f"🔍 User {user.username} has plan: {plan} | Subscribed: {profile.is_subscribed}")
 
@@ -59,35 +53,35 @@ class TriggerPublicAlertView(APIView):
 
             message = request.data.get("message", "🚨 Emergency alert!")
             alert = EmergencyAlert.objects.create(
-                user=user,
-                message=message,
-                location=location,
-                is_test=is_test
+                user=user, message=message, location=location, is_test=is_test
             )
 
             contacts = Contact.objects.filter(user=user)
             contacts_count = contacts.count()
             successful_sends = 0
 
-            # Check if this is their first real alert
+            logger.info(f"📇 Found {contacts_count} contacts for user {user.username}")
+
+            # First real alert check
             alert_count = EmergencyAlert.objects.filter(user=user, is_test=False).exclude(id=alert.id).count()
             is_first_real_alert = alert_count == 0
 
             if not is_test:
-                # ⚠️ Define message BEFORE loop
                 full_message = f"{message}\n\nLocation: {location}" if location else message
 
                 for contact in contacts:
                     try:
+                        logger.info(f"📤 Sending email alert to {contact.phone_number}")
                         send_emergency_message(contact=contact, user=user, message=full_message)
                         successful_sends += 1
                     except Exception as e:
                         logger.error(f"Failed to send alert to contact {contact.id}: {str(e)}")
                         continue
 
+                # ✅ Trigger SMS
+                logger.info("📨 Calling send_sms_alert...")
                 send_sms_alert(user, full_message)
 
-                # Bill only if it's not their first real alert
                 if successful_sends > 0 and not is_first_real_alert:
                     add_stripe_usage(user, quantity=successful_sends)
 
@@ -103,21 +97,13 @@ class TriggerPublicAlertView(APIView):
             })
 
         except ValueError:
-            return Response(
-                {"detail": "Invalid token format"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"detail": "Invalid token format"}, status=status.HTTP_400_BAD_REQUEST)
         except Profile.DoesNotExist:
-            return Response(
-                {"detail": "Profile not found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             logger.error(f"Emergency alert error: {str(e)}", exc_info=True)
-            return Response(
-                {"detail": "Internal server error"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            return Response({"detail": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 

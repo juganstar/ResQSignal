@@ -45,7 +45,7 @@ function App() {
               <img
                 src={logo}
                 alt="ResQSignal icon"
-                className="h-12 w-12 sm:h-10 sm:w-10 object-contain animate-pulse"
+                className="h-14 w-14 sm:h-14 sm:w-14 object-contain animate-pulse"
               />
             </Link>
           </div>

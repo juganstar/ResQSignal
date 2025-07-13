@@ -20,11 +20,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(username.toLowerCase(), password);
+      const usernameFormatted = (username || "").trim().toLowerCase();
+      await login(usernameFormatted, password);
       navigate("/", { replace: true });
     } catch (err) {
       console.error("🔐 Login error:", err);
       let errorMessage = t("errors.invalidCredentials");
+
       const errorData = err.response?.data || err.message;
 
       if (typeof errorData === "string") {
@@ -66,7 +68,7 @@ export default function LoginPage() {
                 type="text"
                 autoComplete="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase())}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
                 disabled={loading}

@@ -145,6 +145,7 @@
     "passwordsDontMatch": "As palavras-passe não coincidem.",
     "invalidEmail": "Insira um endereço de email válido.",
     "emailNotVerified": "⚠️ Email não verificado. Por favor, confirme o seu email antes de iniciar sessão.",
+    "unknown": "ocorreu um erro desconhecido, por favor tenta outra vez",
     "invalidCredentials": "Credenciais inválidas. Verifique o seu nome de utilizador e palavra-passe."
   },
   "reset": {

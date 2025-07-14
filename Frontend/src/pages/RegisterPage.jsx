@@ -1,3 +1,4 @@
+// no topo mantém como estava:
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axiosDefaults";
@@ -35,7 +36,7 @@ export default function RegisterPage() {
 
     try {
       await axios.post("/api/users/registration/", {
-        username: typeof formData.username === "string" ? formData.username.toLowerCase() : "",
+        username: formData.username?.toLowerCase(),
         email: formData.email || undefined,
         password1: formData.password1,
         password2: formData.password2
@@ -45,7 +46,10 @@ export default function RegisterPage() {
       setTimeout(() => navigate("/verify-email"), 1500);
     } catch (err) {
       console.error("Registration error:", err);
-      let errorMessage = t("register.error.generic");
+      console.log("API response:", err?.response?.data);
+      setLoading(false);
+
+      let errorMessage = typeof t === "function" ? t("register.error.generic") : "Erro inesperado.";
       const formErrs = {};
 
       if (err.response?.data) {
@@ -68,7 +72,6 @@ export default function RegisterPage() {
       }
 
       setError(errorMessage);
-      setLoading(false);
     }
   };
 

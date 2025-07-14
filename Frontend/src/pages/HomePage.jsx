@@ -20,15 +20,15 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col justify-between bg-black text-white">
+      <div className="min-h-screen flex items-center justify-center text-white">
         {t("home.loading")}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-black text-white">
-      <main className="flex-grow flex items-center justify-center px-4">
+    <>
+      <main className="min-h-[calc(100vh-96px)] flex items-center justify-center px-4 text-white">
         <div className="w-full text-center space-y-10">
           {isAuthenticated ? (
             <motion.div
@@ -125,10 +125,10 @@ export default function HomePage() {
         </div>
       </main>
 
-      <footer className="text-center text-sm text-white mt-2 mb-0 pb-2">
+      <footer className="text-center text-sm text-gray-500 py-6">
         <p>© {new Date().getFullYear()} ResQSignal. {t("footer.rights")}</p>
         <p>
-          {t("footer.contact")}:{" "}
+          {t("footer.contact")}: {" "}
           <a
             href="mailto:ResQSignal.help@gmail.com"
             className="text-purple-400 underline"
@@ -137,6 +137,6 @@ export default function HomePage() {
           </a>
         </p>
       </footer>
-    </div>
+    </>
   );
 }

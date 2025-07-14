@@ -125,7 +125,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <footer className="text-center text-sm text-white pt-1 pb-2">
+      <footer className="text-center text-sm text-white pt-0 pb-1 mt-4">
         <p>© {new Date().getFullYear()} ResQSignal. {t("footer.rights")}</p>
         <p>
           {t("footer.contact")}: {" "}

@@ -20,7 +20,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
+      <div className="min-h-screen flex flex-col justify-between bg-black text-white">
         {t("home.loading")}
       </div>
     );
@@ -125,7 +125,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <footer className="text-center text-sm text-white pt-0 pb-1 mt-4">
+      <footer className="text-center text-sm text-white mt-2 mb-0 pb-0">
         <p>© {new Date().getFullYear()} ResQSignal. {t("footer.rights")}</p>
         <p>
           {t("footer.contact")}: {" "}

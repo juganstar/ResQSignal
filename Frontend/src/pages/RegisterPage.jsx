@@ -1,4 +1,3 @@
-// no topo mantém como estava:
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axiosDefaults";
@@ -23,7 +22,7 @@ export default function RegisterPage() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [id]: value
     }));
@@ -56,12 +55,12 @@ export default function RegisterPage() {
         const data = err.response.data;
 
         if (typeof data === "string") {
-          errorMessage = translateErrorMessage(data, t);
+          errorMessage = translateErrorMessage(data, t) || errorMessage;
         } else if (typeof data === "object") {
           Object.entries(data).forEach(([field, errors]) => {
             const translated = Array.isArray(errors)
-              ? errors.map((e) => translateErrorMessage(e, t))
-              : [translateErrorMessage(errors, t)];
+              ? errors.map((e) => translateErrorMessage(e, t) || e)
+              : [translateErrorMessage(errors, t) || errors];
             formErrs[field] = translated;
           });
 

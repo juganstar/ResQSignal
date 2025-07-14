@@ -91,7 +91,7 @@ function App() {
         </div>
 
         {/* MOBILE NAVIGATION (below top row) */}
-        <nav className="flex sm:hidden justify-center gap-4 text-sm pt-2">
+        <nav className="flex sm:hidden justify-center gap-4 text-sm pt-2 pb-4">
           <NavLink to="/" className={({ isActive }) => isActive ? "text-purple-400 font-semibold" : "text-white hover:text-purple-300"}>
             {t("nav.home")}
           </NavLink>

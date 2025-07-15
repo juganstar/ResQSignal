@@ -21,18 +21,15 @@ export default function RegisterPage() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
-
-
   const [passwordChecks, setPasswordChecks] = useState({
     minLength: false,
     hasNumber: false,
     notCommon: false,
-    notSimilar: true, // skipped similarity
+    notSimilar: true,
   });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -43,11 +40,11 @@ export default function RegisterPage() {
     const pwd = formData.password1;
     setPasswordChecks({
       minLength: pwd.length >= 8,
-      hasNumber: !/^\d+$/.test(pwd), // not just numbers
+      hasNumber: !/^\d+$/.test(pwd),
       notCommon:
         !["password", "12345678", "qwerty", "11111111", "00000000", "abcdef", "admin"].includes(pwd.toLowerCase()) &&
         !/^(\d)\1{5,}$/.test(pwd),
-      notSimilar: true, // could implement later
+      notSimilar: true,
     });
   }, [formData.password1]);
 
@@ -66,23 +63,26 @@ export default function RegisterPage() {
 
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
-
     } catch (err) {
-      console.error("Registration error:", err);
+      console.error("Registration error:", err.response?.data || err.message);
       setLoading(false);
 
       const data = err?.response?.data;
       let errorMessage = t("register.error.generic") || "Erro inesperado.";
 
-      if (data) {
-        if (typeof data === "string") {
-          errorMessage = translateErrorMessage(null, data, t);
-        } else if (typeof data === "object") {
-          const messages = Object.entries(data).flatMap(([field, errors]) =>
-            Array.isArray(errors)
-              ? errors.map((msg) => translateErrorMessage(field, msg, t))
-              : [translateErrorMessage(field, errors, t)]
-          );
+      if (!data) {
+        console.warn("No response data from server:", err);
+      } else if (typeof data === "string") {
+        errorMessage = translateErrorMessage(null, data, t);
+      } else if (typeof data === "object") {
+        const messages = Object.entries(data).flatMap(([field, errors]) => {
+          if (Array.isArray(errors)) {
+            return errors.map((msg) => translateErrorMessage(field, msg, t));
+          }
+          return [translateErrorMessage(field, errors, t)];
+        });
+
+        if (messages.length > 0) {
           errorMessage = messages.join("\n");
         }
       }

@@ -64,7 +64,7 @@ export default function RegisterPage() {
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
     } catch (err) {
-      console.error("Registration error:", err.response?.data || err.message);
+      console.error("Registration error FULL:", err); // Full error object
       setLoading(false);
 
       const data = err?.response?.data;
@@ -75,6 +75,7 @@ export default function RegisterPage() {
       } else if (typeof data === "string") {
         errorMessage = translateErrorMessage(null, data, t);
       } else if (typeof data === "object") {
+        console.log("🔍 Full error object:", data);
         const messages = Object.entries(data).flatMap(([field, errors]) => {
           if (Array.isArray(errors)) {
             return errors.map((msg) => translateErrorMessage(field, msg, t));
@@ -90,6 +91,7 @@ export default function RegisterPage() {
       setError(errorMessage);
     }
   };
+
 
   const allValid = Object.values(passwordChecks).every(Boolean);
 

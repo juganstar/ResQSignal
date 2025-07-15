@@ -54,8 +54,16 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      await axios.post("/api/users/registration/", {
+        username: formData.username?.toLowerCase(),
+        email: formData.email || undefined,
+        password1: formData.password1,
+        password2: formData.password2,
+      });
+
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
+
     } catch (err) {
       console.error("Registration error FULL:", err);
       setLoading(false);

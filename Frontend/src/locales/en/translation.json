@@ -148,7 +148,8 @@
     "invalidEmail": "Enter a valid email address.",
     "emailNotVerified": "⚠️ Email not verified. Please confirm your email before logging in.",
     "unknown": "An unknown error occurred. Please try again.",
-    "invalidCredentials": "Invalid credentials. Check your username and password."
+    "invalidCredentials": "Invalid credentials. Check your username and password.",
+    "fieldBlank": "this field cannot be empty"
   },
   "reset": {
     "title": "Reset your password",

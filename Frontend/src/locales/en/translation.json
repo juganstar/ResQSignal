@@ -143,6 +143,7 @@
     "usernameExists": "Username: A user with this name already exists.",
     "passwordTooShort": "Password is too short.",
     "passwordTooCommon": "Password is too common.",
+    "passwordAllDigits": "Must not be only numbers.",
     "passwordsDontMatch": "Passwords do not match.",
     "invalidEmail": "Enter a valid email address.",
     "emailNotVerified": "⚠️ Email not verified. Please confirm your email before logging in.",

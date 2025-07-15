@@ -21,6 +21,7 @@ export default function RegisterPage() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
 
+
   const [passwordChecks, setPasswordChecks] = useState({
     minLength: false,
     hasNumber: false,
@@ -46,7 +47,9 @@ export default function RegisterPage() {
     setPasswordChecks({
       minLength: pwd.length >= 8,
       hasNumber: !/^\d+$/.test(pwd), // not just numbers
-      notCommon: !["password", "12345678", "qwerty"].includes(pwd.toLowerCase()),
+      notCommon:
+        !["password", "12345678", "qwerty", "11111111", "00000000", "abcdef", "admin"].includes(pwd.toLowerCase()) &&
+        !/^(\d)\1{5,}$/.test(pwd),
       notSimilar: true, // could implement later
     });
   }, [formData.password1]);
@@ -120,10 +123,13 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.password1}
                 onChange={handleChange}
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 disabled={loading}
               />
-              {passwordTouched && formData.password1.length > 0 && (
+
+              {passwordFocused && formData.password1.length > 0 && (
                 <ul className="mt-2 text-sm text-gray-300 space-y-1">
                   <PasswordRequirement ok={passwordChecks.minLength}>{t("errors.passwordTooShort")}</PasswordRequirement>
                   <PasswordRequirement ok={passwordChecks.hasNumber}>{t("errors.passwordAllDigits")}</PasswordRequirement>

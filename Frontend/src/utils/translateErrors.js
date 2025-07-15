@@ -49,7 +49,12 @@ export function translateErrorMessage(field, message, t) {
     return t("errors.passwordTooCommon");
   }
 
-  if (msg.includes("passwords do not match")) {
+  if (
+    msg.includes("passwords do not match") ||
+    msg.includes("password fields didn’t match") ||
+    msg.includes("password fields didn't match") ||
+    msg.includes("password mismatch")
+  ) {
     return t("errors.passwordsDontMatch");
   }
 

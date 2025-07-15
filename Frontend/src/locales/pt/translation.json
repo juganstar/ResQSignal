@@ -142,6 +142,7 @@
     "usernameExists": "Nome de utilizador: Já existe um utilizador com este nome.",
     "passwordTooShort": "Palavra-passe: A palavra-passe é demasiado curta.",
     "passwordTooCommon": "Palavra-passe: A palavra-passe é demasiado comum.",
+    "passwordAllDigits": "Não pode conter apenas números.",
     "passwordsDontMatch": "As palavras-passe não coincidem.",
     "invalidEmail": "Insira um endereço de email válido.",
     "emailNotVerified": "⚠️ Email não verificado. Por favor, confirme o seu email antes de iniciar sessão.",

@@ -54,17 +54,10 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await axios.post("/api/users/registration/", {
-        username: formData.username?.toLowerCase(),
-        email: formData.email || undefined,
-        password1: formData.password1,
-        password2: formData.password2,
-      });
-
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
     } catch (err) {
-      console.error("Registration error FULL:", err); // Full error object
+      console.error("Registration error FULL:", err);
       setLoading(false);
 
       const data = err?.response?.data;
@@ -76,7 +69,8 @@ export default function RegisterPage() {
         errorMessage = translateErrorMessage(null, data, t);
       } else if (typeof data === "object") {
         console.log("🔍 Full error object:", data);
-        const messages = Object.entries(data).flatMap(([field, errors]) => {
+        const errorSource = data.errors || data;
+        const messages = Object.entries(errorSource).flatMap(([field, errors]) => {
           if (Array.isArray(errors)) {
             return errors.map((msg) => translateErrorMessage(field, msg, t));
           }
@@ -91,7 +85,6 @@ export default function RegisterPage() {
       setError(errorMessage);
     }
   };
-
 
   const allValid = Object.values(passwordChecks).every(Boolean);
 

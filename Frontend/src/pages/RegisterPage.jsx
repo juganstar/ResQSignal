@@ -33,10 +33,6 @@ export default function RegisterPage() {
   const handleChange = (e) => {
     const { id, value } = e.target;
 
-    if (id === "password1" && !passwordTouched) {
-      setPasswordTouched(true);
-    }
-
     setFormData((prev) => ({
       ...prev,
       [id]: value,

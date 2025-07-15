@@ -75,7 +75,8 @@ export default function RegisterPage() {
 
       if (data) {
         if (typeof data === "string") {
-          errorMessage = translateErrorMessage(data, t) || errorMessage;
+          // Fallback for string-only errors (rare)
+          errorMessage = data;
         } else if (typeof data === "object") {
           const messages = Object.entries(data).flatMap(([field, errors]) => {
             return Array.isArray(errors)
@@ -88,7 +89,8 @@ export default function RegisterPage() {
 
       setError(errorMessage);
     }
-  };
+  }
+
 
   const allValid = Object.values(passwordChecks).every(Boolean);
 

@@ -1,20 +1,17 @@
 export function translateErrorMessage(field, message, t) {
-  // Extract detail if needed
+  // Extract detail if wrapped
   if (typeof message === "object" && message?.detail) {
     message = message.detail;
   }
 
-  // If it's an array with a single string (ex: ["CONTACT_LIMIT_REACHED::3::Basic"])
+  // Handle array with one string inside
   if (Array.isArray(message) && message.length === 1 && typeof message[0] === "string") {
     message = message[0];
   }
 
-  // Fallback for still unrecognized types
-  if (typeof message !== "string") {
-    return t("errors.unknown");
-  }
+  if (typeof message !== "string") return t("errors.unknown");
 
-  // 🛠️ Must come before `.toLowerCase()`
+  // Handle special system-style codes
   if (message.startsWith("CONTACT_LIMIT_REACHED::")) {
     const parts = message.split("::");
     const max = parts[1];
@@ -24,12 +21,8 @@ export function translateErrorMessage(field, message, t) {
 
   const msg = message.toLowerCase().trim();
 
-  if (
-    msg === "email_not_verified" ||
-    msg === "email not verified" ||
-    msg.includes("email not verified") ||
-    msg.includes("e-mail is not verified")
-  ) {
+  // === Specific known error matches ===
+  if (msg === "email_not_verified" || msg.includes("email not verified")) {
     return t("errors.emailNotVerified");
   }
 
@@ -47,6 +40,10 @@ export function translateErrorMessage(field, message, t) {
 
   if (msg.includes("this password is too common")) {
     return t("errors.passwordTooCommon");
+  }
+
+  if (msg.includes("this password is entirely numeric")) {
+    return t("errors.passwordAllDigits");
   }
 
   if (
@@ -70,5 +67,10 @@ export function translateErrorMessage(field, message, t) {
     return t("errors.invalidCredentials");
   }
 
-  return t("errors.unknown");
+  if (msg === "this field may not be blank." && field) {
+    return t("errors.fieldBlank", { field });
+  }
+
+  // Fallback to raw message if no translation match
+  return message;
 }

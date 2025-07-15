@@ -17,7 +17,6 @@ export default function RegisterPage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
@@ -28,6 +27,18 @@ export default function RegisterPage() {
     notSimilar: true,
   });
 
+  useEffect(() => {
+    const pwd = formData.password1;
+    setPasswordChecks({
+      minLength: pwd.length >= 8,
+      hasNumber: /[0-9]/.test(pwd),
+      notCommon:
+        !["password", "12345678", "qwerty", "11111111", "00000000", "abcdef", "admin"].includes(pwd.toLowerCase()) &&
+        !/^(\d)\1{5,}$/.test(pwd),
+      notSimilar: true,
+    });
+  }, [formData.password1]);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
@@ -36,22 +47,16 @@ export default function RegisterPage() {
     }));
   };
 
-  useEffect(() => {
-    const pwd = formData.password1;
-    setPasswordChecks({
-      minLength: pwd.length >= 8,
-      hasNumber: !/^\d+$/.test(pwd),
-      notCommon:
-        !["password", "12345678", "qwerty", "11111111", "00000000", "abcdef", "admin"].includes(pwd.toLowerCase()) &&
-        !/^(\d)\1{5,}$/.test(pwd),
-      notSimilar: true,
-    });
-  }, [formData.password1]);
-
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    if (formData.password1 !== formData.password2) {
+      setError(t("errors.passwordsDontMatch") || "As passwords não coincidem.");
+      setLoading(false);
+      return;
+    }
 
     try {
       await axios.post("/api/users/registration/", {
@@ -61,9 +66,7 @@ export default function RegisterPage() {
         password2: formData.password2,
       });
 
-      setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
-
     } catch (err) {
       console.error("Registration error FULL:", err);
       setLoading(false);
@@ -76,7 +79,6 @@ export default function RegisterPage() {
       } else if (typeof data === "string") {
         errorMessage = translateErrorMessage(null, data, t);
       } else if (typeof data === "object") {
-        console.log("🔍 Full error object:", data);
         const errorSource = data.errors || data;
         const messages = Object.entries(errorSource).flatMap(([field, errors]) => {
           if (Array.isArray(errors)) {
@@ -112,8 +114,22 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleRegister} className="space-y-6">
-            <InputField id="username" label={t("register.username")} value={formData.username} onChange={handleChange} disabled={loading} />
-            <InputField id="email" label={t("register.email")} type="email" value={formData.email} onChange={handleChange} disabled={loading} />
+            <InputField
+              id="username"
+              label={t("register.username")}
+              value={formData.username}
+              onChange={handleChange}
+              disabled={loading}
+            />
+
+            <InputField
+              id="email"
+              label={t("register.email")}
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
 
             <div>
               <label htmlFor="password1" className="block text-sm text-gray-300 mb-1">
@@ -129,17 +145,29 @@ export default function RegisterPage() {
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 disabled={loading}
               />
-
               {passwordFocused && formData.password1.length > 0 && (
                 <ul className="mt-2 text-sm text-gray-300 space-y-1">
-                  <PasswordRequirement ok={passwordChecks.minLength}>{t("errors.passwordTooShort")}</PasswordRequirement>
-                  <PasswordRequirement ok={passwordChecks.hasNumber}>{t("errors.passwordAllDigits")}</PasswordRequirement>
-                  <PasswordRequirement ok={passwordChecks.notCommon}>{t("errors.passwordTooCommon")}</PasswordRequirement>
+                  <PasswordRequirement ok={passwordChecks.minLength}>
+                    {t("errors.passwordTooShort")}
+                  </PasswordRequirement>
+                  <PasswordRequirement ok={passwordChecks.hasNumber}>
+                    {t("errors.passwordAllDigits")}
+                  </PasswordRequirement>
+                  <PasswordRequirement ok={passwordChecks.notCommon}>
+                    {t("errors.passwordTooCommon")}
+                  </PasswordRequirement>
                 </ul>
               )}
             </div>
 
-            <InputField id="password2" label={t("register.password2")} type="password" value={formData.password2} onChange={handleChange} disabled={loading} />
+            <InputField
+              id="password2"
+              label={t("register.password2")}
+              type="password"
+              value={formData.password2}
+              onChange={handleChange}
+              disabled={loading}
+            />
 
             <div className="flex items-start gap-2 mt-4">
               <input

@@ -19,15 +19,22 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
   const [passwordChecks, setPasswordChecks] = useState({
     minLength: false,
     hasNumber: false,
     notCommon: false,
-    notSimilar: true, // can't check similarity in frontend for now
+    notSimilar: true, // skipped similarity
   });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+
+    if (id === "password1" && !passwordTouched) {
+      setPasswordTouched(true);
+    }
+
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -38,9 +45,9 @@ export default function RegisterPage() {
     const pwd = formData.password1;
     setPasswordChecks({
       minLength: pwd.length >= 8,
-      hasNumber: !/^\d+$/.test(pwd), // not only numbers
+      hasNumber: !/^\d+$/.test(pwd), // not just numbers
       notCommon: !["password", "12345678", "qwerty"].includes(pwd.toLowerCase()),
-      notSimilar: true, // skipped frontend logic
+      notSimilar: true, // could implement later
     });
   }, [formData.password1]);
 
@@ -103,7 +110,7 @@ export default function RegisterPage() {
           <form onSubmit={handleRegister} className="space-y-6">
             <InputField id="username" label={t("register.username")} value={formData.username} onChange={handleChange} disabled={loading} />
             <InputField id="email" label={t("register.email")} type="email" value={formData.email} onChange={handleChange} disabled={loading} />
-            
+
             <div>
               <label htmlFor="password1" className="block text-sm text-gray-300 mb-1">
                 {t("register.password1")}
@@ -116,11 +123,13 @@ export default function RegisterPage() {
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 disabled={loading}
               />
-              <ul className="mt-2 text-sm text-gray-300 space-y-1">
-                <PasswordRequirement ok={passwordChecks.minLength}>{t("errors.passwordTooShort")}</PasswordRequirement>
-                <PasswordRequirement ok={passwordChecks.hasNumber}>{t("errors.passwordAllDigits")}</PasswordRequirement>
-                <PasswordRequirement ok={passwordChecks.notCommon}>{t("errors.passwordTooCommon")}</PasswordRequirement>
-              </ul>
+              {passwordTouched && formData.password1.length > 0 && (
+                <ul className="mt-2 text-sm text-gray-300 space-y-1">
+                  <PasswordRequirement ok={passwordChecks.minLength}>{t("errors.passwordTooShort")}</PasswordRequirement>
+                  <PasswordRequirement ok={passwordChecks.hasNumber}>{t("errors.passwordAllDigits")}</PasswordRequirement>
+                  <PasswordRequirement ok={passwordChecks.notCommon}>{t("errors.passwordTooCommon")}</PasswordRequirement>
+                </ul>
+              )}
             </div>
 
             <InputField id="password2" label={t("register.password2")} type="password" value={formData.password2} onChange={handleChange} disabled={loading} />

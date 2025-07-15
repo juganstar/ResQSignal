@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axiosDefaults";
 import { useTranslation } from "react-i18next";
@@ -12,21 +12,37 @@ export default function RegisterPage() {
     username: "",
     email: "",
     password1: "",
-    password2: ""
+    password2: "",
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [passwordChecks, setPasswordChecks] = useState({
+    minLength: false,
+    hasNumber: false,
+    notCommon: false,
+    notSimilar: true, // can't check similarity in frontend for now
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }));
   };
+
+  useEffect(() => {
+    const pwd = formData.password1;
+    setPasswordChecks({
+      minLength: pwd.length >= 8,
+      hasNumber: !/^\d+$/.test(pwd), // not only numbers
+      notCommon: !["password", "12345678", "qwerty"].includes(pwd.toLowerCase()),
+      notSimilar: true, // skipped frontend logic
+    });
+  }, [formData.password1]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -38,35 +54,28 @@ export default function RegisterPage() {
         username: formData.username?.toLowerCase(),
         email: formData.email || undefined,
         password1: formData.password1,
-        password2: formData.password2
+        password2: formData.password2,
       });
 
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
     } catch (err) {
       console.error("Registration error:", err);
-      console.log("API response:", err?.response?.data);
       setLoading(false);
 
-      let errorMessage = typeof t === "function" ? t("register.error.generic") : "Erro inesperado.";
-      const formErrs = {};
+      let errorMessage = t("register.error.generic") || "Erro inesperado.";
+      const data = err?.response?.data;
 
-      if (err.response?.data) {
-        const data = err.response.data;
-
+      if (data) {
         if (typeof data === "string") {
           errorMessage = translateErrorMessage(data, t) || errorMessage;
         } else if (typeof data === "object") {
-          Object.entries(data).forEach(([field, errors]) => {
-            const translated = Array.isArray(errors)
-              ? errors.map((e) => translateErrorMessage(e, t) || e)
-              : [translateErrorMessage(errors, t) || errors];
-            formErrs[field] = translated;
+          const messages = Object.entries(data).flatMap(([field, errors]) => {
+            return Array.isArray(errors)
+              ? errors.map((msg) => translateErrorMessage(field, msg, t))
+              : [translateErrorMessage(field, errors, t)];
           });
-
-          errorMessage = Object.values(formErrs)
-            .flat()
-            .join("\n");
+          errorMessage = messages.join("\n");
         }
       }
 
@@ -74,37 +83,15 @@ export default function RegisterPage() {
     }
   };
 
-  if (success) {
-    return (
-      <div className="flex-grow flex items-center justify-center px-4 py-10">
-        <div className="w-full max-w-md">
-          <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl shadow-xl p-8 text-center">
-            <div className="animate-pulse text-green-400 mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-white mb-4">
-              {t("register.successTitle")}
-            </h1>
-            <p className="text-gray-300">{t("register.successMessage")}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const allValid = Object.values(passwordChecks).every(Boolean);
 
   return (
     <div className="flex-grow flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white">
-              {t("register.title")}
-            </h1>
-            <p className="text-sm text-gray-400 mt-2">
-              {t("register.subtitle")}
-            </p>
+            <h1 className="text-3xl font-bold text-white">{t("register.title")}</h1>
+            <p className="text-sm text-gray-400 mt-2">{t("register.subtitle")}</p>
           </div>
 
           {error && (
@@ -114,37 +101,9 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleRegister} className="space-y-6">
-            <div>
-              <label htmlFor="username" className="block text-sm text-gray-300 mb-1">
-                {t("register.username")}
-              </label>
-              <input
-                id="username"
-                type="text"
-                autoComplete="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm text-gray-300 mb-1">
-                {t("register.email")}
-              </label>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                disabled={loading}
-              />
-            </div>
-
+            <InputField id="username" label={t("register.username")} value={formData.username} onChange={handleChange} disabled={loading} />
+            <InputField id="email" label={t("register.email")} type="email" value={formData.email} onChange={handleChange} disabled={loading} />
+            
             <div>
               <label htmlFor="password1" className="block text-sm text-gray-300 mb-1">
                 {t("register.password1")}
@@ -152,30 +111,19 @@ export default function RegisterPage() {
               <input
                 id="password1"
                 type="password"
-                autoComplete="new-password"
                 value={formData.password1}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
                 disabled={loading}
               />
+              <ul className="mt-2 text-sm text-gray-300 space-y-1">
+                <PasswordRequirement ok={passwordChecks.minLength}>{t("errors.passwordTooShort")}</PasswordRequirement>
+                <PasswordRequirement ok={passwordChecks.hasNumber}>{t("errors.passwordAllDigits")}</PasswordRequirement>
+                <PasswordRequirement ok={passwordChecks.notCommon}>{t("errors.passwordTooCommon")}</PasswordRequirement>
+              </ul>
             </div>
 
-            <div>
-              <label htmlFor="password2" className="block text-sm text-gray-300 mb-1">
-                {t("register.password2")}
-              </label>
-              <input
-                id="password2"
-                type="password"
-                autoComplete="new-password"
-                value={formData.password2}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-                disabled={loading}
-              />
-            </div>
+            <InputField id="password2" label={t("register.password2")} type="password" value={formData.password2} onChange={handleChange} disabled={loading} />
 
             <div className="flex items-start gap-2 mt-4">
               <input
@@ -199,9 +147,9 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              disabled={!acceptedTerms || loading}
+              disabled={!acceptedTerms || loading || !allValid}
               className={`w-full py-2 px-4 bg-purple-600 text-white font-semibold rounded-md shadow transition ${
-                (!acceptedTerms || loading)
+                (!acceptedTerms || loading || !allValid)
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-purple-700"
               }`}
@@ -219,5 +167,31 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function InputField({ id, label, value, onChange, disabled, type = "text" }) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm text-gray-300 mb-1">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+        disabled={disabled}
+      />
+    </div>
+  );
+}
+
+function PasswordRequirement({ ok, children }) {
+  return (
+    <li className={ok ? "text-green-400" : "text-red-400"}>
+      {ok ? "✔" : "✘"} {children}
+    </li>
   );
 }

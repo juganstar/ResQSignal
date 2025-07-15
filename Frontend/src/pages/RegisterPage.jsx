@@ -66,31 +66,30 @@ export default function RegisterPage() {
 
       setSuccess(true);
       setTimeout(() => navigate("/verify-email"), 1500);
+
     } catch (err) {
       console.error("Registration error:", err);
       setLoading(false);
 
-      let errorMessage = t("register.error.generic") || "Erro inesperado.";
       const data = err?.response?.data;
+      let errorMessage = t("register.error.generic") || "Erro inesperado.";
 
       if (data) {
         if (typeof data === "string") {
-          // Fallback for string-only errors (rare)
-          errorMessage = data;
+          errorMessage = translateErrorMessage(null, data, t);
         } else if (typeof data === "object") {
-          const messages = Object.entries(data).flatMap(([field, errors]) => {
-            return Array.isArray(errors)
+          const messages = Object.entries(data).flatMap(([field, errors]) =>
+            Array.isArray(errors)
               ? errors.map((msg) => translateErrorMessage(field, msg, t))
-              : [translateErrorMessage(field, errors, t)];
-          });
+              : [translateErrorMessage(field, errors, t)]
+          );
           errorMessage = messages.join("\n");
         }
       }
 
       setError(errorMessage);
     }
-  }
-
+  };
 
   const allValid = Object.values(passwordChecks).every(Boolean);
 

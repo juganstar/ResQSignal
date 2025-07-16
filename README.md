@@ -3,6 +3,10 @@
 **ResQSignal** is an emergency alert platform that lets users instantly notify their trusted contacts via SMS — even if the user is offline. Each user gets a unique alert link that can be triggered from any device, at any time.
 
 > ⚠️ For alerts to be sent, the **ResQSignal server must be online**. Your contacts don’t need to install anything — they just receive the messages.
+> 🧪 Want to test the real SMS alert system? please contact me.
+> I can activate a **Premium test account** for you so you can try the emergency alert feature (SMS delivery + GPS).  
+
+---
 
 🌐 **Live:** [resqsignal.com](https://resqsignal.com)
 

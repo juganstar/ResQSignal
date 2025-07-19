@@ -1,4 +1,4 @@
-from billing.models import Subscription
+from datetime import timedelta
 from django.utils import timezone
 
 def get_user_plan(user):
@@ -9,17 +9,18 @@ def get_user_plan(user):
     if subscription and subscription.plan in ["basic", "premium"]:
         return subscription.plan
 
-    # Priority 2: Free user (manually flagged)
+    # Priority 2: Trial (calculate on the fly)
+    if profile.trial_start and profile.trial_days:
+        trial_end = profile.trial_start + timedelta(days=profile.trial_days)
+        if timezone.now() < trial_end:
+            return "premium"
+
+    # Priority 3: Free override
     if profile.is_free_user:
         return "premium"
 
-    # Priority 3: Active trial — treat as premium
-    if profile.trial_ends_at and profile.trial_ends_at > timezone.now():
-        return "premium"
-
-    # Priority 4: Subscribed but no Stripe sub (fallback)
+    # Priority 4: Old manual plan fallback
     if profile.is_subscribed and profile.plan in ["basic", "premium"]:
         return profile.plan
 
-    # Fallback
     return "none"

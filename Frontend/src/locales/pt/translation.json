@@ -7,7 +7,7 @@
     "privacy": "Privacidade"
   },
   "home": {
-    "welcomeBack": "Bem-vindo de volta, {{username}}!",
+    "welcomeBack": "Bem-vindo, {{username}}!",
     "manageContacts": "Gerir Contactos",
     "logout": "Sair",
     "login": "Entrar",

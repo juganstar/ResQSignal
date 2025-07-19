@@ -80,7 +80,7 @@ class Profile(models.Model):
     def has_premium_access(self):
         if self.get_effective_plan() == "premium":
             return True
-        if self.trial_start and timezone.now() < self.trial_start + timedelta(days=30):
+        if self.trial_start and timezone.now() < self.trial_start + timedelta(days=3):
             return True
         return False
 

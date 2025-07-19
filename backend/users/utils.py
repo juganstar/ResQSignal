@@ -1,5 +1,7 @@
 from datetime import timedelta
 from django.utils import timezone
+from billing.models import Subscription
+
 
 def get_user_plan(user):
     profile = user.profile
@@ -9,9 +11,9 @@ def get_user_plan(user):
     if subscription and subscription.plan in ["basic", "premium"]:
         return subscription.plan
 
-    # Priority 2: Trial (calculate on the fly)
-    if profile.trial_start and profile.trial_days:
-        trial_end = profile.trial_start + timedelta(days=profile.trial_days)
+    # Priority 2: Trial (fixed 3-day period)
+    if profile.trial_start:
+        trial_end = profile.trial_start + timedelta(days=3)
         if timezone.now() < trial_end:
             return "premium"
 

@@ -39,7 +39,9 @@ export default function LoginPage() {
       }
 
       console.log("🧠 Final parsed error:", errorMessage);
-      setError(translateErrorMessage("login", errorMessage, t));
+      setError(
+        translateErrorMessage("detail", errorMessage, t) ||
+        translateErrorMessage("login", errorMessage, t));
     } finally {
       setLoading(false);
     }

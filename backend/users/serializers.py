@@ -67,12 +67,12 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_trial_days_left(self, obj):
         if obj.trial_start:
-            remaining = obj.trial_start + timedelta(days=30) - timezone.now()
+            remaining = obj.trial_start + timedelta(days=3) - timezone.now()
             return max(0, remaining.days)
         return 0
 
     def get_is_in_trial(self, obj):
-        return obj.trial_start and timezone.now() < obj.trial_start + timedelta(days=30)
+        return obj.trial_start and timezone.now() < obj.trial_start + timedelta(days=3)
 
     def get_has_premium(self, obj):
         return obj.has_premium_access()

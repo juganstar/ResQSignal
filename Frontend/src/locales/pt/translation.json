@@ -96,6 +96,7 @@
     "invalid_name": "Introduza um nome válido (apenas letras).",
     "required_name": "O nome é obrigatório.",
     "required_phone": "O número de telemóvel é obrigatório.",
+    "premium_required_to_add": "⚠️ Necessita de acesso premium para adicionar contactos.",
     "correct_errors": "Por favor, corrija os erros abaixo.",
     "error_add": "Falha ao adicionar contacto.",
     "error_delete": "Falha ao remover contacto.",

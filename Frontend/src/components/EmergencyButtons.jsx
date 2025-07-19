@@ -1,8 +1,8 @@
 // src/components/EmergencyButtons.jsx
 import { MapPin, Settings } from "lucide-react";
 
-export default function EmergencyButtons({ userToken }) {
-  if (!userToken) return null;
+export default function EmergencyButtons({ userToken, hasPremium }) {
+  if (!userToken || !hasPremium) return null;
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 

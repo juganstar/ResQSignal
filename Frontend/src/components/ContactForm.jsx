@@ -1,4 +1,3 @@
-// src/components/ContactForm.jsx
 import { useState } from "react";
 import axios from "../utils/axiosDefaults";
 import PhoneInput from "react-phone-input-2";
@@ -23,7 +22,7 @@ function translateErrorMessage(field, msg, t) {
   return msg;
 }
 
-export default function ContactForm({ contacts, setContacts, setError }) {
+export default function ContactForm({ contacts, setContacts, setError, hasPremium }) {
   const { t } = useTranslation();
   const [newContact, setNewContact] = useState({
     name: "",
@@ -52,6 +51,11 @@ export default function ContactForm({ contacts, setContacts, setError }) {
 
   const handleAddContact = async () => {
     try {
+      if (!hasPremium) {
+        setError(t("setup.premium_required_to_add"));
+        return;
+      }
+
       if (!validateForm()) return;
 
       const formatted = {

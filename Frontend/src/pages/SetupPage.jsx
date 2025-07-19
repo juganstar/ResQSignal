@@ -1,4 +1,3 @@
-// SetupPage.jsx
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -18,6 +17,8 @@ export default function SetupPage() {
   const [loading, setLoading] = useState(true);
   const [userToken, setUserToken] = useState('');
   const [error, setError] = useState('');
+
+  const hasPremium = user?.profile?.has_premium ?? false;
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -45,10 +46,15 @@ export default function SetupPage() {
     <div className="min-h-[calc(100vh-96px)] py-12 px-4 max-w-2xl mx-auto text-white">
       <h2 className="text-3xl font-bold text-center mb-8">{t('setup.title')}</h2>
       <SetupGuide />
-      <ContactForm contacts={contacts} setContacts={setContacts} setError={setError} />
+      <ContactForm
+        contacts={contacts}
+        setContacts={setContacts}
+        setError={setError}
+        hasPremium={hasPremium} // ✅ Pass premium status
+      />
       {error && <div className="mt-2 text-red-500 text-sm font-medium">{error}</div>}
       <ContactList contacts={contacts} setContacts={setContacts} />
-      <EmergencyButtons userToken={userToken} />
+      <EmergencyButtons userToken={userToken} hasPremium={hasPremium} /> {/* Optional */}
       <AccountActions logout={logout} navigate={navigate} />
     </div>
   );

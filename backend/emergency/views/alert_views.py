@@ -14,10 +14,11 @@ class TriggerEmergencyAlert(APIView):
     def post(self, request):
         profile = request.user.profile
 
-        if not (profile.is_subscribed or profile.plan in ["basic", "premium"]):
+        # ✅ Correct premium access check (trial included)
+        if not profile.has_premium_access():
             return Response(
-                {"error": "⚠️ Plano inativo. Por favor subscreva ou contacte suporte."},
-                status=403
+                {"detail": "⚠️ Plano inativo. Apenas utilizadores premium ou em período de teste podem enviar alertas."},
+                status=status.HTTP_403_FORBIDDEN
             )
 
         message = request.data.get("message", "")
@@ -32,7 +33,7 @@ class TriggerEmergencyAlert(APIView):
         add_stripe_usage(request.user, quantity=message_count)
 
         return Response({"status": "alert triggered", "id": alert.id})
-    
+
 
 
 from django.http import JsonResponse, HttpResponse

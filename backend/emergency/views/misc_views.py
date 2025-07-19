@@ -32,7 +32,7 @@ class PublicAlertStatusCheck(APIView):
             profile = Profile.objects.get(token=token)
             user = profile.user
 
-            if not (profile.is_subscribed or profile.is_free_user):
+            if not profile.has_premium_access():
                 return Response(
                     {"message": "Account inactive or no subscription."},
                     status=status.HTTP_403_FORBIDDEN

@@ -40,7 +40,7 @@ class TriggerPublicAlertView(APIView):
                 return Response({"status": "location update received", "type": "continuous"})
 
             # Subscription check
-            if not (profile.is_subscribed or profile.is_free_user):
+            if not profile.has_premium_access():
                 return Response({"detail": "Subscription required"}, status=status.HTTP_403_FORBIDDEN)
 
             # Plan
@@ -118,7 +118,7 @@ class PublicAlertStatusCheck(APIView):
             profile = Profile.objects.get(token=token)
             user = profile.user
 
-            if not (profile.is_subscribed or profile.is_free_user):
+            if not profile.has_premium_access():
                 return Response(
                     {"message": "Account inactive or no subscription."},
                     status=status.HTTP_403_FORBIDDEN
@@ -158,7 +158,7 @@ class PublicAlertStatusCheck(APIView):
 @ensure_csrf_cookie
 def public_alert_page(request, token):
     profile = get_object_or_404(Profile, token=token)
-    if not (profile.is_subscribed or profile.is_free_user):
+    if not profile.has_premium_access():
         return render(request, 'emergency/subscription_required.html', {'token': token})
     return render(request, 'emergency/public_alert.html', {'token': token, 'user': profile.user})
 

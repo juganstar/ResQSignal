@@ -13,22 +13,25 @@ class ContactListCreate(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
-        plan = get_user_plan(user)
+        profile = user.profile
 
-        if plan == "basic":
+        # ✅ Use unified access logic
+        if profile.has_premium_access():
+            max_allowed = 7  # You decide: full limit for trial users?
+        elif profile.get_effective_plan() == "basic":
             max_allowed = 3
-        elif plan == "premium":
-            max_allowed = 7
         else:
             max_allowed = 0
 
         current = Contact.objects.filter(user=user).count()
         if current >= max_allowed:
+            plan_name = profile.get_effective_plan()
             raise serializers.ValidationError(
-                f"CONTACT_LIMIT_REACHED::{max_allowed}::{plan}"
-            )           
+                f"CONTACT_LIMIT_REACHED::{max_allowed}::{plan_name}"
+            )
 
         serializer.save(user=user)
+
 
 class ContactDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ContactSerializer

@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from django.views.decorators.http import require_GET
 from django.http import JsonResponse
 
+from django.utils import timezone
+from datetime import timedelta
 import uuid
 
 class User(AbstractUser):
@@ -14,30 +16,27 @@ class User(AbstractUser):
     """
     class Meta:
         default_related_name = 'custom_user'  # Prevents reverse accessor clashes
-    
+
     def save(self, *args, **kwargs):
         """
         Override save method to:
         1. Prevent superuser demotion
         2. Block regular users from taking superuser usernames
         """
-        # For existing users
         if self.pk:
             original_user = User.objects.get(pk=self.pk)
-            # Prevent superuser demotion
             if original_user.is_superuser and not self.is_superuser:
                 raise ValueError("Cannot demote a superuser via update")
-        
-        # Prevent username collisions with superusers
+
         if not self.is_superuser and User.objects.filter(
-            username__iexact=self.username,  # Case-insensitive check
+            username__iexact=self.username,
             is_superuser=True
         ).exclude(pk=self.pk).exists():
             raise ValueError(f"Username '{self.username}' is reserved for admin")
-        
-        # Normalize username to lowercase
+
         self.username = self.username.lower()
         super().save(*args, **kwargs)
+
 
 class Profile(models.Model):
     PLAN_CHOICES = [
@@ -63,30 +62,35 @@ class Profile(models.Model):
         unique=True
     )
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    
     plan = models.CharField(
         max_length=10,
         choices=PLAN_CHOICES,
         default="none"
     )
-
-    # ✅ New field
     first_alert_sent = models.BooleanField(default=False)
+
+    # ✅ Premium trial
+    trial_start = models.DateTimeField(null=True, blank=True)
 
     def get_effective_plan(self):
         if self.is_free_user or self.is_subscribed:
             return "premium"
         return self.plan or "none"
 
+    def has_premium_access(self):
+        if self.get_effective_plan() == "premium":
+            return True
+        if self.trial_start and timezone.now() < self.trial_start + timedelta(days=30):
+            return True
+        return False
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
-
 
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """Ensure every user has a profile created/updated on save"""
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(user=instance, trial_start=timezone.now())
     instance.profile.save()
-

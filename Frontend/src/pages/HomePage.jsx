@@ -41,6 +41,22 @@ export default function HomePage() {
                   ? t("home.welcomeBack", { username: user.username })
                   : t("home.loading")}
               </h2>
+
+              {/* 🔔 Subscription / Trial Info */}
+              {user?.profile && (
+                <div className="mt-4 text-sm text-purple-300">
+                  {user.profile.has_premium ? (
+                    user.profile.is_in_trial ? (
+                      <>🎁 {t("home.trialActive", { days: user.profile.trial_days_left })}</>
+                    ) : (
+                      <>✅ {t("home.premiumUser")}</>
+                    )
+                  ) : (
+                    <>⚠️ {t("home.trialEnded")}</>
+                  )}
+                </div>
+              )}
+
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
                 <Link
                   to="/setup"
@@ -128,7 +144,7 @@ export default function HomePage() {
       <footer className="text-center text-sm text-white py-6">
         <p>© {new Date().getFullYear()} ResQSignal. {t("footer.rights")}</p>
         <p>
-          {t("footer.contact")}: {" "}
+          {t("footer.contact")}:{" "}
           <a
             href="mailto:ResQSignal.help@gmail.com"
             className="text-purple-400 underline"

@@ -14,7 +14,10 @@
     "register": "Criar Conta",
     "feature1": "✅ Botão de emergência real.\n1 clique e alerta os seus contactos.",
     "feature2": "📡 Envia localização em tempo real.\nFunciona apenas com plano premium.",
-    "feature3": "⏱️ Para momentos críticos.\nSem tempo? O ResQSignal fala por si.",
+    "feature3": "🎁 30 Dias de Acesso Premium Gratuito. \nAlertas de emergência instantâneos.",
+    "trialActive": "🎁 Período de teste ativo — {{days}} dias restantes",
+  "premiumUser": "✅ Utilizador premium",
+  "trialEnded": "⚠️ Período de teste terminado — atualize para continuar",
     "loading": "A carregar...",
     "user": "utilizador"
   },

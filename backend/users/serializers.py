@@ -9,6 +9,10 @@ from allauth.account.utils import complete_signup
 from allauth.account import app_settings as allauth_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from datetime import timedelta
+from django.utils import timezone
+from users.models import Profile  # Adjust if your Profile is in another app
+
 User = get_user_model()
 
 
@@ -30,7 +34,9 @@ class CustomLoginSerializer(LoginSerializer):
 
         attrs['user'] = user
         return attrs
-    
+
+
+# ✅ JWT login: block token issue if email not verified
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -42,11 +48,43 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 
+# ✅ Profile nested info for /api/users/me/
+class ProfileSerializer(serializers.ModelSerializer):
+    trial_days_left = serializers.SerializerMethodField()
+    is_in_trial = serializers.SerializerMethodField()
+    has_premium = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = [
+            "plan",
+            "is_subscribed",
+            "is_free_user",
+            "trial_days_left",
+            "is_in_trial",
+            "has_premium",
+        ]
+
+    def get_trial_days_left(self, obj):
+        if obj.trial_start:
+            remaining = obj.trial_start + timedelta(days=30) - timezone.now()
+            return max(0, remaining.days)
+        return 0
+
+    def get_is_in_trial(self, obj):
+        return obj.trial_start and timezone.now() < obj.trial_start + timedelta(days=30)
+
+    def get_has_premium(self, obj):
+        return obj.has_premium_access()
+
+
 # ✅ Used in /api/users/me/
 class UserDetailsSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
     class Meta:
         model = User
-        fields = ['pk', 'username', 'email', 'first_name', 'last_name']
+        fields = ['pk', 'username', 'email', 'first_name', 'last_name', 'profile']
         read_only_fields = ['email']
 
 

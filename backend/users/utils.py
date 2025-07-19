@@ -1,5 +1,5 @@
 from billing.models import Subscription
-
+from django.utils import timezone
 
 def get_user_plan(user):
     profile = user.profile
@@ -9,11 +9,15 @@ def get_user_plan(user):
     if subscription and subscription.plan in ["basic", "premium"]:
         return subscription.plan
 
-    # Priority 2: Free users get premium features
+    # Priority 2: Free user (manually flagged)
     if profile.is_free_user:
         return "premium"
 
-    # Priority 3: Subscribed users with profile.plan set
+    # Priority 3: Active trial — treat as premium
+    if profile.trial_ends_at and profile.trial_ends_at > timezone.now():
+        return "premium"
+
+    # Priority 4: Subscribed but no Stripe sub (fallback)
     if profile.is_subscribed and profile.plan in ["basic", "premium"]:
         return profile.plan
 

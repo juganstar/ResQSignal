@@ -136,7 +136,6 @@
         if (isInitial) {
           const locationToShow = data?.location_shared ? latestLocation : null;
           updateStatus('success', '✅ Alert sent successfully!', locationToShow);
-          setTimeout(() => { spinner.style.animation = 'none'; }, 1000);
         } else {
           console.log("📍 Location update:", lat, lon);
         }
@@ -146,7 +145,6 @@
         console.error('Location sending error:', err);
         if (isInitial) {
           updateStatus('error', `❌ Alert failed: ${err.message}`);
-          spinner.style.animation = 'none';
         }
       });
     }

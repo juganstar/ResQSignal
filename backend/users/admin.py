@@ -12,8 +12,10 @@ from .models import Profile
 from billing.models import Subscription
 from users.utils import get_user_plan
 import users.admin_cleanup
+import logging
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 # 👇 Inline: Contacts under each user
 class ContactInline(admin.TabularInline):
@@ -77,8 +79,12 @@ class ProfileAdmin(admin.ModelAdmin):
     )
 
     def display_plan(self, obj):
-        return get_user_plan(obj.user)
-    display_plan.short_description = "Plan"
+        try:
+            return get_user_plan(obj.user)
+        except Exception as e:
+            logger.error(f"Error in display_plan for user {obj.user}: {e}")
+            return "—"
+
 
     def alerts_sent(self, obj):
         return EmergencyAlert.objects.filter(user=obj.user, is_test=False).count()

@@ -29,10 +29,19 @@ echo "PostgreSQL is available - proceeding with migrations"
 
 # Run migrations
 if [ "$RUN_MIGRATIONS" = "true" ]; then
-  echo "Running makemigrations..."
-  python manage.py makemigrations --noinput || true
+  echo "⚠️ Cleaning broken migration (users.0004)..."
 
-  echo "Running migrate (normal)..."
+  # Step 1: Delete broken migration file (just in case)
+  rm -f /app/backend/users/migrations/0004_profile_has_used_trial_profile_payment_method_added_and_more.py
+
+  # Step 2: Fake back to the last valid migration (0003)
+  python manage.py migrate users 0003 --fake
+
+  # Step 3: Recreate the correct migration
+  python manage.py makemigrations users
+
+  # Step 4: Apply everything normally
+  echo "Running migrate (fixed)..."
   python manage.py migrate --noinput
 
   echo "Collecting static files..."

@@ -75,7 +75,10 @@ export default function HomePage() {
               </div>
 
               {/* ✅ Trial CTA Block */}
-              {user?.profile && !user.profile.has_premium && !user.profile.trial_start && (
+              {user?.profile && 
+              !user.profile.has_premium && 
+              !user.profile.trial_start && 
+              !user.profile.has_used_trial && (
                 <div className="mt-6 p-4 bg-yellow-100/10 text-sm rounded-lg border border-yellow-500 text-yellow-200 max-w-md mx-auto">
                   <p className="mb-2">{t("home.wantTrial")}</p>
                   <Link

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 import stripe
 from django.conf import settings
 from users.models import Profile
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import api_view, permission_classes
 
 class BillingPortalView(APIView):
     permission_classes = [IsAuthenticated]

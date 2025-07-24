@@ -14,7 +14,7 @@
     "register": "Create Account",
     "feature1": "✅ Real emergency button.\n1 tap and alert your contacts.",
     "feature2": "📡 Sends real-time location.\nAvailable only on the premium plan.",
-    "feature3": "30 Days Free Premium Access \nInstant emergency alerts.",
+    "feature3": "3 Days Free Premium Access \nInstant emergency alerts.",
     "trialActive": "Trial active — {{days}} days left",
     "premiumUser": "Premium user",
     "trialEnded": "Trial ended — upgrade to continue",
@@ -172,7 +172,24 @@
   "footer": {
     "rights": "All rights reserved.",
     "contact": "Contact"
-}
+  },
+  "trial": {
+    "title": "Activate Your Free Trial",
+    "intro": "You can try ResQSignal free for 3 days. You'll get full access to the platform, including alert sending, contact management, and premium features.",
+    "section1_title": "✅ What’s included in the trial",
+    "point1": "✔ Send real alerts to your contacts",
+    "point2": "✔ Public alert page with your unique token",
+    "point3": "✔ GPS location included (for premium users)",
+    "point4": "✔ Full dashboard access and configuration",
+    "section2_title": "🔒 Why do we ask for a payment method?",
+    "payment_explanation": "While the trial is free, alerts are sent via SMS using Twilio, which charges per message (~€0.06 per contact). We ask for a card just to ensure those real costs are covered, even during testing.",
+    "section3_title": "⏳ What happens after the trial?",
+    "post_trial_info": "After the 3-day trial, you won’t be charged automatically. We’ll invite you to pick a plan. You can cancel at any time.",
+    "startButton": "Start Free Trial",
+    "loading": "Redirecting to Stripe...",
+    "back": "← Back to homepage",
+    "error": "Failed to activate trial."
+  }
 
 
 }

@@ -118,9 +118,15 @@ def handle_checkout_session_completed(session):
         profile = Profile.objects.get(stripe_customer_id=customer_id)
         user = profile.user
     except Profile.DoesNotExist:
-        user = None
+        print("❌ No matching profile for customer ID")
+        return
 
-    # Save subscription
+    # Activate trial if user requested it but hasn’t used it yet
+    if not profile.has_used_trial and not profile.trial_start:
+        profile.start_trial()
+        print(f"🚀 Trial activated for {user.username}")
+
+    # Save subscription (create or update)
     Subscription.objects.update_or_create(
         stripe_customer_id=customer_id,
         defaults={

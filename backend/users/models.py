@@ -38,6 +38,9 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
 
+from django.utils import timezone
+from datetime import timedelta
+
 class Profile(models.Model):
     PLAN_CHOICES = [
         ("none", "No Plan"),
@@ -69,8 +72,10 @@ class Profile(models.Model):
     )
     first_alert_sent = models.BooleanField(default=False)
 
-    # ✅ Premium trial
+    # ✅ Trial
     trial_start = models.DateTimeField(null=True, blank=True)
+    has_used_trial = models.BooleanField(default=False)  # 🔐 avoid re-use
+    payment_method_added = models.BooleanField(default=False)  # ✅ Stripe card check
 
     def get_effective_plan(self):
         if self.is_free_user or self.is_subscribed:
@@ -84,8 +89,20 @@ class Profile(models.Model):
             return True
         return False
 
+    def is_trial_active(self):
+        return (
+            self.trial_start is not None and
+            timezone.now() < self.trial_start + timedelta(days=3)
+        )
+
+    def start_trial(self):
+        self.trial_start = timezone.now()
+        self.has_used_trial = True
+        self.save()
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
 
 
 @receiver(post_save, sender=User)

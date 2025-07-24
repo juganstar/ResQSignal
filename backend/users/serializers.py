@@ -88,7 +88,13 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = ['email']
 
 
-# ✅ Custom registration with validation + email confirmation trigger
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import setup_user_email
+from dj_rest_auth.registration.serializers import RegisterSerializer
+from rest_framework import serializers
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import validate_email
+
 class CustomRegisterSerializer(RegisterSerializer):
     def validate_email(self, email):
         email = email.lower()
@@ -108,6 +114,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def save(self, request):
         user = super().save(request)
+
         complete_signup(
             request,
             user,

@@ -14,9 +14,9 @@
     "register": "Criar Conta",
     "feature1": "✅ Botão de emergência real.\n1 clique e alerta os seus contactos.",
     "feature2": "📡 Envia localização em tempo real.\nFunciona apenas com plano premium.",
-    "feature3": "🎁 30 Dias de Acesso Premium Gratuito. \nAlertas de emergência instantâneos.",
+    "feature3": "3 Dias de Acesso Premium Gratuito. \nAlertas de emergência instantâneos.",
     "trialActive": "Período de teste ativo — {{days}} dias restantes",
-  "premiumUser": "✅ Utilizador premium",
+  "premiumUser": " Utilizador premium",
   "trialEnded": "⚠️ Período de teste terminado — atualize para continuar",
     "loading": "A carregar...",
     "user": "utilizador"
@@ -171,7 +171,24 @@
   "footer": {
     "rights": "Todos os direitos reservados.",
     "contact": "Contacto"
-}
+  },
+  "trial": {
+    "title": "Ative o Período Experimental",
+    "intro": "Pode testar o ResQSignal gratuitamente durante 3 dias. Terá acesso total à plataforma, incluindo o envio de alertas, gestão de contactos e funcionalidades premium.",
+    "section1_title": "✅ O que inclui o período experimental",
+    "point1": "✔ Envio de alertas para os seus contactos",
+    "point2": "✔ Página pública com token para ativar alertas",
+    "point3": "✔ Suporte para localização GPS (utilizadores premium)",
+    "point4": "✔ Interface completa de gestão e visualização",
+    "section2_title": "🔒 Porque pedimos um método de pagamento?",
+    "payment_explanation": "Apesar de o período ser gratuito, os alertas são enviados por SMS através do serviço Twilio, que tem um custo por mensagem (~0.06€ por contacto). Pedimos um cartão apenas para garantir que os custos do envio real são cobertos, mesmo durante o teste.",
+    "section3_title": "⏳ E depois do período experimental?",
+    "post_trial_info": "No fim dos 3 dias, não será cobrado automaticamente. Iremos convidá-lo a escolher um plano. Pode cancelar a qualquer momento.",
+    "startButton": "Ativar Período Experimental",
+    "loading": "A redirecionar para o Stripe...",
+    "back": "← Voltar à página inicial",
+    "error": "Erro ao ativar o período experimental."
+  }
 
 
 }

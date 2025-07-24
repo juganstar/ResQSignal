@@ -18,6 +18,7 @@ import RegisterPage from "./pages/RegisterPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import EmailConfirmedPage from "./pages/EmailConfirmedPage";
 import ResetRequestPage from "./pages/ResetRequestPage";
+import TrialInfoPage from "./pages/TrialInfoPage";
 import ResetConfirmPage from "./pages/ResetConfirmPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
@@ -131,6 +132,7 @@ function App() {
               <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/email-confirmed" element={<EmailConfirmedPage />} />
               <Route path="/reset-password/" element={<ResetRequestPage />} />
+              <Route path="/trial-info" element={<TrialInfoPage />} />
               <Route
                 path="/reset-password-confirm/:uid/:token"
                 element={<ResetConfirmPage />}

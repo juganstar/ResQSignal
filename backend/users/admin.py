@@ -71,11 +71,13 @@ class ProfileAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_subscribed", "is_free_user")
     search_fields = ("user__username", "user__email")
-    readonly_fields = ["token"]
+    readonly_fields = ["token", "trial_start"]
     actions = ["delete_profiles_and_users"]
+
     fields = (
         "user", "phone_number", "emergency_contact", "is_subscribed",
-        "is_free_user", "stripe_customer_id", "plan", "token"
+        "is_free_user", "stripe_customer_id", "plan", "token",
+        "trial_start", "has_used_trial", "payment_method_added"
     )
 
     def display_plan(self, obj):
@@ -84,7 +86,7 @@ class ProfileAdmin(admin.ModelAdmin):
         except Exception as e:
             logger.error(f"Error in display_plan for user {obj.user}: {e}")
             return "—"
-
+    display_plan.short_description = "Plan"
 
     def alerts_sent(self, obj):
         return EmergencyAlert.objects.filter(user=obj.user, is_test=False).count()
@@ -94,6 +96,7 @@ class ProfileAdmin(admin.ModelAdmin):
         contact_count = Contact.objects.filter(user=obj.user).count()
         alert_count = EmergencyAlert.objects.filter(user=obj.user, is_test=False).count()
         return contact_count * alert_count
+    contacts_notified.short_description = "Contacts Notified"
 
     def delete_model(self, request, obj):
         user = obj.user
@@ -114,4 +117,5 @@ class ProfileAdmin(admin.ModelAdmin):
         ) % count, messages.SUCCESS)
 
     delete_profiles_and_users.short_description = "❌ Delete selected profiles and users"
+
 

@@ -1,10 +1,11 @@
 # billing/views.py
-from rest_framework.views import APIView, permission_classes
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 import stripe
 from django.conf import settings
 from users.models import Profile
+from rest_framework.decorators import permission_classes
 
 class BillingPortalView(APIView):
     permission_classes = [IsAuthenticated]

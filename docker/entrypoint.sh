@@ -1,20 +1,15 @@
 #!/bin/bash
 set -e
 
-# Debug: Show environment variables
 echo "DB Connection Info:"
 echo "Host: ${POSTGRES_HOST}"
 echo "Port: ${POSTGRES_PORT}"
 echo "User: ${POSTGRES_USER}"
 echo "DB: ${POSTGRES_DB}"
 
-# Create migrations directory if it doesn't exist
-mkdir -p /app/backend/migrations
-chmod -R a+w /app/backend/migrations
-
-# Wait for PostgreSQL with timeout
+# Wait for PostgreSQL
 export PGPASSWORD="${POSTGRES_PASSWORD}"
-echo "Waiting for PostgreSQL to become available..."
+echo "Waiting for PostgreSQL..."
 timeout=30
 while ! psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -c '\q'; do
   sleep 1
@@ -25,29 +20,26 @@ while ! psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGRES_USER}" -
   fi
 done
 
-echo "PostgreSQL is available - proceeding with migrations"
+echo "PostgreSQL is ready."
 
-# Run migrations
+# Only run if migrations are enabled
 if [ "$RUN_MIGRATIONS" = "true" ]; then
-  echo "⚠️ Cleaning broken migration (users.0004)..."
+  echo "⚠️ Cleaning up old broken migrations (if any)..."
 
-  # Step 1: Delete broken migration file (just in case)
-  rm -f /app/backend/users/migrations/0004_profile_has_used_trial_profile_payment_method_added_and_more.py
-
-  # Step 2: Fake back to the last valid migration (0003)
+  # Fake back to last known good
   python manage.py migrate users 0003 --fake
 
-  # Step 3: Recreate the correct migration
+  # Make a new clean migration
+  echo "⚙️ Creating fresh migration for new fields..."
   python manage.py makemigrations users
 
-  # Step 4: Apply everything normally
-  echo "Running migrate (fixed)..."
+  echo "📦 Applying all migrations..."
   python manage.py migrate --noinput
 
-  echo "Collecting static files..."
+  echo "🎯 Collecting static files..."
   python manage.py collectstatic --noinput
 fi
 
-# Start server
-echo "Starting Django development server..."
+# Start Django
+echo "🚀 Starting Django..."
 exec python manage.py runserver 0.0.0.0:8000

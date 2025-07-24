@@ -32,7 +32,7 @@ if [ "$RUN_MIGRATIONS" = "true" ]; then
   echo "Running makemigrations..."
   python manage.py makemigrations --noinput || true
 
-  echo "Running migrate..."
+  echo "Running migrate (normal)..."
   python manage.py migrate --noinput
 
   echo "Collecting static files..."

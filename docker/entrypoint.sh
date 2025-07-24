@@ -32,9 +32,6 @@ if [ "$RUN_MIGRATIONS" = "true" ]; then
   echo "Running makemigrations..."
   python manage.py makemigrations --noinput || true
 
-  echo "Faking migration that already exists in DB..."
-  python manage.py migrate users 0004_profile_has_used_trial_profile_payment_method_added_and_more --fake || true
-
   echo "Running migrate..."
   python manage.py migrate --noinput
 

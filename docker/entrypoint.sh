@@ -13,7 +13,7 @@ echo "Waiting for PostgreSQL..."
 timeout=30
 while ! psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -c '\q'; do
   sleep 1
-  timeout=$((timeout - 1))
+  timeout=$((timeout-1))
   if [ $timeout -eq 0 ]; then
     echo "PostgreSQL not available, giving up"
     exit 1
@@ -24,16 +24,10 @@ echo "PostgreSQL is ready."
 
 # Only run if migrations are enabled
 if [ "$RUN_MIGRATIONS" = "true" ]; then
-  echo "⚠️ Rolling back users app to 0003 (safe checkpoint)..."
-  python manage.py migrate users 0003 --fake
+  echo "📦 Applying all migrations (users)..."
+  python manage.py migrate users --fake-initial
 
-  echo "🧹 Removing broken 0004 migration if it exists..."
-  rm -f /app/backend/users/migrations/0004*.py
-
-  echo "⚙️ Recreating migration for new fields..."
-  python manage.py makemigrations users
-
-  echo "📦 Applying all migrations..."
+  echo "📦 Applying all remaining migrations..."
   python manage.py migrate --noinput
 
   echo "🎯 Collecting static files..."

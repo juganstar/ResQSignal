@@ -11,7 +11,7 @@ export default function TrialInfoPage() {
   const handleStartTrial = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("/api/checkout/", {
+      const res = await axios.post("/api/billing/checkout/", {
         plan: "premium",
       });
       window.location.href = res.data.url;

@@ -208,6 +208,13 @@ export default function RegisterPage() {
               {t("register.loginLink")}
             </Link>
           </div>
+
+          <div className="mt-3 text-center text-sm text-gray-400">
+            {t("register.notVerifiedYet")}{" "}
+            <Link to="/verify-email" className="text-purple-400 hover:text-purple-300 underline">
+              {t("register.resendLink")}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

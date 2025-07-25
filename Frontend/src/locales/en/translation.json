@@ -137,7 +137,11 @@
   "verify": {
     "title": "Confirm Your Email",
     "subtitle": "We've sent you a confirmation link. Please check your inbox and click the link to activate your account.",
-    "loginButton": "Go to Login"
+    "loginButton": "Go to Login",
+    "resendLink": "Didn't receive the email? Resend",
+    "resentSuccess": "Verification email sent successfully.",
+    "resentFail": "Failed to resend email. Please try again later.",
+    "sending": "Sending..."
   },
   "emailConfirmed": {
     "title": "Email Confirmed!",
@@ -184,9 +188,9 @@
     "point3": "✔ GPS location included (for premium users)",
     "point4": "✔ Full dashboard access and configuration",
     "section2_title": "🔒 Why do we ask for a payment method?",
-    "payment_explanation": "While the trial is free, alerts are sent via SMS using Twilio, which charges per message (~€0.06 per contact). We ask for a card just to ensure those real costs are covered, even during testing.",
+    "payment_explanation": "While the trial is free, alerts are sent via SMS using Twilio, which charges per message (~€0.10 per contact). We ask for a card just to ensure those real costs are covered, even during testing.",
     "section3_title": "⏳ What happens after the trial?",
-    "post_trial_info": "After the 3-day trial, you won’t be charged automatically. We’ll invite you to pick a plan. You can cancel at any time.",
+    "post_trial_info": "Your subscription will automatically renew after the 3-day free trial unless you cancel. You can cancel or change plans anytime from your dashboard.",
     "startButton": "Start Free Trial",
     "loading": "Redirecting to Stripe...",
     "back": "← Back to homepage",

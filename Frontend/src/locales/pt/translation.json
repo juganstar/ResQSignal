@@ -136,7 +136,11 @@
   "verify": {
     "title": "Confirme o seu Email",
     "subtitle": "Enviámos um link de confirmação. Verifique a sua caixa de entrada e clique no link para ativar a sua conta.",
-    "loginButton": "Ir para o Login"
+    "loginButton": "Ir para o Login",
+    "resendLink": "Reenviar email de verificação",
+    "resentSuccess": "Email reenviado com sucesso.",
+    "resentFail": "Erro ao reenviar. Tente novamente mais tarde.",
+    "sending": "A enviar..."
   },
   "emailConfirmed": {
     "title": "Email Confirmado!",
@@ -183,9 +187,9 @@
     "point3": "✔ Suporte para localização GPS (utilizadores premium)",
     "point4": "✔ Interface completa de gestão e visualização",
     "section2_title": "🔒 Porque pedimos um método de pagamento?",
-    "payment_explanation": "Apesar de o período ser gratuito, os alertas são enviados por SMS através do serviço Twilio, que tem um custo por mensagem (~0.06€ por contacto). Pedimos um cartão apenas para garantir que os custos do envio real são cobertos, mesmo durante o teste.",
+    "payment_explanation": "Apesar de o período ser gratuito, os alertas são enviados por SMS através do serviço Twilio, que tem um custo por mensagem (~0.10€ por contacto). Pedimos um cartão apenas para garantir que os custos do envio real são cobertos, mesmo durante o teste.",
     "section3_title": "⏳ E depois do período experimental?",
-    "post_trial_info": "No fim dos 3 dias, não será cobrado automaticamente. Iremos convidá-lo a escolher um plano. Pode cancelar a qualquer momento.",
+    "post_trial_info": "A subscrição será automaticamente renovada após os 3 dias grátis, salvo cancelamento. Pode muda de plano ou cancelar facilmente a qualquer momento na sua área de utilizador.",
     "startButton": "Ativar Período Experimental",
     "loading": "A redirecionar para o Stripe...",
     "back": "← Voltar à página inicial",

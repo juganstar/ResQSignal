@@ -49,7 +49,7 @@ def create_checkout_session(request):
             subscription_data={
                 'trial_period_days': 3  # 🎉 Stripe handles the trial!
             },
-            success_url='https://resqsignal.com/success',
+            success_url='https://resqsignal.com/',
             cancel_url='https://resqsignal.com/cancel',
         )
 

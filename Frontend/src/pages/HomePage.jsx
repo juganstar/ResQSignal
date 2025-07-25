@@ -11,6 +11,17 @@ export default function HomePage() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
 
+  const handleActivateTrial = async () => {
+    try {
+      const res = await axios.post("/api/users/trial/request/");
+      if (res.status === 200) {
+        window.location.href = res.data.url;
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || "Trial activation failed.");
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -89,7 +100,6 @@ export default function HomePage() {
                   {t("home.logout")}
                 </button>
               </div>
-              
             </motion.div>
           ) : (
             <motion.div

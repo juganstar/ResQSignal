@@ -74,12 +74,12 @@ export default function HomePage() {
                   {!user.profile.has_premium &&
                     !user.profile.trial_start &&
                     !user.profile.has_used_trial && (
-                      <button
-                        onClick={handleActivateTrial}
+                      <Link
+                        to="/trial-info"
                         className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-3 py-1 rounded"
                       >
                         {t("home.activateTrial")}
-                      </button>
+                      </Link>
                     )}
                 </div>
               )}

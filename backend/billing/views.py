@@ -35,12 +35,10 @@ def request_trial(request):
     if profile.trial_start:
         return Response({"detail": "O período experimental já está ativo."}, status=400)
 
-    if profile.payment_method_added or profile.stripe_customer_id:
-        # Card might already be present; activate immediately
-        profile.start_trial()
-        return Response({"detail": "Período experimental ativado com sucesso."})
+    # ✅ Garantir que já tem cartão confirmado
+    if not profile.payment_method_added:
+        return Response({"detail": "Método de pagamento necessário."}, status=400)
 
-    # Just mark trial intent; will be activated after Stripe checkout completes
-    profile.has_used_trial = False
-    profile.save()
-    return Response({"detail": "Período experimental solicitado. Ative-o após adicionar um método de pagamento."})
+    # ✅ Ativar trial
+    profile.start_trial()
+    return Response({"detail": "Período experimental ativado com sucesso."})

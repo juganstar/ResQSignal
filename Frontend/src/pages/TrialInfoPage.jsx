@@ -11,17 +11,17 @@ export default function TrialInfoPage() {
   const handleStartTrial = async () => {
     setLoading(true);
     try {
-      await axios.post("/api/users/trial/request/");
       const res = await axios.post("/api/create-checkout-session/", {
         plan: "basic",
       });
       window.location.href = res.data.url;
     } catch (err) {
-      alert(err.response?.data?.detail || t("trial.error"));
+      alert(err.response?.data?.error || t("trial.error"));
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-96px)] py-12 px-4 max-w-2xl mx-auto text-white">

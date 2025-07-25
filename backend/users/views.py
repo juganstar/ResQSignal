@@ -75,14 +75,17 @@ def request_trial(request):
 
     # Já usou trial?
     if profile.has_used_trial:
+        print("🛑 Blocked: already used trial")
         return Response({"error": "Já usaste o período experimental."}, status=400)
 
     # Não adicionou cartão?
     if not profile.payment_method_added:
+        print("🛑 Blocked: payment method not added")
         return Response({"error": "Método de pagamento necessário."}, status=400)
 
     # Ativar o trial
     profile.start_trial()
+    print("✅ Trial started")
     return Response({"success": "Período experimental ativado com sucesso!"})
 
 

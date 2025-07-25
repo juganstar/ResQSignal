@@ -54,7 +54,7 @@
     "privacy": "Política de Privacidade",
     "and": "e",
     "error_policy": "Deve aceitar os Termos de Serviço e a Política de Privacidade.",
-    "notVerifiedYet": "Tem de verificar o seu email antes de iniciar sessão.",
+    "notVerifiedYet": "verifique o seu email.",
     "resendLink": "Reenviar email de verificação",
     "error": {
       "generic": "Falha no registo. Por favor, tente novamente.",

@@ -55,7 +55,7 @@
     "privacy": "Privacy Policy",
     "and": "and",
     "error_policy": "You must accept the Terms of Service and Privacy Policy.",
-    "notVerifiedYet": "You must verify your email before logging in.",
+    "notVerifiedYet": "verify your email.",
     "resendLink": "Resend verification email",
     "error": {
       "generic": "Registration failed. Please try again.",

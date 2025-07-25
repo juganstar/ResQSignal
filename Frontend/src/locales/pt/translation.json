@@ -17,9 +17,9 @@
     "feature3": "3 Dias de Acesso Premium Gratuito. \nAlertas de emergência instantâneos.",
     "trialActive": "Período de teste ativo — {{days}} dias restantes",
     "premiumUser": " Utilizador premium",
-    "trialEnded": "Período de teste inativo — atualize para continuar",
-    "wantTrial": "Quero ativar período de teste",
-    "learnMoreTrial": "Saber mais",
+    "trialEnded": "Período de teste inativo — faz upgrade para continuar",
+    "trialInactive": "Período experimental inativo — ativa gratuitamente",
+    "activateTrial": "Ativar Trial",
     "loading": "A carregar...",
     "user": "utilizador"
   },

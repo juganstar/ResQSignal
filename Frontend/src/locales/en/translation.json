@@ -17,10 +17,10 @@
     "feature3": "3 Days Free Premium Access \nInstant emergency alerts.",
     "trialActive": "Trial active — {{days}} days left",
     "premiumUser": "Premium user",
-    "trialEnded": "Trial is inactive — upgrade to continue",
+    "trialEnded": "Trial inactive — upgrade to continue.",
+    "trialInactive": " Trial is inactive — activate for free.",
+    "activateTrial": "Ativate Trial",
     "loading": "Loading...",
-    "wantTrial": "activate Trial",
-    "learnMoreTrial": "know more",
     "user": "user"
   },
   "login": {

@@ -44,16 +44,32 @@ export default function HomePage() {
 
               {/* 🔔 Subscription / Trial Info */}
               {user?.profile && (
-                <div className="mt-4 text-sm text-purple-300">
-                  {user.profile.has_premium ? (
-                    user.profile.is_in_trial ? (
-                      <>🎁 {t("home.trialActive", { days: user.profile.trial_days_left })}</>
+                <div className="mt-4 flex flex-col sm:flex-row items-center justify-center text-sm text-purple-300 bg-purple-800/20 px-4 py-2 rounded-lg gap-3">
+                  <span>
+                    {user.profile.has_premium ? (
+                      user.profile.is_in_trial ? (
+                        <>🎁 {t("home.trialActive", { days: user.profile.trial_days_left })}</>
+                      ) : (
+                        <>✅ {t("home.premiumUser")}</>
+                      )
+                    ) : user.profile.trial_start ? (
+                      <>⚠️ {t("home.trialEnded")}</>
                     ) : (
-                      <>✅ {t("home.premiumUser")}</>
-                    )
-                  ) : (
-                    <>⚠️ {t("home.trialEnded")}</>
-                  )}
+                      <>⚠️ {t("home.trialInactive")}</>
+                    )}
+                  </span>
+
+                  {/* 👇 Only show trial button if never used */}
+                  {!user.profile.has_premium &&
+                    !user.profile.trial_start &&
+                    !user.profile.has_used_trial && (
+                      <button
+                        onClick={handleActivateTrial}
+                        className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-3 py-1 rounded"
+                      >
+                        {t("home.activateTrial")}
+                      </button>
+                    )}
                 </div>
               )}
 
@@ -73,22 +89,7 @@ export default function HomePage() {
                   {t("home.logout")}
                 </button>
               </div>
-
-              {/* ✅ Trial CTA Block */}
-              {user?.profile && 
-              !user.profile.has_premium && 
-              !user.profile.trial_start && 
-              !user.profile.has_used_trial && (
-                <div className="mt-6 p-4 bg-green-100/10 text-sm rounded-lg border border-green-500 text-green-200 max-w-md mx-auto">
-                  <p className="mb-2">{t("home.wantTrial")}</p>
-                  <Link
-                    to="/trial-info"
-                    className="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded transition"
-                  >
-                    {t("home.learnMoreTrial")}
-                  </Link>
-                </div>
-              )}
+              
             </motion.div>
           ) : (
             <motion.div

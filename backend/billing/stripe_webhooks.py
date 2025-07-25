@@ -47,8 +47,8 @@ def create_checkout_session(request):
                 'price': price_id,
                 'quantity': 1,
             }],
-            success_url='http://localhost:5173/success',
-            cancel_url='http://localhost:5173/cancel',
+            success_url='https://resqsignal.com/success',
+            cancel_url='https://resqsignal.com/cancel',
         )
 
         return Response({'url': session.url})
@@ -93,7 +93,7 @@ def handle_checkout_session_completed(session):
         subscription_data = stripe.Subscription.retrieve(subscription_id)
         item_data = subscription_data['items']['data'][0]
         item_id = item_data['id']
-        price_id = item_data['price']
+        price_id = item_data['price']['id']  # ✅ fix: get price ID properly
     except Exception as e:
         print(f"❌ Failed to retrieve subscription data: {e}")
         return
@@ -121,12 +121,17 @@ def handle_checkout_session_completed(session):
         print("❌ No matching profile for customer ID")
         return
 
-    # Activate trial if user requested it but hasn’t used it yet
+    # ✅ Marcar como cartão adicionado
+    profile.payment_method_added = True
+
+    # ✅ Ativar trial se ainda não foi usado
     if not profile.has_used_trial and not profile.trial_start:
         profile.start_trial()
         print(f"🚀 Trial activated for {user.username}")
 
-    # Save subscription (create or update)
+    profile.save()
+
+    # ✅ Guardar ou atualizar subscrição
     Subscription.objects.update_or_create(
         stripe_customer_id=customer_id,
         defaults={
@@ -140,6 +145,7 @@ def handle_checkout_session_completed(session):
     )
 
     print(f"✅ Subscription saved for {customer_email} ({plan})")
+
 
 
 @api_view(["POST"])

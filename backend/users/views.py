@@ -9,7 +9,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
-
 # Django Allauth
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
@@ -29,12 +28,26 @@ from dj_rest_auth.views import PasswordResetView as DRFPasswordResetView
 from .serializers import CustomRegisterSerializer
 from users.models import Profile
 from users.serializers import UserDetailsSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 from users.serializers import CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 User = get_user_model()
 
 
+# 🌡️ Health check
+class HealthCheck(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({"status": "ok"})
+
+
+# 🔐 JWT login
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+# 👤 Authenticated user info
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def current_user(request):
@@ -49,13 +62,26 @@ def current_user(request):
     return Response(data)
 
 
-class HealthCheck(APIView):
-    permission_classes = [AllowAny]
+# 🧪 Trial activation
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def request_trial(request):
+    profile = request.user.profile
 
-    def get(self, request):
-        return Response({"status": "ok"})
+    # Já usou trial?
+    if profile.has_used_trial:
+        return Response({"error": "Já usaste o período experimental."}, status=400)
+
+    # Não adicionou cartão?
+    if not profile.payment_method_added:
+        return Response({"error": "Método de pagamento necessário."}, status=400)
+
+    # Ativar o trial
+    profile.start_trial()
+    return Response({"success": "Período experimental ativado com sucesso!"})
 
 
+# 📝 User registration
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = CustomRegisterSerializer
     permission_classes = [AllowAny]
@@ -80,8 +106,7 @@ class UserRegistrationView(generics.CreateAPIView):
         )
 
 
-# 🔒 Password Reset
-
+# 🔒 Password Reset Flow
 def filter_users_by_email(email):
     return User.objects.filter(email__iexact=email)
 
@@ -145,12 +170,10 @@ class CustomPasswordResetConfirmView(APIView):
         return Response({"detail": "Password has been reset."}, status=status.HTTP_200_OK)
 
 
+# 🗑️ Delete account
 class DeleteAccountView(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
         request.user.delete()
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-    
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer

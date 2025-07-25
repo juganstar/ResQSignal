@@ -16,8 +16,10 @@
     "feature2": "📡 Envia localização em tempo real.\nFunciona apenas com plano premium.",
     "feature3": "3 Dias de Acesso Premium Gratuito. \nAlertas de emergência instantâneos.",
     "trialActive": "Período de teste ativo — {{days}} dias restantes",
-  "premiumUser": " Utilizador premium",
-  "trialEnded": "⚠️ Período de teste terminado — atualize para continuar",
+    "premiumUser": " Utilizador premium",
+    "trialEnded": "Período de teste inativo — atualize para continuar",
+    "wantTrial": "Quero ativar período experimental",
+    "learnMoreTrial": "Saber mais",
     "loading": "A carregar...",
     "user": "utilizador"
   },

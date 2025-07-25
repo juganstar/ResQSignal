@@ -12,6 +12,7 @@ from .views import (
     CustomPasswordResetConfirmView,
     DeleteAccountView,
     CustomTokenObtainPairView,
+    request_trial,
 )
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path("reset-password/", CustomPasswordResetView.as_view(), name="reset-password"),
     path("reset-password-confirm/", CustomPasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("delete-account/", DeleteAccountView.as_view(), name="delete-account"),
+    path("trial/request/", request_trial, name="request-trial"),
 ]

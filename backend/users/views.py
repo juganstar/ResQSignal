@@ -62,7 +62,7 @@ def current_user(request):
     return Response(data)
 
 
-# 🧪 Trial activation
+# Trial activation
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def request_trial(request):

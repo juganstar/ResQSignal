@@ -11,7 +11,7 @@ export default function TrialInfoPage() {
   const handleStartTrial = async () => {
     setLoading(true);
     try {
-      await axios.post("/api/trial/request/");
+      await axios.post("/api/users/trial/request/");
       const res = await axios.post("/api/create-checkout-session/", {
         plan: "basic",
       });

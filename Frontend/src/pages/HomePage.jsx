@@ -79,11 +79,11 @@ export default function HomePage() {
               !user.profile.has_premium && 
               !user.profile.trial_start && 
               !user.profile.has_used_trial && (
-                <div className="mt-6 p-4 bg-yellow-100/10 text-sm rounded-lg border border-yellow-500 text-yellow-200 max-w-md mx-auto">
+                <div className="mt-6 p-4 bg-green-100/10 text-sm rounded-lg border border-green-500 text-green-200 max-w-md mx-auto">
                   <p className="mb-2">{t("home.wantTrial")}</p>
                   <Link
                     to="/trial-info"
-                    className="inline-block px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded transition"
+                    className="inline-block px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded transition"
                   >
                     {t("home.learnMoreTrial")}
                   </Link>

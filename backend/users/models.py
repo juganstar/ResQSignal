@@ -109,5 +109,5 @@ class Profile(models.Model):
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """Ensure every user has a profile created/updated on save"""
     if created:
-        Profile.objects.create(user=instance, trial_start=timezone.now())
+        Profile.objects.create(user=instance) 
     instance.profile.save()

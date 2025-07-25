@@ -68,6 +68,11 @@ def current_user(request):
 def request_trial(request):
     profile = request.user.profile
 
+    print("🧪 Trial debug:")
+    print("has_used_trial:", profile.has_used_trial)
+    print("payment_method_added:", profile.payment_method_added)
+    print("trial_start:", profile.trial_start)
+
     # Já usou trial?
     if profile.has_used_trial:
         return Response({"error": "Já usaste o período experimental."}, status=400)

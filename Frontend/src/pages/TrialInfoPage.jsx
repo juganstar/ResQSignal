@@ -12,7 +12,7 @@ export default function TrialInfoPage() {
     setLoading(true);
     try {
       const res = await axios.post("/api/create-checkout-session/", {
-        plan: "basic",
+        plan: "premium",
       });
       window.location.href = res.data.url;
     } catch (err) {

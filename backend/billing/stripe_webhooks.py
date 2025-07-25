@@ -11,7 +11,6 @@ from billing.models import Subscription
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])  # 💥 Require login for safety
 @csrf_exempt 
@@ -30,7 +29,7 @@ def create_checkout_session(request):
         return Response({'error': 'Invalid plan.'}, status=400)
 
     try:
-        # 🔒 If customer already exists, reuse it
+        # 🔒 Reuse or create Stripe customer
         if profile.stripe_customer_id:
             customer_id = profile.stripe_customer_id
         else:
@@ -47,6 +46,9 @@ def create_checkout_session(request):
                 'price': price_id,
                 'quantity': 1,
             }],
+            subscription_data={
+                'trial_period_days': 3  # 🎉 Stripe handles the trial!
+            },
             success_url='https://resqsignal.com/success',
             cancel_url='https://resqsignal.com/cancel',
         )

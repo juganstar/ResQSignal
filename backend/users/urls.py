@@ -1,4 +1,5 @@
 from django.urls import path
+from dj_rest_auth.registration.views import ResendEmailVerificationView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -29,4 +30,5 @@ urlpatterns = [
     path("reset-password-confirm/", CustomPasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("delete-account/", DeleteAccountView.as_view(), name="delete-account"),
     path("trial/request/", request_trial, name="request-trial"),
+    path("resend-verification/", ResendEmailVerificationView.as_view(), name="resend-verification"),
 ]

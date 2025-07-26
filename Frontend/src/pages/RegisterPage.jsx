@@ -210,9 +210,9 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-3 text-center text-sm text-gray-400">
-            {t("register.notVerifiedYet")}{" "}
+            {t("register.didntGetEmail")}{" "}
             <Link to="/resend-verification" className="text-purple-400 hover:text-purple-300 underline">
-              {t("register.resendLink")}
+              {t("register.resendHere")}
             </Link>
           </div>
         </div>

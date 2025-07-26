@@ -55,8 +55,8 @@
     "privacy": "Privacy Policy",
     "and": "and",
     "error_policy": "You must accept the Terms of Service and Privacy Policy.",
-    "notVerifiedYet": "verify your email.",
-    "resendLink": "Resend verification email",
+    "didntGetEmail": "Didn't receive the verification email?",
+    "resendHere": "Click here to resend",
     "error": {
       "generic": "Registration failed. Please try again.",
       "usernameExists": "This username is already taken.",

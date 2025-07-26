@@ -139,7 +139,6 @@
     "title": "Confirme o seu Email",
     "subtitle": "Enviámos um link de confirmação. Verifique a sua caixa de entrada e clique no link para ativar a sua conta.",
     "loginButton": "Ir para o Login",
-    "resendLink": "Reenviar email de verificação",
     "resentSuccess": "Email reenviado com sucesso.",
     "resentFail": "Erro ao reenviar. Tente novamente mais tarde.",
     "sending": "A enviar...",

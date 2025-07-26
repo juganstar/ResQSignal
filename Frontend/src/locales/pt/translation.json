@@ -142,7 +142,9 @@
     "resendLink": "Reenviar email de verificação",
     "resentSuccess": "Email reenviado com sucesso.",
     "resentFail": "Erro ao reenviar. Tente novamente mais tarde.",
-    "sending": "A enviar..."
+    "sending": "A enviar...",
+    "resendTitle": "Reenviar Email de Verificação",
+    "resendDescription": "Insira o seu email para receber um novo link de verificação."
   },
   "emailConfirmed": {
     "title": "Email Confirmado!",

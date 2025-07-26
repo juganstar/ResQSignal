@@ -136,14 +136,16 @@
   "last_updated": "Last updated: July 2025",
   "back": "Back"
   },
-  "verify": {
-    "title": "Confirm Your Email",
-    "subtitle": "We've sent you a confirmation link. Please check your inbox and click the link to activate your account.",
+ "verify": {
+    "title": "Confirm your Email",
+    "subtitle": "We’ve sent you a confirmation link. Please check your inbox and click the link to activate your account.",
     "loginButton": "Go to Login",
-    "resendLink": "Didn't receive the email? Resend",
-    "resentSuccess": "Verification email sent successfully.",
+    "resendLink": "Resend verification email",
+    "resentSuccess": "Verification email resent successfully.",
     "resentFail": "Failed to resend email. Please try again later.",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "resendTitle": "Resend Verification Email",
+    "resendDescription": "Enter your email address to receive a new verification link."
   },
   "emailConfirmed": {
     "title": "Email Confirmed!",

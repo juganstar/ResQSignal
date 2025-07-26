@@ -22,6 +22,8 @@ import TrialInfoPage from "./pages/TrialInfoPage";
 import ResetConfirmPage from "./pages/ResetConfirmPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CancelPage from "./pages/CancelPage";
+import ResendVerificationPage from "./pages/ResendVerificationPage";
+
 
 
 import logo from "./assets/logo.png";
@@ -136,6 +138,7 @@ function App() {
               <Route path="/reset-password/" element={<ResetRequestPage />} />
               <Route path="/trial-info" element={<TrialInfoPage />} />
               <Route path="/cancel" element={<CancelPage />} />
+              <Route path="/resend-verification" element={<ResendVerificationPage />} />
               <Route
                 path="/reset-password-confirm/:uid/:token"
                 element={<ResetConfirmPage />}

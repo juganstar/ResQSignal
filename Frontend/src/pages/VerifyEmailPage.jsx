@@ -1,26 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
-import { useState } from "react";
-import axios from "../utils/axiosDefaults";
 
 export default function VerifyEmailPage() {
   const { t } = useTranslation();
-  const [resendMessage, setResendMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleResend = async () => {
-    setLoading(true);
-    setResendMessage(null);
-    try {
-      await axios.post("/api/users/verify/resend/");
-      setResendMessage(t("verify.resentSuccess"));
-    } catch (err) {
-      setResendMessage(t("verify.resentFail"));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex-grow flex items-center justify-center px-4 py-10">
@@ -42,19 +25,6 @@ export default function VerifyEmailPage() {
           >
             {t("verify.loginButton")}
           </Link>
-
-          <div className="mt-4">
-            <button
-              onClick={handleResend}
-              disabled={loading}
-              className="text-sm text-purple-400 hover:underline disabled:opacity-50 mt-2"
-            >
-              {loading ? t("verify.sending") : t("verify.resendLink")}
-            </button>
-            {resendMessage && (
-              <p className="text-sm text-gray-400 mt-2">{resendMessage}</p>
-            )}
-          </div>
         </div>
       </div>
     </div>

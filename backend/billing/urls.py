@@ -7,5 +7,5 @@ urlpatterns = [
     path("portal/", create_billing_portal_session, name="billing-portal"),
     path("checkout/", create_checkout_session, name="create-checkout"),
     path("trial/request/", request_trial, name="request_trial"),
-    path('webhook/', views.stripe_webhook, name='stripe-webhook'),
+    path("webhook/", views.stripe_webhook, name="stripe_webhook"),
 ]

@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# ✅ Collect static files here
-RUN python manage.py collectstatic --noinput
+# ❌ REMOVE collectstatic from build step (fails without env vars)
+# RUN python manage.py collectstatic --noinput
 
 # Default entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

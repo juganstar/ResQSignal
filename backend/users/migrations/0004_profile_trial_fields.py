@@ -1,6 +1,5 @@
 from django.db import migrations, models
 
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -17,5 +16,10 @@ class Migration(migrations.Migration):
             model_name="profile",
             name="payment_method_added",
             field=models.BooleanField(default=False),
+        ),
+        migrations.AddField(
+            model_name="profile",
+            name="trial_start",
+            field=models.DateTimeField(null=True),
         ),
     ]

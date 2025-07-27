@@ -101,7 +101,7 @@
     "invalid_name": "Please enter a valid name (letters only).",
     "required_name": "Name is required.",
     "required_phone": "Phone number is required.",
-    "premium_required_to_add": "⚠️ You need premium access to add contacts.",
+    "premium_required_to_add": "need to be subscribed to add contacts.",
     "correct_errors": "Please correct the errors below.",
     "error_add": "Failed to add contact.",
     "error_delete": "Failed to delete contact.",

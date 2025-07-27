@@ -12,6 +12,7 @@ from django.contrib.auth.tokens import default_token_generator
 # Django Allauth
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
+from allauth.account.utils import send_email_confirmation
 
 # DRF
 from rest_framework.decorators import api_view, permission_classes
@@ -185,3 +186,12 @@ class DeleteAccountView(APIView):
     def delete(self, request):
         request.user.delete()
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class ResendEmailVerificationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        send_email_confirmation(request, user)
+        return Response({"detail": "Verification email resent."}, status=200)

@@ -18,14 +18,17 @@ COPY docker/entrypoint.sh /entrypoint.sh
 RUN dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Install Python dependencies
-COPY requirements.txt .
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . .
 
-# ✅ Collect static files here
+# ⬇️ Inject env vars from Railway into a .env file at build time
+RUN echo "DATABASE_URL=${DATABASE_URL}" > .env
+
+# Collect static files (needs DATABASE_URL set)
 RUN python manage.py collectstatic --noinput
 
-# Default entrypoint
+# Entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

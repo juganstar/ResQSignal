@@ -24,4 +24,5 @@ COPY . .
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
 # TEMPORARY: create superuser
-CMD ["python", "create_superuser.py"]
+CMD ["python", "scripts/make_migrations.py"]
+

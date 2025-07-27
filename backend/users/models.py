@@ -106,8 +106,6 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    """Ensure every user has a profile created/updated on save"""
-    if created:
-        Profile.objects.create(user=instance) 
-    instance.profile.save()
+def create_or_update_user_profile(sender, instance, **kwargs):
+    """Ensure every user always has a profile"""
+    Profile.objects.get_or_create(user=instance)

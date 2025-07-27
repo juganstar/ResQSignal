@@ -210,7 +210,7 @@ else:
     PROD_ORIGINS = [
         "https://resqsignal.com",
         "https://www.resqsignal.com",
-        "resqsignal-production.up.railway.app",
+        "https://resqsignal-production.up.railway.app",
     ]
     CORS_ALLOWED_ORIGINS = PROD_ORIGINS
     CSRF_TRUSTED_ORIGINS = PROD_ORIGINS

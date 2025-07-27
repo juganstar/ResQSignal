@@ -4,7 +4,7 @@ import i18n from '../i18n';
 const baseURL =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:8000'
-    : 'resqsignal-production.up.railway.app';
+    : 'https://resqsignal-production.up.railway.app';
 
 const secureAxios = axios.create({
   baseURL,

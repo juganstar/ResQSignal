@@ -1,4 +1,4 @@
-from stripe import UsageRecord
+from stripe.usage_record import UsageRecord
 import time
 from billing.models import Subscription
 

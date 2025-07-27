@@ -1,5 +1,3 @@
-# docker/Dockerfile
-
 FROM python:3.11-slim
 
 RUN apt-get update && \
@@ -21,4 +19,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+ENV PYTHONUNBUFFERED=1
+
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+
+# 👇 This is your final CMD in production
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

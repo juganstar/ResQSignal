@@ -29,3 +29,5 @@ COPY . .
 
 # Default entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+
+CMD ["sh", "-c", "python manage.py createsuperuser && gunicorn config.wsgi:application --bind 0.0.0.0:8000"]

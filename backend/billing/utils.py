@@ -1,4 +1,4 @@
-from stripe.usage_record import UsageRecord
+import stripe
 import time
 from billing.models import Subscription
 
@@ -9,7 +9,7 @@ def add_stripe_usage(user, quantity=1):
             print("❌ Missing subscription_item_id")
             return
 
-        UsageRecord.create(
+        stripe.UsageRecord.create(
             subscription_item=sub.subscription_item_id,
             quantity=quantity,
             timestamp=int(time.time()),

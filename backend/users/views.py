@@ -188,10 +188,14 @@ class DeleteAccountView(APIView):
         return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
     
-class ResendEmailVerificationView(APIView):
+class CustomResendEmailVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         user = request.user
-        send_email_confirmation(request, user)
-        return Response({"detail": "Verification email resent."}, status=200)
+        email_address = EmailAddress.objects.filter(user=user, email=user.email).first()
+
+        if email_address and not email_address.verified:
+            send_email_confirmation(request, user, signup=False)
+            return Response({"detail": "Verification email sent."}, status=status.HTTP_200_OK)
+        return Response({"detail": "Email already verified or not found."}, status=status.HTTP_400_BAD_REQUEST)

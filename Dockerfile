@@ -22,7 +22,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
-
-# TEMPORARY: create superuser
-CMD ["python", "scripts/make_migrations.py"]
-

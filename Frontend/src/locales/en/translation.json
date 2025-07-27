@@ -137,14 +137,16 @@
   "back": "Back"
   },
  "verify": {
-    "title": "Confirm your Email",
-    "subtitle": "We’ve sent you a confirmation link. Please check your inbox and click the link to activate your account.",
-    "loginButton": "Go to Login",
-    "resentSuccess": "Verification email resent successfully.",
-    "resentFail": "Failed to resend email. Please try again later.",
-    "sending": "Sending...",
-    "resendTitle": "Resend Verification Email",
-    "resendDescription": "Enter your email address to receive a new verification link."
+  "title": "Confirm Your Email",
+  "subtitle": "We’ve sent you a verification link. Check your inbox and click the link to activate your account.",
+  "loginButton": "Go to Login",
+  "resendTitle": "Resend Verification Email",
+  "resendDescription": "Enter your email address to receive a new verification link.",
+  "button": "Resend link",
+  "backToLogin": "Back to login",
+  "resentSuccess": "Verification email sent successfully.",
+  "resentFail": "Failed to resend. Please try again later.",
+  "sending": "Sending..."
   },
   "emailConfirmed": {
     "title": "Email Confirmed!",

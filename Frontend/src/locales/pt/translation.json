@@ -136,14 +136,16 @@
   "back": "Voltar"
   },
   "verify": {
-    "title": "Confirme o seu Email",
-    "subtitle": "Enviámos um link de confirmação. Verifique a sua caixa de entrada e clique no link para ativar a sua conta.",
-    "loginButton": "Ir para o Login",
-    "resentSuccess": "Email reenviado com sucesso.",
-    "resentFail": "Erro ao reenviar. Tente novamente mais tarde.",
-    "sending": "A enviar...",
-    "resendTitle": "Reenviar Email de Verificação",
-    "resendDescription": "Insira o seu email para receber um novo link de verificação."
+  "title": "Confirme o seu Email",
+  "subtitle": "Enviámos um link de confirmação. Verifique a sua caixa de entrada e clique no link para ativar a sua conta.",
+  "loginButton": "Ir para o Login",
+  "resendTitle": "Reenviar Email de Verificação",
+  "resendDescription": "Insira o seu email para receber um novo link de verificação.",
+  "button": "Reenviar link",
+  "backToLogin": "Voltar ao login",
+  "resentSuccess": "Email reenviado com sucesso.",
+  "resentFail": "Erro ao reenviar. Tente novamente mais tarde.",
+  "sending": "A enviar..."
   },
   "emailConfirmed": {
     "title": "Email Confirmado!",

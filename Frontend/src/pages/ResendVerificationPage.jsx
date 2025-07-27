@@ -16,7 +16,7 @@ export default function ResendVerificationPage() {
     try {
       await axios.post("/api/users/resend-verification/", { email });
       toast.success(t("verify.resentSuccess"));
-      setTimeout(() => navigate("/login"), 2000); // redirect after 2s
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       toast.error(t("verify.resentFail"));
     } finally {
@@ -38,7 +38,7 @@ export default function ResendVerificationPage() {
           <form onSubmit={handleResend}>
             <input
               type="email"
-              placeholder={t("form.email")}
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -47,15 +47,15 @@ export default function ResendVerificationPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+              className="w-full py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold transition"
             >
-              {loading ? t("verify.sending") : t("verify.resendLink")}
+              {loading ? t("verify.sending") : t("verify.button")}
             </button>
           </form>
 
           <div className="mt-4 text-sm text-gray-400 text-center">
             <Link to="/login" className="underline text-blue-400 hover:text-blue-500">
-              {t("auth.backToLogin")}
+              {t("verify.backToLogin")}
             </Link>
           </div>
         </div>

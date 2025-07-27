@@ -193,17 +193,18 @@ class CustomResendEmailVerificationView(APIView):
 
     def post(self, request):
         email = request.data.get("email")
+        print("📩 Resend email requested:", email)
+
         if not email:
             return Response({"detail": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.filter(email__iexact=email).first()
-        if not user:
-            return Response({"detail": "User with this email not found."}, status=status.HTTP_400_BAD_REQUEST)
-
-        email_address = EmailAddress.objects.filter(user=user, email=user.email).first()
+        email_address = EmailAddress.objects.filter(email__iexact=email).first()
+        print("📩 EmailAddress found:", email_address)
 
         if email_address and not email_address.verified:
-            send_email_confirmation(request, user, signup=False)
+            send_email_confirmation(request, email_address.user, signup=False)
+            print("✅ Verification email sent.")
             return Response({"detail": "Verification email sent."}, status=status.HTTP_200_OK)
 
-        return Response({"detail": "Email already verified or not found."}, status=status.HTTP_400_BAD_REQUEST)
+        print("⚠️ Email not found or already verified.")
+        return Response({"detail": "Email not found or already verified."}, status=status.HTTP_400_BAD_REQUEST)

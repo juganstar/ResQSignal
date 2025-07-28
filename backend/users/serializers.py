@@ -1,17 +1,23 @@
-from rest_framework import serializers
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model, authenticate
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import validate_email
+from django.utils import timezone
+from django.utils.timezone import is_naive, make_aware
+
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from dj_rest_auth.serializers import LoginSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
+
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account import app_settings as allauth_settings
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from datetime import timedelta
-from django.utils import timezone
-from users.models import Profile  # Adjust if your Profile is in another app
+from users.models import Profile  # Ajustar se estiver noutra app
+
 
 User = get_user_model()
 
@@ -67,12 +73,22 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_trial_days_left(self, obj):
         if obj.trial_start:
-            remaining = obj.trial_start + timedelta(days=3) - timezone.now()
+            trial_start = obj.trial_start
+            if is_naive(trial_start):
+                trial_start = make_aware(trial_start)
+
+            remaining = trial_start + timedelta(days=3) - timezone.now()
             return max(0, remaining.days)
         return 0
 
     def get_is_in_trial(self, obj):
-        return obj.trial_start and timezone.now() < obj.trial_start + timedelta(days=3)
+        if obj.trial_start:
+            trial_start = obj.trial_start
+            if is_naive(trial_start):
+                trial_start = make_aware(trial_start)
+
+            return timezone.now() < trial_start + timedelta(days=3)
+        return False
 
     def get_has_premium(self, obj):
         return obj.has_premium_access()

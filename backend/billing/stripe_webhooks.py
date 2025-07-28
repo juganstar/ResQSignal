@@ -27,12 +27,16 @@ def create_checkout_session(request):
     email = request.user.email
     plan = request.data.get("plan")
 
+    # --- map plan → licensed price ---
     if plan == "basic":
-        price_id = getattr(settings, "STRIPE_BASIC_PRICE_ID", os.getenv("STRIPE_BASIC_PRICE_ID"))
+        access_price = os.getenv("BASIC_ACCESS_PRICE_ID")
     elif plan == "premium":
-        price_id = getattr(settings, "STRIPE_PREMIUM_PRICE_ID", os.getenv("STRIPE_PREMIUM_PRICE_ID"))
+        access_price = os.getenv("PREMIUM_ACCESS_PRICE_ID")
     else:
         return Response({'error': 'Plano inválido.'}, status=400)
+
+    # --- SMS metered add-on (same for both plans) ---
+    sms_price = os.getenv("SMS_METERED_PRICE_ID")
 
     try:
         if profile.stripe_customer_id:
@@ -47,16 +51,18 @@ def create_checkout_session(request):
             customer=customer_id,
             payment_method_types=['card'],
             mode='subscription',
-            line_items=[{'price': price_id, 'quantity': 1}],
+            line_items=[
+                {"price": access_price, "quantity": 1},  # €3 or €5 licensed
+                {"price": sms_price,    "quantity": 1},  # €0.10 per SMS metered
+            ],
             subscription_data={'trial_period_days': 3},
             success_url='https://resqsignal.com/',
             cancel_url='https://resqsignal.com/cancel/',
         )
-
         return Response({'url': session.url})
 
     except Exception as e:
-        print("❌ Erro no checkout:", e)
+        logger.error("❌ Erro no checkout:", e, exc_info=True)
         return Response({'error': str(e)}, status=500)
 
 

@@ -6,50 +6,72 @@ from users.models import Profile
 
 stripe.api_key = getattr(settings, "STRIPE_SECRET_KEY", os.getenv("STRIPE_SECRET_KEY"))
 
-
 def handle_checkout_session_completed(session):
+    """
+    Stripe webhook handler for checkout.session.completed
+    Creates / updates Subscription record with:
+      - licensed plan (basic or premium)
+      - metered SMS add-on item id
+    """
     customer_id = session.get('customer')
     subscription_id = session.get('subscription')
 
     if not customer_id or not subscription_id:
-        print("❌ Faltam customer_id ou subscription_id")
+        print("❌ Missing customer_id or subscription_id")
         return
 
     try:
-        subscription_data = stripe.Subscription.retrieve(subscription_id)
-        item_data = subscription_data['items']['data'][0]
-        item_id = item_data['id']
-        price_id = item_data['price']['id']
+        # Fetch full subscription with line_items expanded
+        subscription_data = stripe.Subscription.retrieve(
+            subscription_id,
+            expand=['items.data.price']
+        )
     except Exception as e:
-        print(f"❌ Erro ao obter dados da subscrição: {e}")
+        print(f"❌ Error retrieving subscription: {e}")
         return
 
+    # Map price IDs to plans
+    basic_price_id = getattr(settings, "STRIPE_BASIC_PRICE_ID", os.getenv("STRIPE_BASIC_PRICE_ID"))
+    premium_price_id = getattr(settings, "STRIPE_PREMIUM_PRICE_ID", os.getenv("STRIPE_PREMIUM_PRICE_ID"))
+    sms_price_id = getattr(settings, "STRIPE_SMS_METERED_PRICE_ID", os.getenv("STRIPE_SMS_METERED_PRICE_ID"))
+
     plan = "unknown"
-    if price_id == getattr(settings, "STRIPE_BASIC_PRICE_ID", os.getenv("STRIPE_BASIC_PRICE_ID")):
-        plan = "basic"
-    elif price_id == getattr(settings, "STRIPE_PREMIUM_PRICE_ID", os.getenv("STRIPE_PREMIUM_PRICE_ID")):
-        plan = "premium"
+    access_item_id = None
+    sms_item_id = None
+
+    for item in subscription_data['items']['data']:
+        price_id = item['price']['id']
+        if price_id == basic_price_id:
+            plan = "basic"
+            access_item_id = item['id']
+        elif price_id == premium_price_id:
+            plan = "premium"
+            access_item_id = item['id']
+        elif price_id == sms_price_id:
+            sms_item_id = item['id']
+
+    if plan == "unknown":
+        print(f"⚠️ Unknown price IDs in subscription {subscription_id}")
+        return
 
     try:
         customer = stripe.Customer.retrieve(customer_id)
         customer_email = customer.email
     except Exception as e:
-        print(f"⚠️ Não foi possível obter o email do cliente: {e}")
+        print(f"⚠️ Could not fetch customer email: {e}")
         customer_email = None
 
     try:
         profile = Profile.objects.get(stripe_customer_id=customer_id)
         user = profile.user
     except Profile.DoesNotExist:
-        print(f"❌ Perfil não encontrado para customer_id {customer_id}")
+        print(f"❌ Profile not found for customer {customer_id}")
         return
 
     profile.payment_method_added = True
-
     if not profile.has_used_trial and not profile.trial_start:
         profile.start_trial()
-        print(f"🚀 Trial ativado para {user.username}")
-
+        print(f"🚀 Trial activated for {user.username}")
     profile.save()
 
     Subscription.objects.update_or_create(
@@ -60,11 +82,12 @@ def handle_checkout_session_completed(session):
             "stripe_subscription_id": subscription_id,
             "plan": plan,
             "status": "active",
-            "subscription_item_id": item_id,
+            "subscription_item_id": access_item_id,   # licensed plan item
+            "sms_subscription_item_id": sms_item_id,  # metered SMS item (nullable)
         }
     )
 
-    print(f"✅ Subscrição guardada para {customer_email or 'sem email'} ({plan})")
+    print(f"✅ Subscription saved for {customer_email or 'no email'} ({plan})")
 
 
 def handle_subscription_created(subscription):

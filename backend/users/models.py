@@ -2,12 +2,11 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.views.decorators.http import require_GET
-from django.http import JsonResponse
-
 from django.utils import timezone
+from django.utils.timezone import make_aware, is_naive
 from datetime import timedelta
 import uuid
+
 
 class User(AbstractUser):
     """
@@ -85,15 +84,25 @@ class Profile(models.Model):
     def has_premium_access(self):
         if self.get_effective_plan() == "premium":
             return True
-        if self.trial_start and timezone.now() < self.trial_start + timedelta(days=3):
-            return True
+
+        if self.trial_start:
+            trial_start = self.trial_start
+            if is_naive(trial_start):
+                trial_start = make_aware(trial_start)
+            if timezone.now() < trial_start + timedelta(days=3):
+                return True
+
         return False
 
     def is_trial_active(self):
-        return (
-            self.trial_start is not None and
-            timezone.now() < self.trial_start + timedelta(days=3)
-        )
+        if not self.trial_start:
+            return False
+
+        trial_start = self.trial_start
+        if is_naive(trial_start):
+            trial_start = make_aware(trial_start)
+
+        return timezone.now() < trial_start + timedelta(days=3)
 
     def start_trial(self):
         self.trial_start = timezone.now()

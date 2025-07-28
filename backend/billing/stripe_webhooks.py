@@ -11,7 +11,6 @@ from billing.models import Subscription
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
-@api_view(['POST'])
 @permission_classes([IsAuthenticated])  # 💥 Require login for safety
 @csrf_exempt 
 def create_checkout_session(request):
@@ -78,7 +77,11 @@ def stripe_webhook(request):
         session = event["data"]["object"]
         handle_checkout_session_completed(session)
 
+    else:
+        print(f"Unhandled event type: {event['type']}")
+
     return HttpResponse(status=200)
+
 
 
 def handle_checkout_session_completed(session):

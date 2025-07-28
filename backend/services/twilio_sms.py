@@ -35,20 +35,15 @@ def send_sms_alert(user, message):
 
     for contact in contacts:
         raw = contact.phone_number
-        to = _to_e164(raw)
-
-        print(f"   raw='{raw}' → normalised='{to}'")
-
-        if not to:
-            print(f"   ⚠️  Skipping '{contact.name}' – invalid / empty number")
+        if not raw:
             continue
-
         try:
+            to = str(raw)                 # ← fix
             msg = client.messages.create(
                 body=message,
                 from_=TWILIO_PHONE_NUMBER,
                 to=to
             )
-            print(f"   ✅ SID: {msg.sid}  Status: {msg.status}")
+            print(f"✅ SID: {msg.sid}")
         except Exception as e:
-            print(f"   ❌ Failed to send to {to}: {e}")
+            print(f"❌ {e}")

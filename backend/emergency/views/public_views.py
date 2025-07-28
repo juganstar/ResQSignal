@@ -17,8 +17,6 @@ from users.utils import get_user_plan
 from billing.models import Subscription
 from services.twilio_sms import send_sms_alert
 
-
-
 logger = logging.getLogger(__name__)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -67,11 +65,24 @@ class TriggerPublicAlertView(APIView):
             is_first_real_alert = alert_count == 0
 
             if not is_test:
-                full_message = f"{message}\n\nLocation: {location}" if location else message
+                # Build branded, clickable message
+                if location:
+                    lat, lon = location.split(",", 1)
+                    maps_link = f"https://maps.google.com/?q={lat},{lon}"
+                    full_message = (
+                        f"🚨 ResQSignal ALERT from {user.get_full_name() or user.username}!\n"
+                        f"I may need immediate help.\n"
+                        f"📍 Tap for exact location:\n{maps_link}"
+                    )
+                else:
+                    full_message = (
+                        f"🚨 ResQSignal ALERT from {user.get_full_name() or user.username}!\n"
+                        f"I may need immediate help. Location not available."
+                    )
 
                 for contact in contacts:
                     try:
-                        logger.info(f"📤 Sending email alert to {contact.phone_number}")
+                        logger.info(f"📤 Sending alert to {contact.phone_number}")
                         send_emergency_message(contact=contact, user=user, message=full_message)
                         successful_sends += 1
                     except Exception as e:
@@ -103,7 +114,6 @@ class TriggerPublicAlertView(APIView):
         except Exception as e:
             logger.error(f"Emergency alert error: {str(e)}", exc_info=True)
             return Response({"detail": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 

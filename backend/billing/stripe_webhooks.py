@@ -11,6 +11,7 @@ from billing.models import Subscription
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])  # 💥 Require login for safety
 @csrf_exempt 
 def create_checkout_session(request):

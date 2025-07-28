@@ -2,34 +2,39 @@ import os
 import stripe
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.conf import settings
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
 from users.models import Profile
-from billing.models import Subscription
+from .webhook_handlers import (
+    handle_checkout_session_completed,
+    handle_subscription_created,
+    handle_subscription_updated,
+)
 
+# Configura a chave da API da Stripe
+stripe.api_key = getattr(settings, "STRIPE_SECRET_KEY", os.getenv("STRIPE_SECRET_KEY"))
 
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])  # 💥 Require login for safety
-@csrf_exempt 
+@permission_classes([IsAuthenticated])
+@csrf_exempt
 def create_checkout_session(request):
-    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-
     profile = request.user.profile
     email = request.user.email
     plan = request.data.get("plan")
 
     if plan == "basic":
-        price_id = os.getenv("STRIPE_BASIC_PRICE_ID")
+        price_id = getattr(settings, "STRIPE_BASIC_PRICE_ID", os.getenv("STRIPE_BASIC_PRICE_ID"))
     elif plan == "premium":
-        price_id = os.getenv("STRIPE_PREMIUM_PRICE_ID")
+        price_id = getattr(settings, "STRIPE_PREMIUM_PRICE_ID", os.getenv("STRIPE_PREMIUM_PRICE_ID"))
     else:
-        return Response({'error': 'Invalid plan.'}, status=400)
+        return Response({'error': 'Plano inválido.'}, status=400)
 
     try:
-        # 🔒 Reuse or create Stripe customer
         if profile.stripe_customer_id:
             customer_id = profile.stripe_customer_id
         else:
@@ -42,22 +47,36 @@ def create_checkout_session(request):
             customer=customer_id,
             payment_method_types=['card'],
             mode='subscription',
-            line_items=[{
-                'price': price_id,
-                'quantity': 1,
-            }],
-            subscription_data={
-                'trial_period_days': 3  # 🎉 Stripe handles the trial!
-            },
+            line_items=[{'price': price_id, 'quantity': 1}],
+            subscription_data={'trial_period_days': 3},
             success_url='https://resqsignal.com/',
-            cancel_url='https://resqsignal.com/cancel',
+            cancel_url='https://resqsignal.com/cancel/',
         )
 
         return Response({'url': session.url})
 
     except Exception as e:
-        print("❌ Checkout Error:", e)
+        print("❌ Erro no checkout:", e)
         return Response({'error': str(e)}, status=500)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def create_billing_portal_session(request):
+    profile = request.user.profile
+    customer_id = profile.stripe_customer_id
+
+    if not customer_id:
+        return Response({"error": "Nenhum cliente Stripe encontrado."}, status=400)
+
+    try:
+        session = stripe.billing_portal.Session.create(
+            customer=customer_id,
+            return_url=os.getenv("BILLING_PORTAL_RETURN_URL", "https://resqsignal.com/setup")
+        )
+        return Response({"url": session.url})
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
 
 
 @csrf_exempt
@@ -67,109 +86,29 @@ def stripe_webhook(request):
     secret = os.getenv("STRIPE_WEBHOOK_SECRET")
 
     if not secret:
-        return HttpResponse("Missing webhook secret", status=500)
+        return HttpResponse("Missing Stripe webhook secret", status=500)
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, secret)
     except Exception as e:
+        print("❌ Erro ao verificar assinatura Stripe:", e)
         return HttpResponse(f"Webhook error: {e}", status=400)
 
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        handle_checkout_session_completed(session)
+    event_type = event.get("type", "")
+    data_object = event.get("data", {}).get("object", {})
+
+    print(f"📬 Evento recebido da Stripe: {event_type}")
+
+    if event_type == "checkout.session.completed":
+        handle_checkout_session_completed(data_object)
+
+    elif event_type == "customer.subscription.created":
+        handle_subscription_created(data_object)
+
+    elif event_type == "customer.subscription.updated":
+        handle_subscription_updated(data_object)
 
     else:
-        print(f"Unhandled event type: {event['type']}")
+        print(f"⚠️ Evento não tratado: {event_type}")
 
     return HttpResponse(status=200)
-
-
-
-def handle_checkout_session_completed(session):
-    import stripe
-    from billing.models import Subscription
-    from users.models import Profile
-    from django.conf import settings
-
-    customer_id = session.get('customer')
-    subscription_id = session.get('subscription')
-
-    # Get full subscription data from Stripe (for item ID + price)
-    try:
-        subscription_data = stripe.Subscription.retrieve(subscription_id)
-        item_data = subscription_data['items']['data'][0]
-        item_id = item_data['id']
-        price_id = item_data['price']['id']  # ✅ fix: get price ID properly
-    except Exception as e:
-        print(f"❌ Failed to retrieve subscription data: {e}")
-        return
-
-    # Determine plan
-    plan = "unknown"
-    if price_id == os.getenv("STRIPE_BASIC_PRICE_ID"):
-        plan = "basic"
-    elif price_id == os.getenv("STRIPE_PREMIUM_PRICE_ID"):
-        plan = "premium"
-
-    # Get customer email safely
-    try:
-        customer = stripe.Customer.retrieve(customer_id)
-        customer_email = customer.email
-    except Exception as e:
-        print(f"⚠️ Could not get customer email: {e}")
-        customer_email = None
-
-    # Match to existing user
-    try:
-        profile = Profile.objects.get(stripe_customer_id=customer_id)
-        user = profile.user
-    except Profile.DoesNotExist:
-        print("❌ No matching profile for customer ID")
-        return
-
-    # ✅ Marcar como cartão adicionado
-    profile.payment_method_added = True
-
-    # ✅ Ativar trial se ainda não foi usado
-    if not profile.has_used_trial and not profile.trial_start:
-        profile.start_trial()
-        print(f"🚀 Trial activated for {user.username}")
-
-    profile.save()
-
-    # ✅ Guardar ou atualizar subscrição
-    Subscription.objects.update_or_create(
-        stripe_customer_id=customer_id,
-        defaults={
-            "user": user,
-            "email": customer_email,
-            "stripe_subscription_id": subscription_id,
-            "plan": plan,
-            "status": "active",
-            "subscription_item_id": item_id,
-        }
-    )
-
-    print(f"✅ Subscription saved for {customer_email} ({plan})")
-
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def create_billing_portal_session(request):
-    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-
-    profile = request.user.profile
-    customer_id = profile.stripe_customer_id
-
-    if not customer_id:
-        return Response({"error": "No Stripe customer found"}, status=400)
-
-    try:
-        session = stripe.billing_portal.Session.create(
-            customer=customer_id,
-            return_url="http://localhost:5173/dashboard",  # Or wherever you want to send them after
-        )
-        return Response({"url": session.url})
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)

@@ -1,14 +1,14 @@
 from django.urls import path
-from .views import (
-    BillingPortalView,
+from .views import BillingPortalView, request_trial
+from .stripe_webhooks import (
     create_checkout_session,
-    request_trial,
     stripe_webhook,
+    create_billing_portal_session
 )
 
 urlpatterns = [
-    path("portal/", BillingPortalView.as_view(), name="billing-portal"),
     path("checkout/", create_checkout_session, name="create-checkout"),
-    path("trial/request/", request_trial, name="request_trial"),
-    path("webhook/", stripe_webhook, name="stripe_webhook"),
+    path("portal/", BillingPortalView.as_view(), name="billing-portal"),
+    path("trial/request/", request_trial, name="request-trial"),
+    path("webhook/", stripe_webhook, name="stripe-webhook"),
 ]

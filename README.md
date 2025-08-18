@@ -96,7 +96,7 @@ ResQSignal is fully Dockerized and was originally designed for local development
 - Separate containers for backend and frontend
 
 🛠️ Due to recent production changes, local setup instructions are being updated.  
-For now, please explore the **live version** at [resqsignal.com](https://resqsignal.com) or contact me if you’d like help running it locally.
+For now, please explore the **live version** at [resqsignal.com](https://resqsignal.com) or contact me if you’d like help running it locally, always up to help.
 
 ---
 
